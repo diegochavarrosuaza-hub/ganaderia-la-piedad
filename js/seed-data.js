@@ -1,5 +1,6 @@
-// Datos migrados de 'Ganadería La Piedad.xlsx' el 2026-07-13
-// Se cargan una sola vez, la primera vez que se abre la app.
+// Datos migrados de 'Ganadería La Piedad.xlsx' el 2026-07-12
+// Actualizado el 2026-07-13: Freya viva, Flora fallecida (mar 2026),
+// vacas 055-060 (5.º viaje) y nacimiento de Jennifer (vaca 057, 22/05/2026).
 export const SEED = {
  "vacas": [
   {
@@ -93,7 +94,7 @@ export const SEED = {
    "fechaNac": "2023-01-04",
    "sexo": "Hembra",
    "ultimoParto": "2025-12-31",
-   "criaActual": "Flora",
+   "criaActual": "Flora (Fallecida)",
    "fechaPrenez": "",
    "fechaProbParto": "",
    "estado": "ACTIVA",
@@ -149,7 +150,7 @@ export const SEED = {
    "fechaNac": "2022-12-28",
    "sexo": "Hembra",
    "ultimoParto": "2025-12-31",
-   "criaActual": "Freya (Fallecida)",
+   "criaActual": "Freya",
    "fechaPrenez": "",
    "fechaProbParto": "",
    "estado": "ACTIVA",
@@ -757,6 +758,90 @@ export const SEED = {
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
+  },
+  {
+   "chapeta": "055",
+   "codigo": "055-3",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": "5.º viaje"
+  },
+  {
+   "chapeta": "056",
+   "codigo": "052-3",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": "5.º viaje"
+  },
+  {
+   "chapeta": "057",
+   "codigo": "139",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "2026-05-22",
+   "criaActual": "Jennifer",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": "5.º viaje"
+  },
+  {
+   "chapeta": "058",
+   "codigo": "1327",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": ""
+  },
+  {
+   "chapeta": "059",
+   "codigo": "1072",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": ""
+  },
+  {
+   "chapeta": "060",
+   "codigo": "1341",
+   "genetica": "Plus x Plus",
+   "fechaNac": "",
+   "sexo": "Hembra",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": ""
   }
  ],
  "terneros": [
@@ -1272,11 +1357,11 @@ export const SEED = {
    "sexo": "Hembra",
    "fechaNac": "2025-12-31",
    "codigoMadre": "007",
-   "activo": true,
-   "fechaSalida": "",
-   "tipoSalida": "",
+   "activo": false,
+   "fechaSalida": "2026-03-15",
+   "tipoSalida": "FALLECIDO",
    "brucelosis": "No",
-   "observaciones": "",
+   "observaciones": "Fallecida en marzo 2026 (fecha aproximada)",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
   },
@@ -1285,7 +1370,7 @@ export const SEED = {
    "sexo": "Hembra",
    "fechaNac": "2025-12-31",
    "codigoMadre": "011",
-   "activo": false,
+   "activo": true,
    "fechaSalida": "",
    "tipoSalida": "",
    "brucelosis": "No",
@@ -1381,6 +1466,19 @@ export const SEED = {
    "tipoSalida": "VENDIDO",
    "brucelosis": "No",
    "observaciones": "Vendido a: Ganadero Munar",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Jennifer",
+   "sexo": "Hembra",
+   "fechaNac": "2026-05-22",
+   "codigoMadre": "057",
+   "activo": true,
+   "fechaSalida": "",
+   "tipoSalida": "",
+   "brucelosis": "No",
+   "observaciones": "Nacida del parto de vaca 057",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
   }
@@ -2163,6 +2261,87 @@ export const SEED = {
    "fecha": "2026-05-08",
    "precio": 1800000.0,
    "causa": "Ganadero Munar"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Freya",
+   "tipo": "CORRECCIÓN",
+   "fecha": "",
+   "precio": null,
+   "causa": "Estaba registrada como fallecida; sigue viva"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Flora",
+   "tipo": "FALLECIDO",
+   "fecha": "2026-03-15",
+   "precio": null,
+   "causa": "Fecha aproximada (marzo 2026)"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "055",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "056",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "057",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "058",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "059",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "060",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Jennifer",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-05-22",
+   "precio": null,
+   "causa": "Madre: vaca 057"
   }
  ]
 };
