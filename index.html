@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1B5E20">
+<title>Ganadería La Piedad</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div>
+      <h1>🐄 Ganadería La Piedad</h1>
+      <div class="subtitle">Control del hato y las cuentas</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost-light btn-sm" data-nav="respaldo">💾 Respaldo</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-nav="inicio">🏠 Inicio</button>
+    <button class="tab" data-nav="vacas">🐄 Vacas</button>
+    <button class="tab" data-nav="terneros">🐮 Terneros</button>
+    <button class="tab" data-nav="reproduccion">🤰 Reproducción</button>
+    <button class="tab" data-nav="pesajes">⚖️ Pesajes</button>
+    <button class="tab" data-nav="eventos">📋 Eventos</button>
+  </nav>
+
+  <main class="main" id="view">
+    <div class="spinner"><div class="spin"></div>Cargando la finca…</div>
+  </main>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+<div id="chart-tooltip" class="chart-tooltip" hidden></div>
+<div id="print-root"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

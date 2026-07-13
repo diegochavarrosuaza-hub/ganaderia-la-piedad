@@ -1,0 +1,15 @@
+{
+  "name": "Ganadería La Piedad",
+  "short_name": "La Piedad",
+  "description": "Control del hato y las cuentas de la finca",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F1F8F1",
+  "theme_color": "#1B5E20",
+  "lang": "es",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
