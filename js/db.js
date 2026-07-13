@@ -64,13 +64,17 @@ async function metaGet(key) {
 }
 function metaSet(key, value) { return req2p(tx('meta', 'readwrite').put({ key, value })); }
 
-// Primera vez que se abre la app: carga los datos migrados del Excel.
+// Carga los datos semilla en CADA store que exista pero esté vacío. Así una
+// instalación limpia se siembra completa y una actualización (ej. v2→v3, que
+// agrega 'tratamientos') también recibe la semilla del store nuevo, sin duplicar
+// lo ya cargado.
 async function seedSiVacio() {
-  if (await metaGet('seeded')) return;
   for (const s of STORES) {
-    if (SEED[s] && SEED[s].length) await bulkAdd(s, SEED[s]);
+    if (!(SEED[s] && SEED[s].length)) continue;
+    const existente = await all(s);
+    if (!existente.length) await bulkAdd(s, SEED[s]);
   }
-  await metaSet('seeded', new Date().toISOString());
+  if (!(await metaGet('seeded'))) await metaSet('seeded', new Date().toISOString());
 }
 
 // Estado completo en memoria (la finca es pequeña: leer todo es instantáneo)

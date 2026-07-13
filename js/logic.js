@@ -47,12 +47,11 @@ export async function crearPrenez({ chapeta, fechaPrenez, dias = 280, observacio
 
 // ── Servicios (inseminación / transferencia) ──────────────────────
 export async function confirmarServicio(servicio, resultado) {
-  servicio.resultado = resultado;
-  servicio.fechaConfirmacion = hoyISO();
-  await db.put('servicios', servicio);
   const etiqueta = servicio.tipo === 'TE' ? 'transferencia' : 'inseminación';
-  await registrarEvento('VACA', servicio.chapeta, 'RESULTADO_' + resultado,
-    { fecha: servicio.fecha, causa: etiqueta });
+  let extra = {};
+  // Si resulta preñada, creamos la preñez PRIMERO: si la vaca ya tenía una
+  // preñez activa, crearPrenez lanza y no se persiste nada (el servicio queda
+  // PENDIENTE, recuperable) en vez de dejar un servicio "preñada" sin preñez.
   if (resultado === 'PREÑADA') {
     const fechaProbParto = await crearPrenez({
       chapeta: servicio.chapeta,
@@ -60,9 +59,14 @@ export async function confirmarServicio(servicio, resultado) {
       dias: DIAS_GESTACION[servicio.tipo] || 280,
       observaciones: 'Por ' + etiqueta,
     });
-    return { fechaProbParto };
+    extra = { fechaProbParto };
   }
-  return {};
+  servicio.resultado = resultado;
+  servicio.fechaConfirmacion = hoyISO();
+  await db.put('servicios', servicio);
+  await registrarEvento('VACA', servicio.chapeta, 'RESULTADO_' + resultado,
+    { fecha: servicio.fecha, causa: etiqueta });
+  return extra;
 }
 
 // ── Parto ─────────────────────────────────────────────────────────
@@ -131,9 +135,14 @@ export async function registrarPesaje({ fecha, nombre, peso, edadMeses, observac
   const terneros = await db.all('terneros');
   const t = terneros.find(x => x.nombre.trim().toLowerCase() === nombre.trim().toLowerCase());
   if (t) {
-    t.ultimoPeso = peso;
-    t.fechaUltimoPesaje = fecha || hoyISO();
-    await db.put('terneros', t);
+    const fechaNueva = fecha || hoyISO();
+    // Solo actualiza el "último peso" si este pesaje es igual o más reciente que
+    // el guardado (un pesaje retroactivo no debe pisar el peso actual real).
+    if (!t.fechaUltimoPesaje || fechaNueva >= t.fechaUltimoPesaje) {
+      t.ultimoPeso = peso;
+      t.fechaUltimoPesaje = fechaNueva;
+      await db.put('terneros', t);
+    }
   }
   await registrarEvento('TERNERO', nombre, 'PESAJE', { fecha, precio: peso });
 }

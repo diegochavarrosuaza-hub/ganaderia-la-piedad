@@ -59,6 +59,13 @@ async function main() {
   ajustarTopbar();
   window.addEventListener('resize', ajustarTopbar);
 
+  // Al rotar el celular o cambiar el tamaño, re-dibujar la vista para que las
+  // gráficas recalculen su geometría al nuevo ancho (con un pequeño respiro).
+  let reflowT;
+  const reflow = () => { clearTimeout(reflowT); reflowT = setTimeout(renderVista, 180); };
+  window.addEventListener('resize', reflow);
+  window.addEventListener('orientationchange', reflow);
+
   // Navegación (pestañas y botones con data-nav)
   document.getElementById('tabs').addEventListener('click', e => {
     const tab = e.target.closest('[data-nav]');

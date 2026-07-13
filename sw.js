@@ -1,6 +1,6 @@
 // Service worker — deja la app disponible sin internet.
 // Al cambiar cualquier archivo de la app, sube la versión para que se actualice.
-const CACHE = 'la-piedad-v10';
+const CACHE = 'la-piedad-v11';
 const ARCHIVOS = [
   './',
   './index.html',
@@ -41,17 +41,25 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Red primero (para recibir actualizaciones), caché si no hay internet
+// Caché primero (arranque instantáneo, ideal para señal mala en el campo) y
+// refresco en segundo plano. Solo se cachean respuestas buenas (200/OK) del
+// mismo origen: así un error 500/404 pasajero del servidor NUNCA sobrescribe
+// en caché la versión buena de un archivo.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    fetch(e.request)
-      .then(resp => {
-        const copia = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copia));
-        return resp;
-      })
-      .catch(() => caches.match(e.request, { ignoreSearch: true })
-        .then(r => r || caches.match('./index.html')))
+    caches.match(e.request, { ignoreSearch: true }).then(cacheado => {
+      const red = fetch(e.request)
+        .then(resp => {
+          if (resp && resp.ok && resp.status === 200 &&
+              (resp.type === 'basic' || resp.type === 'default')) {
+            const copia = resp.clone();
+            caches.open(CACHE).then(c => c.put(e.request, copia));
+          }
+          return resp;
+        })
+        .catch(() => cacheado || caches.match('./index.html'));
+      return cacheado || red;
+    })
   );
 });

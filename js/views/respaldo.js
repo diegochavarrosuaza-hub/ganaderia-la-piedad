@@ -11,6 +11,7 @@ export function render(el, ctx) {
     ['💉 Servicios', state.servicios.length],
     ['🤰 Preñeces', state.prenez.length],
     ['⚖️ Pesajes', state.pesajes.length],
+    ['🩺 Tratamientos', (state.tratamientos || []).length],
     ['📋 Eventos', state.eventos.length],
   ];
 

@@ -1421,7 +1421,7 @@ export const SEED = {
    "nombre": "Bambi",
    "sexo": "Macho",
    "fechaNac": "2026-02-24",
-   "codigoMadre": "051",
+   "codigoMadre": "049",
    "activo": true,
    "fechaSalida": "",
    "tipoSalida": "",
@@ -1434,7 +1434,7 @@ export const SEED = {
    "nombre": "Capuchino",
    "sexo": "Macho",
    "fechaNac": "2026-02-26",
-   "codigoMadre": "052",
+   "codigoMadre": "050",
    "activo": true,
    "fechaSalida": "",
    "tipoSalida": "",
@@ -1459,13 +1459,13 @@ export const SEED = {
   {
    "nombre": "Vendido",
    "sexo": "Macho",
-   "fechaNac": "2026-05-08",
+   "fechaNac": "2026-05-05",
    "codigoMadre": "051",
    "activo": false,
-   "fechaSalida": "2026-05-08",
+   "fechaSalida": "2026-05-05",
    "tipoSalida": "VENDIDO",
    "brucelosis": "No",
-   "observaciones": "Vendido a: Ganadero Munar",
+   "observaciones": "Macho, vendido al nacer a Ganadero Munar",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
   },
@@ -1479,19 +1479,6 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "Nacida del parto de vaca 057",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
-  },
-  {
-   "nombre": "Cría 051 (vendido)",
-   "sexo": "Macho",
-   "fechaNac": "2026-05-05",
-   "codigoMadre": "051",
-   "activo": false,
-   "fechaSalida": "2026-05-05",
-   "tipoSalida": "VENDIDO",
-   "brucelosis": "No",
-   "observaciones": "Vendido al nacer, sin nombre",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
   },
@@ -1872,21 +1859,21 @@ export const SEED = {
    "chapeta": "041",
    "fechaPrenez": "2024-11-11",
    "fechaProbParto": "2025-08-21",
-   "observaciones": "",
-   "estado": "PREÑADA"
+   "observaciones": "Parto 2025-07-17 — Cría: Julio",
+   "estado": "PARIDA"
   },
   {
    "chapeta": "043",
    "fechaPrenez": "2024-11-11",
    "fechaProbParto": "2025-08-21",
-   "observaciones": "",
-   "estado": "PREÑADA"
+   "observaciones": "Parto 2025-05-27 — Cría: Carbón",
+   "estado": "PARIDA"
   },
   {
    "chapeta": "051",
    "fechaPrenez": "2025-08-14",
    "fechaProbParto": "2026-05-24",
-   "observaciones": "Parto 2026-05-08 — Cría: Vendido",
+   "observaciones": "Parto 2026-05-05 — Cría: Vendido",
    "estado": "PARIDA"
   },
   {
@@ -2302,15 +2289,6 @@ export const SEED = {
    "fecha": "2026-05-08",
    "precio": null,
    "causa": "Madre: vaca 51"
-  },
-  {
-   "timestamp": "2026-05-14 23:59:10",
-   "categoria": "VACA",
-   "refId": "051",
-   "tipo": "PARTO",
-   "fecha": "2026-05-08",
-   "precio": null,
-   "causa": "Vendido"
   },
   {
    "timestamp": "2026-05-15 00:00:16",

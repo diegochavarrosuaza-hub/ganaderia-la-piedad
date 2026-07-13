@@ -28,7 +28,7 @@ export function render(el, ctx) {
             const txt = d < 0 ? `atrasado ${-d} d` : (d === 0 ? 'hoy' : `en ${d} d`);
             return `${fmtFecha(t.fechaReaplicar)} <span class="badge ${cls}">${txt}</span>`;
           } },
-        { key: 'estado', label: 'Estado', render: t => badge(t.estado === 'HECHO' ? 'CANCELADO' : (t.fechaReaplicar ? 'PENDIENTE' : 'VIGENTE')) },
+        { key: 'estado', label: 'Estado', render: t => badge(t.estado === 'HECHO' ? 'REAPLICADO' : (t.fechaReaplicar ? 'PENDIENTE' : 'VIGENTE')) },
         { key: '_a', label: '', render: t => (t.estado !== 'HECHO' && t.fechaReaplicar)
             ? `<button class="btn btn-primary btn-sm" data-reap="${t.id}">✅ Ya reapliqué</button>` : '' },
       ],
