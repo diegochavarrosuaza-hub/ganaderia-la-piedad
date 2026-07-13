@@ -36,7 +36,10 @@ function barPath(x, y, w, h, r = 4) {
  */
 export function columnChart(data, { money = true, height = 240 } = {}) {
   if (!data.length) return '<div class="empty-note">Sin datos aún.</div>';
-  const W = 680, H = height;
+  // En celular el SVG se encoge: usar un viewBox angosto para que el texto
+  // se vea al tamaño real y no en miniatura.
+  const W = Math.min(680, Math.max(300, window.innerWidth - 70));
+  const H = height;
   const padL = 56, padR = 10, padT = 22, padB = 26;
   const plotW = W - padL - padR, plotH = H - padT - padB;
   const maxVal = Math.max(...data.map(d => d.value), 0);
@@ -70,8 +73,9 @@ export function columnChart(data, { money = true, height = 240 } = {}) {
     // Zona de hover más ancha que la barra (objetivo táctil)
     bars += `<rect x="${padL + band * i}" y="${padT}" width="${band}" height="${plotH}"
              fill="transparent" data-tip="${esc(d.tip || d.label + ': ' + (money ? fmtMoney(d.value) : d.value))}"/>`;
-    // Etiqueta del eje X (si hay muchas, una de cada dos)
-    if (n <= 8 || i % 2 === (n - 1) % 2) {
+    // Etiqueta del eje X (se ralea según el espacio disponible)
+    const cada = Math.max(1, Math.ceil(36 / band));
+    if (n <= 8 || i % cada === (n - 1) % cada) {
       labels += `<text x="${cx}" y="${H - 8}" text-anchor="middle"
                  font-size="10.5" fill="${INK_MUTED}">${esc(d.label)}</text>`;
     }

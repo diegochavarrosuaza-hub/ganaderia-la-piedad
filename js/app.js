@@ -50,6 +50,14 @@ async function main() {
     return;
   }
 
+  // La barra de pestañas se pega justo debajo del encabezado, mida lo que mida
+  const ajustarTopbar = () => {
+    const h = document.querySelector('.topbar').offsetHeight;
+    document.documentElement.style.setProperty('--topbar-h', h + 'px');
+  };
+  ajustarTopbar();
+  window.addEventListener('resize', ajustarTopbar);
+
   // Navegación (pestañas y botones con data-nav)
   document.getElementById('tabs').addEventListener('click', e => {
     const tab = e.target.closest('[data-nav]');
