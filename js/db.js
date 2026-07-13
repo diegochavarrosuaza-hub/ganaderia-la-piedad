@@ -2,9 +2,9 @@
 import { SEED } from './seed-data.js';
 
 const DB_NAME = 'ganaderia-la-piedad';
-const DB_VERSION = 2;
+const DB_VERSION = 3; // v3: se agregó 'tratamientos' (sanidad)
 // Las facturas se manejan fuera de la app (Google Sheets + Claude); aquí solo el hato.
-export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'eventos'];
+export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'tratamientos', 'eventos'];
 
 let _db = null;
 
@@ -75,9 +75,9 @@ async function seedSiVacio() {
 
 // Estado completo en memoria (la finca es pequeña: leer todo es instantáneo)
 export async function loadState() {
-  const [vacas, terneros, servicios, prenez, pesajes, eventos] =
+  const [vacas, terneros, servicios, prenez, pesajes, tratamientos, eventos] =
     await Promise.all(STORES.map(s => all(s)));
-  return { vacas, terneros, servicios, prenez, pesajes, eventos };
+  return { vacas, terneros, servicios, prenez, pesajes, tratamientos, eventos };
 }
 
 // ── Respaldo ──────────────────────────────────────────────────────

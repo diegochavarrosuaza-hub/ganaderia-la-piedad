@@ -4,11 +4,12 @@ import * as dashboard from './views/dashboard.js';
 import * as vacas from './views/vacas.js';
 import * as terneros from './views/terneros.js';
 import * as reproduccion from './views/reproduccion.js';
+import * as sanidad from './views/sanidad.js';
 import * as pesajes from './views/pesajes.js';
 import * as eventos from './views/eventos.js';
 import * as respaldo from './views/respaldo.js';
 
-const VISTAS = { inicio: dashboard, vacas, terneros, reproduccion, pesajes, eventos, respaldo };
+const VISTAS = { inicio: dashboard, vacas, terneros, reproduccion, sanidad, pesajes, eventos, respaldo };
 
 const ctx = {
   state: null,

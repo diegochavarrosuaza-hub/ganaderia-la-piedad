@@ -585,8 +585,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-11-06",
    "criaActual": "Marcos",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-05-13",
+   "fechaProbParto": "2027-02-17",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -654,7 +654,7 @@ export const SEED = {
    "fechaNac": "",
    "sexo": "Hembra",
    "ultimoParto": "2026-03-17",
-   "criaActual": "Ternero Fallecido",
+   "criaActual": "Cría fallecida",
    "fechaPrenez": "",
    "fechaProbParto": "",
    "estado": "ACTIVA",
@@ -667,8 +667,8 @@ export const SEED = {
    "genetica": "F1",
    "fechaNac": "",
    "sexo": "Hembra",
-   "ultimoParto": "2025-08-15",
-   "criaActual": "Ternero Fallecido",
+   "ultimoParto": "2026-03-15",
+   "criaActual": "Cría fallecida",
    "fechaPrenez": "",
    "fechaProbParto": "",
    "estado": "ACTIVA",
@@ -709,10 +709,10 @@ export const SEED = {
    "genetica": "F1",
    "fechaNac": "",
    "sexo": "Hembra",
-   "ultimoParto": "",
-   "criaActual": "",
-   "fechaPrenez": "2025-08-14",
-   "fechaProbParto": "2026-05-24",
+   "ultimoParto": "2026-05-05",
+   "criaActual": "Cría vendida",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -737,10 +737,10 @@ export const SEED = {
    "genetica": "F1",
    "fechaNac": "",
    "sexo": "Hembra",
-   "ultimoParto": "",
-   "criaActual": "",
-   "fechaPrenez": "2025-05-14",
-   "fechaProbParto": "2026-02-21",
+   "ultimoParto": "2026-05-20",
+   "criaActual": "Cría fallecida",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -1481,6 +1481,58 @@ export const SEED = {
    "observaciones": "Nacida del parto de vaca 057",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Cría 051 (vendido)",
+   "sexo": "Macho",
+   "fechaNac": "2026-05-05",
+   "codigoMadre": "051",
+   "activo": false,
+   "fechaSalida": "2026-05-05",
+   "tipoSalida": "VENDIDO",
+   "brucelosis": "No",
+   "observaciones": "Vendido al nacer, sin nombre",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Cría 047 (murió)",
+   "sexo": "",
+   "fechaNac": "2026-03-17",
+   "codigoMadre": "047",
+   "activo": false,
+   "fechaSalida": "2026-03-17",
+   "tipoSalida": "FALLECIDO",
+   "brucelosis": "No",
+   "observaciones": "Nació enfermo, falleció",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Cría 048 (murió)",
+   "sexo": "",
+   "fechaNac": "2026-03-15",
+   "codigoMadre": "048",
+   "activo": false,
+   "fechaSalida": "2026-03-15",
+   "tipoSalida": "FALLECIDO",
+   "brucelosis": "No",
+   "observaciones": "Nació enfermo, falleció",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Cría 053 (murió)",
+   "sexo": "",
+   "fechaNac": "2026-05-20",
+   "codigoMadre": "053",
+   "activo": false,
+   "fechaSalida": "2026-05-20",
+   "tipoSalida": "FALLECIDO",
+   "brucelosis": "No",
+   "observaciones": "Ternero muerto",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
   }
  ],
  "servicios": [
@@ -1848,8 +1900,8 @@ export const SEED = {
    "chapeta": "053",
    "fechaPrenez": "2025-05-14",
    "fechaProbParto": "2026-02-21",
-   "observaciones": "Fecha incierta",
-   "estado": "PREÑADA"
+   "observaciones": "Fecha incierta | Parto 2026-05-20",
+   "estado": "PARIDA"
   },
   {
    "chapeta": "054",
@@ -1898,6 +1950,13 @@ export const SEED = {
    "fechaPrenez": "2026-04-11",
    "fechaProbParto": "2027-01-16",
    "observaciones": "Transferencia de embrión",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "042",
+   "fechaPrenez": "2026-05-13",
+   "fechaProbParto": "2027-02-17",
+   "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA"
   }
  ],
@@ -2351,6 +2410,71 @@ export const SEED = {
    "fecha": "2026-05-20",
    "precio": null,
    "causa": ""
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "051",
+   "tipo": "PARTO",
+   "fecha": "2026-05-05",
+   "precio": null,
+   "causa": "Ternero macho vendido al nacer"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "047",
+   "tipo": "PARTO",
+   "fecha": "2026-03-17",
+   "precio": null,
+   "causa": "Ternero nació enfermo y murió"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "048",
+   "tipo": "PARTO",
+   "fecha": "2026-03-15",
+   "precio": null,
+   "causa": "Ternero nació enfermo y murió"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "053",
+   "tipo": "PARTO",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": "Ternero muerto"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "042",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-13",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "SANIDAD",
+   "refId": "Toda la lechería",
+   "tipo": "TRATAMIENTO",
+   "fecha": "2026-06-20",
+   "precio": null,
+   "causa": "Hemopar + Impulsor FE — reaplicar en 45 días"
+  }
+ ],
+ "tratamientos": [
+  {
+   "fecha": "2026-06-20",
+   "producto": "Hemopar + Impulsor FE",
+   "aplicadoA": "Toda la lechería",
+   "diasReaplicar": 45,
+   "fechaReaplicar": "2026-08-04",
+   "estado": "PENDIENTE",
+   "notas": ""
   }
  ]
 };

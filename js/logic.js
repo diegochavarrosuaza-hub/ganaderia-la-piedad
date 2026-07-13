@@ -223,7 +223,14 @@ export function kpisReproduccion(state) {
 // ── Alertas para el tablero ───────────────────────────────────────
 export function alertas(state) {
   const hoy = hoyISO();
-  const out = { partosProximos: [], partosVencidos: [], serviciosPorConfirmar: [] };
+  const out = { partosProximos: [], partosVencidos: [], serviciosPorConfirmar: [], reaplicaciones: [] };
+
+  for (const t of (state.tratamientos || [])) {
+    if (t.estado !== 'PENDIENTE' || !t.fechaReaplicar) continue;
+    const dias = diasEntre(hoy, t.fechaReaplicar);
+    if (dias != null && dias <= 15) out.reaplicaciones.push({ ...t, dias });
+  }
+  out.reaplicaciones.sort((a, b) => a.dias - b.dias);
 
   for (const p of state.prenez) {
     if (p.estado !== 'PREÑADA' || !p.fechaProbParto) continue;
@@ -243,6 +250,30 @@ export function alertas(state) {
   out.serviciosPorConfirmar.sort((a, b) => b.dias - a.dias);
 
   return out;
+}
+
+// ── Sanidad ───────────────────────────────────────────────────────
+export async function registrarTratamiento({ fecha, producto, aplicadoA, diasReaplicar, notas }) {
+  fecha = fecha || hoyISO();
+  const dias = Number(diasReaplicar) || 0;
+  await db.add('tratamientos', {
+    fecha, producto, aplicadoA: aplicadoA || 'Toda la lechería',
+    diasReaplicar: dias, fechaReaplicar: dias ? addDias(fecha, dias) : '',
+    estado: 'PENDIENTE', notas: notas || '',
+  });
+  await registrarEvento('SANIDAD', aplicadoA || 'Toda la lechería', 'TRATAMIENTO',
+    { fecha, causa: producto + (dias ? ` — reaplicar en ${dias} días` : '') });
+}
+
+// Marca un tratamiento como reaplicado: lo cierra y crea el siguiente ciclo.
+export async function reaplicarTratamiento(trat, fecha) {
+  fecha = fecha || hoyISO();
+  trat.estado = 'HECHO';
+  await db.put('tratamientos', trat);
+  await registrarTratamiento({
+    fecha, producto: trat.producto, aplicadoA: trat.aplicadoA,
+    diasReaplicar: trat.diasReaplicar, notas: trat.notas,
+  });
 }
 
 // La vaca puede estar en el estado dado según los datos actuales

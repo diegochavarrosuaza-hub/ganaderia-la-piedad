@@ -12,7 +12,7 @@ export function render(el, ctx) {
   const geneticas = geneticasHato(state);
 
   const nAlertas = al.partosVencidos.length + al.partosProximos.length
-    + al.serviciosPorConfirmar.length;
+    + al.serviciosPorConfirmar.length + al.reaplicaciones.length;
 
   el.innerHTML = `
     <div class="kpi-grid">
@@ -81,6 +81,11 @@ function renderAlertas(al) {
   for (const s of al.serviciosPorConfirmar) {
     items.push(alerta('info', '💉', `Vaca <b>${esc(s.chapeta)}</b>: ${s.tipo === 'TE' ? 'transferencia' : 'inseminación'} del ${fmtFecha(s.fecha)} sin confirmar`,
       `hace ${s.dias} días — ya se puede palpar`));
+  }
+  for (const t of al.reaplicaciones) {
+    items.push(alerta(t.dias < 0 ? 'critical' : 'warning', '🩺',
+      `Reaplicar <b>${esc(t.producto)}</b> (${esc(t.aplicadoA)})`,
+      t.dias < 0 ? `atrasado ${-t.dias} días` : (t.dias === 0 ? '¡hoy!' : `en ${t.dias} días`)));
   }
 
   if (!items.length) {
