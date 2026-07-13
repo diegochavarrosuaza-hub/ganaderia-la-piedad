@@ -1,6 +1,6 @@
 // Datos migrados de 'Ganadería La Piedad.xlsx' el 2026-07-12
 // Actualizado el 2026-07-13: Freya viva, Flora fallecida (mar 2026),
-// vacas 055-060 (5.º viaje) y nacimiento de Jennifer (vaca 057, 22/05/2026).
+// vacas 055-060 (5.º viaje) nacimiento de Jennifer (vaca 057, 22/05/2026) y Brisa fallecida (20/05/2026).
 export const SEED = {
  "vacas": [
   {
@@ -388,7 +388,7 @@ export const SEED = {
    "fechaNac": "2021-02-03",
    "sexo": "Hembra",
    "ultimoParto": "2025-07-11",
-   "criaActual": "Brisa",
+   "criaActual": "Brisa (Fallecida)",
    "fechaPrenez": "",
    "fechaProbParto": "",
    "estado": "ACTIVA",
@@ -1084,11 +1084,11 @@ export const SEED = {
    "sexo": "Hembra",
    "fechaNac": "2025-11-07",
    "codigoMadre": "028",
-   "activo": true,
-   "fechaSalida": "",
-   "tipoSalida": "",
+   "activo": false,
+   "fechaSalida": "2026-05-20",
+   "tipoSalida": "FALLECIDO",
    "brucelosis": "No",
-   "observaciones": "",
+   "observaciones": "Fallecida el 20/05/2026",
    "ultimoPeso": 127.0,
    "fechaUltimoPesaje": "2026-04-03"
   },
@@ -2342,6 +2342,15 @@ export const SEED = {
    "fecha": "2026-05-22",
    "precio": null,
    "causa": "Madre: vaca 057"
+  },
+  {
+   "timestamp": "2026-07-13 12:30:00",
+   "categoria": "TERNERO",
+   "refId": "Brisa",
+   "tipo": "FALLECIDO",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": ""
   }
  ]
 };
