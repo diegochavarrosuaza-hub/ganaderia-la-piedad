@@ -207,8 +207,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-09-28",
    "criaActual": "Frida",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-05-25",
+   "fechaProbParto": "2027-03-01",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -501,8 +501,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2026-01-25",
    "criaActual": "Maya",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-25",
+   "fechaProbParto": "2027-01-30",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -529,8 +529,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-11-04",
    "criaActual": "Alma",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-28",
+   "fechaProbParto": "2027-02-02",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -753,8 +753,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "",
    "criaActual": "",
-   "fechaPrenez": "2025-05-14",
-   "fechaProbParto": "2026-02-21",
+   "fechaPrenez": "2026-05-17",
+   "fechaProbParto": "2027-02-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -767,8 +767,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "",
    "criaActual": "",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-05-26",
+   "fechaProbParto": "2027-03-02",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": "5.º viaje"
@@ -1748,6 +1748,41 @@ export const SEED = {
    "fechaProbParto": "2027-02-24",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "015",
+   "fechaPrenez": "2026-05-25",
+   "fechaProbParto": "2027-03-01",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "036",
+   "fechaPrenez": "2026-04-25",
+   "fechaProbParto": "2027-01-30",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "055",
+   "fechaPrenez": "2026-05-26",
+   "fechaProbParto": "2027-03-02",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "054",
+   "fechaPrenez": "2026-05-17",
+   "fechaProbParto": "2027-02-21",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "038",
+   "fechaPrenez": "2026-04-28",
+   "fechaProbParto": "2027-02-02",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
   }
  ],
  "pesajes": [
@@ -2470,6 +2505,51 @@ export const SEED = {
    "fecha": "2026-07-17",
    "precio": null,
    "causa": "Embrión sexado — pendiente por confirmar"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "015",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-25",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "036",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-25",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "055",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-26",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-17",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "038",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-28",
+   "precio": null,
+   "causa": "Monta natural (toro)"
   }
  ],
  "tratamientos": [
