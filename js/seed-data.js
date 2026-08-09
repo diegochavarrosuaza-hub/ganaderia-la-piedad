@@ -81,8 +81,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-10-23",
    "criaActual": "Fortuna",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -95,8 +95,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-12-31",
    "criaActual": "Flora (Fallecida)",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-03-26",
+   "fechaProbParto": "2026-12-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -109,8 +109,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-11-18",
    "criaActual": "Afrodita",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-24",
+   "fechaProbParto": "2027-01-29",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -137,8 +137,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-08-18",
    "criaActual": "Venus",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -165,8 +165,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "",
    "criaActual": "",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -179,8 +179,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-09-25",
    "criaActual": "Iris",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -319,8 +319,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-12-22",
    "criaActual": "Cerbero",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -347,8 +347,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-12-21",
    "criaActual": "Penélope",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -375,8 +375,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-11-08",
    "criaActual": "Ulises",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -417,8 +417,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-11-19",
    "criaActual": "Chocolate",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -431,8 +431,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-10-07",
    "criaActual": "Apolo",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -445,8 +445,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-12-23",
    "criaActual": "Palomo",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-03-26",
+   "fechaProbParto": "2026-12-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -543,8 +543,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-11-05",
    "criaActual": "Calista",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-26",
+   "fechaProbParto": "2027-01-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -557,8 +557,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-08-01",
    "criaActual": "Augusto",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-05-20",
+   "fechaProbParto": "2027-02-24",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -571,8 +571,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-07-17",
    "criaActual": "Julio",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2025-11-30",
+   "fechaProbParto": "2026-09-06",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -585,8 +585,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-11-06",
    "criaActual": "Marcos",
-   "fechaPrenez": "2026-05-13",
-   "fechaProbParto": "2027-02-17",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -599,8 +599,8 @@ export const SEED = {
    "sexo": "Macho",
    "ultimoParto": "2025-05-27",
    "criaActual": "Carbón",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2025-11-30",
+   "fechaProbParto": "2026-09-06",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -613,8 +613,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-06-12",
    "criaActual": "Lolita",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -641,8 +641,8 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2026-01-19",
    "criaActual": "Mercurio",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -723,10 +723,10 @@ export const SEED = {
    "genetica": "F1",
    "fechaNac": "",
    "sexo": "Hembra",
-   "ultimoParto": "",
-   "criaActual": "",
-   "fechaPrenez": "2025-05-14",
-   "fechaProbParto": "2026-02-21",
+   "ultimoParto": "2026-07-03",
+   "criaActual": "Princesa",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
    "notas": ""
@@ -1520,336 +1520,69 @@ export const SEED = {
    "observaciones": "Ternero muerto",
    "ultimoPeso": null,
    "fechaUltimoPesaje": ""
+  },
+  {
+   "nombre": "Princesa",
+   "sexo": "Hembra",
+   "fechaNac": "2026-07-03",
+   "codigoMadre": "052",
+   "activo": true,
+   "fechaSalida": "",
+   "tipoSalida": "",
+   "brucelosis": "No",
+   "observaciones": "Nacida del parto de vaca 052",
+   "ultimoPeso": null,
+   "fechaUltimoPesaje": ""
   }
  ],
  "servicios": [
   {
-   "tipo": "IA",
-   "chapeta": "017",
-   "cria": "Blanquillo",
-   "material": "Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "045",
-   "cria": "Odín",
-   "material": "F1",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "033",
-   "cria": "Diana",
-   "material": "Plus x Plus",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "026",
-   "cria": "Luna",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "011",
-   "cria": "Freya",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "020",
-   "cria": "Júpiter",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "014",
-   "cria": "Pepa",
-   "material": "F1",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "021",
-   "cria": "Artemisa",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "034",
-   "cria": "Calista",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "037",
-   "cria": "Paty",
-   "material": "Plus",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "007",
-   "cria": "Flora",
-   "material": "Plus x Plus",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "004",
-   "cria": "Minerva",
-   "material": "Plus x Plus",
-   "raza": "GYR",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "IA",
-   "chapeta": "032",
-   "cria": "Palomo",
-   "material": "F1",
-   "raza": "Nelore",
-   "fecha": "",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "040",
-   "cria": "Augusto",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "015",
-   "cria": "Frida",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "006",
-   "cria": "Fortuna",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "024",
-   "cria": "Mónica",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "027",
-   "cria": "Ulises",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "028",
-   "cria": "Brisa",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "038",
-   "cria": "Alma",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "023",
-   "cria": "Cerbero",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "013",
-   "cria": "Iris",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "012",
-   "cria": "Vacía",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "044",
-   "cria": "Lolita",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-02-14",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "031",
-   "cria": "Apolo",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "030",
-   "cria": "Chocolate",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "025",
-   "cria": "Penélope",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
    "tipo": "TE",
    "chapeta": "042",
-   "cria": "Harco",
-   "material": "Plus x Plus sexado",
+   "cria": "",
+   "material": "Embrión sexado",
    "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "039",
-   "cria": "Calista",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "036",
-   "cria": "Maya",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "010",
-   "cria": "Venus",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
-   "resultado": "PENDIENTE",
-   "fechaConfirmacion": ""
-  },
-  {
-   "tipo": "TE",
-   "chapeta": "046",
-   "cria": "Mercurio",
-   "material": "Plus x Plus sexado",
-   "raza": "",
-   "fecha": "2026-03-05",
+   "fecha": "2026-07-17",
    "resultado": "PENDIENTE",
    "fechaConfirmacion": ""
   },
   {
    "tipo": "TE",
    "chapeta": "022",
-   "cria": "India",
-   "material": "Plus x Plus sexado",
+   "cria": "",
+   "material": "Embrión sexado",
    "raza": "",
-   "fecha": "2026-03-05",
+   "fecha": "2026-07-17",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "TE",
+   "chapeta": "035",
+   "cria": "",
+   "material": "Embrión sexado",
+   "raza": "",
+   "fecha": "2026-07-17",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "TE",
+   "chapeta": "060",
+   "cria": "",
+   "material": "Embrión sexado",
+   "raza": "",
+   "fecha": "2026-07-17",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "TE",
+   "chapeta": "057",
+   "cria": "",
+   "material": "Embrión sexado",
+   "raza": "",
+   "fecha": "2026-07-17",
    "resultado": "PENDIENTE",
    "fechaConfirmacion": ""
   }
@@ -1880,8 +1613,8 @@ export const SEED = {
    "chapeta": "052",
    "fechaPrenez": "2025-05-14",
    "fechaProbParto": "2026-02-21",
-   "observaciones": "Fecha incierta",
-   "estado": "PREÑADA"
+   "observaciones": "Parto 2026-07-03 — Cría: Princesa",
+   "estado": "PARIDA"
   },
   {
    "chapeta": "053",
@@ -1898,51 +1631,121 @@ export const SEED = {
    "estado": "PARIDA"
   },
   {
+   "chapeta": "043",
+   "fechaPrenez": "2025-11-30",
+   "fechaProbParto": "2026-09-06",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "041",
+   "fechaPrenez": "2025-11-30",
+   "fechaProbParto": "2026-09-06",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
    "chapeta": "012",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Tranferencia de embrión",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
+   "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA"
   },
   {
    "chapeta": "044",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Tranferencia de embrión",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
+   "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA"
   },
   {
    "chapeta": "025",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Transferencia de embrión",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
+   "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA"
   },
   {
    "chapeta": "023",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Transferencia de embrión",
-   "estado": "PREÑADA"
-  },
-  {
-   "chapeta": "027",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Transferencia de embrión",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
+   "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA"
   },
   {
    "chapeta": "013",
-   "fechaPrenez": "2026-04-11",
-   "fechaProbParto": "2027-01-16",
-   "observaciones": "Transferencia de embrión",
+   "fechaPrenez": "2026-02-14",
+   "fechaProbParto": "2026-11-21",
+   "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA"
   },
   {
-   "chapeta": "042",
-   "fechaPrenez": "2026-05-13",
-   "fechaProbParto": "2027-02-17",
+   "chapeta": "007",
+   "fechaPrenez": "2026-03-26",
+   "fechaProbParto": "2026-12-31",
+   "observaciones": "Inseminación — Nelore",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "032",
+   "fechaPrenez": "2026-03-26",
+   "fechaProbParto": "2026-12-31",
+   "observaciones": "Inseminación — Nelore",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "008",
+   "fechaPrenez": "2026-04-24",
+   "fechaProbParto": "2027-01-29",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "039",
+   "fechaPrenez": "2026-04-26",
+   "fechaProbParto": "2027-01-31",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "046",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
+   "observaciones": "Monta natural (toro)",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "006",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
+   "observaciones": "Transferencia de embrión sexado",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "010",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
+   "observaciones": "Transferencia de embrión sexado",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "031",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
+   "observaciones": "Transferencia de embrión sexado",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "030",
+   "fechaPrenez": "2026-04-29",
+   "fechaProbParto": "2027-02-03",
+   "observaciones": "Transferencia de embrión sexado",
+   "estado": "PREÑADA"
+  },
+  {
+   "chapeta": "040",
+   "fechaPrenez": "2026-05-20",
+   "fechaProbParto": "2027-02-24",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA"
   }
@@ -2442,6 +2245,231 @@ export const SEED = {
    "fecha": "2026-06-20",
    "precio": null,
    "causa": "Hemopar + Impulsor FE — reaplicar en 45 días"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "052",
+   "tipo": "PARTO",
+   "fecha": "2026-07-03",
+   "precio": null,
+   "causa": "Princesa"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "TERNERO",
+   "refId": "Princesa",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-07-03",
+   "precio": null,
+   "causa": "Madre: vaca 052"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "027",
+   "tipo": "PÉRDIDA",
+   "fecha": "2026-07-21",
+   "precio": null,
+   "causa": "Perdió la cría — preñez cerrada"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "043",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-11-30",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "041",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-11-30",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "012",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "044",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "025",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "023",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "013",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "007",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-03-26",
+   "precio": null,
+   "causa": "Inseminación — Nelore"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "032",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-03-26",
+   "precio": null,
+   "causa": "Inseminación — Nelore"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "008",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-24",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "039",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-26",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "046",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "006",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "010",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "031",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "030",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "040",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "042",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "022",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "035",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "060",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "057",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar"
   }
  ],
  "tratamientos": [
