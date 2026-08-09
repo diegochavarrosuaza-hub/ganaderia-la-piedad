@@ -1,6 +1,6 @@
 // Service worker — deja la app disponible sin internet.
 // Al cambiar cualquier archivo de la app, sube la versión para que se actualice.
-const CACHE = 'la-piedad-v14';
+const CACHE = 'la-piedad-v15';
 const ARCHIVOS = [
   './',
   './index.html',
@@ -29,8 +29,18 @@ const ARCHIVOS = [
   './icons/icon-512.png',
 ];
 
+// Al instalar, bajar cada archivo DE LA RED (cache: 'reload'), nunca de la
+// caché del navegador: si no, una actualización puede quedar con mezcla de
+// versiones (unos archivos nuevos y otros viejos) y dejar la app inconsistente.
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c => Promise.all(ARCHIVOS.map(url =>
+        fetch(new Request(url, { cache: 'reload' }))
+          .then(resp => { if (resp && resp.ok) return c.put(url, resp); })
+      )))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', e => {

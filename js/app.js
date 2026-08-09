@@ -83,6 +83,14 @@ async function main() {
 
   // Service worker para funcionar sin internet
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    // Cuando entra una versión nueva de la app, recargar una sola vez para que
+    // el usuario la vea de inmediato (sin tener que abrirla dos veces).
+    let recargando = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (recargando) return;
+      recargando = true;
+      location.reload();
+    });
     navigator.serviceWorker.register('sw.js').catch(() => { /* opcional */ });
   }
 }
