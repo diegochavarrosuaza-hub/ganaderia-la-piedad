@@ -1,7 +1,7 @@
 // Vista Reproducción — servicios (IA/TE), confirmaciones y preñeces activas
 import { fmtFecha, esc, diasEntre, hoyISO } from '../util.js';
 import { tablaHTML, badge, toast, confirmar } from '../ui.js';
-import { kpisReproduccion, confirmarServicio } from '../logic.js';
+import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO } from '../logic.js';
 import { formServicio, formPrenez, formParto } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
 
@@ -35,6 +35,7 @@ export function render(el, ctx) {
     <div class="fab-row">
       <button class="btn btn-primary" id="btn-ia">💉 Nueva inseminación</button>
       <button class="btn btn-blue" id="btn-te">🔬 Nueva transferencia</button>
+      <button class="btn btn-warn" id="btn-mn">🐂 Monta con toro</button>
       <button class="btn btn-pink" id="btn-prenez">🤰 Preñez directa (monta)</button>
     </div>
 
@@ -92,6 +93,7 @@ export function render(el, ctx) {
 
   el.querySelector('#btn-ia').onclick = () => formServicio('IA', ctx);
   el.querySelector('#btn-te').onclick = () => formServicio('TE', ctx);
+  el.querySelector('#btn-mn').onclick = () => formServicio('MN', ctx);
   el.querySelector('#btn-prenez').onclick = () => {
     const activasV = ctx.state.vacas.filter(v => v.estado === 'ACTIVA');
     if (!activasV.length) return toast('No hay vacas activas.', 'error');
@@ -109,7 +111,7 @@ export function render(el, ctx) {
     const s = ctx.state.servicios.find(x => x.id === Number(b.dataset.id));
     if (!s) return;
     const resultado = b.dataset.conf;
-    const etiqueta = s.tipo === 'TE' ? 'transferencia' : 'inseminación';
+    const etiqueta = TIPO_SERVICIO[s.tipo] || 'servicio';
     const msg = resultado === 'PREÑADA'
       ? `¿Confirmar que la vaca <b>${esc(s.chapeta)}</b> quedó <b>preñada</b> por la ${etiqueta} del ${fmtFecha(s.fecha)}? Se creará la preñez y se calculará la fecha de parto.`
       : `¿Marcar la ${etiqueta} de la vaca <b>${esc(s.chapeta)}</b> como <b>vacía</b> (no funcionó)?`;

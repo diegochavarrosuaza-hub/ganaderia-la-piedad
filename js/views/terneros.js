@@ -36,7 +36,7 @@ export function render(el, ctx) {
 
     <div class="table-wrap">${tablaHTML({
       columns: [
-        { key: 'nombre', label: 'Nombre', render: t => `<b>${esc(t.nombre)}</b>` },
+        { key: 'nombre', label: 'Nombre', render: t => `<b>${esc(t.nombre)}</b>${t.genetica ? ` <span class="muted">· ${esc(t.genetica)}</span>` : ''}` },
         { key: 'sexo', label: 'Sexo' },
         { key: 'edad', label: 'Edad', render: t => edadTexto(t.fechaNac) },
         { key: 'codigoMadre', label: 'Madre', render: t => t.codigoMadre ? '🐄 ' + esc(t.codigoMadre) : '' },

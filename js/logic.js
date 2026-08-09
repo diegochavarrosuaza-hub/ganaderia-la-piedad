@@ -2,7 +2,9 @@
 import * as db from './db.js';
 import { hoyISO, addDias, diasEntre, mesKey, ultimosMeses, toDate } from './util.js';
 
-export const DIAS_GESTACION = { IA: 280, TE: 273 };
+export const DIAS_GESTACION = { IA: 280, TE: 273, MN: 280 };
+// Nombre legible de cada tipo de servicio
+export const TIPO_SERVICIO = { IA: 'inseminación', TE: 'transferencia', MN: 'monta natural' };
 
 // ── Log de eventos ────────────────────────────────────────────────
 export function registrarEvento(categoria, refId, tipo, extra = {}) {
@@ -47,7 +49,7 @@ export async function crearPrenez({ chapeta, fechaPrenez, dias = 280, observacio
 
 // ── Servicios (inseminación / transferencia) ──────────────────────
 export async function confirmarServicio(servicio, resultado) {
-  const etiqueta = servicio.tipo === 'TE' ? 'transferencia' : 'inseminación';
+  const etiqueta = TIPO_SERVICIO[servicio.tipo] || 'servicio';
   let extra = {};
   // Si resulta preñada, creamos la preñez PRIMERO: si la vaca ya tenía una
   // preñez activa, crearPrenez lanza y no se persiste nada (el servicio queda
@@ -178,9 +180,13 @@ export function gdpDe(state, nombre) {
   return (ps[ps.length - 1].peso - ps[0].peso) / dias;
 }
 
+export const esToro = a => a.tipo === 'toro';
+export const soloVacas = arr => arr.filter(x => !esToro(x));
+
 export function kpisHato(state) {
-  const v = state.vacas, t = state.terneros;
+  const v = state.vacas.filter(x => !esToro(x)), t = state.terneros;
   return {
+    toros: state.vacas.filter(x => esToro(x) && x.estado === 'ACTIVA').length,
     vacasActivas: v.filter(x => x.estado === 'ACTIVA').length,
     vacasVendidas: v.filter(x => x.estado === 'VENDIDA').length,
     vacasFallecidas: v.filter(x => x.estado === 'FALLECIDA').length,
@@ -206,7 +212,7 @@ export function nacimientosPorMes(state, nMeses = 12) {
 // Composición del hato activo por genética
 export function geneticasHato(state) {
   const mapa = {};
-  for (const v of state.vacas.filter(x => x.estado === 'ACTIVA')) {
+  for (const v of state.vacas.filter(x => x.estado === 'ACTIVA' && !esToro(x))) {
     const g = v.genetica || 'Sin registro';
     mapa[g] = (mapa[g] || 0) + 1;
   }

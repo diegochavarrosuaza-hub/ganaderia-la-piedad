@@ -2,8 +2,7 @@
 // SEED_VERSION: súbela cada vez que cambien estos datos. Los dispositivos que
 // ya tienen la app instalada detectan la versión nueva y se actualizan solos
 // (guardando antes un respaldo de seguridad de lo que tenían).
-export const SEED_VERSION = '2026-07-21-reproduccion';
-
+export const SEED_VERSION = '2026-08-09-toros';
 export const SEED = {
  "vacas": [
   {
@@ -18,7 +17,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "002",
@@ -32,7 +32,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "003",
@@ -46,7 +47,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "FALLECIDA",
    "fechaSalida": "2025-03-09",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "004",
@@ -60,7 +62,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "005",
@@ -74,7 +77,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "006",
@@ -88,7 +92,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "007",
@@ -102,7 +107,8 @@ export const SEED = {
    "fechaProbParto": "2026-12-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "008",
@@ -116,7 +122,8 @@ export const SEED = {
    "fechaProbParto": "2027-01-29",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "009",
@@ -130,7 +137,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "FALLECIDA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "010",
@@ -144,7 +152,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "011",
@@ -158,7 +167,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "012",
@@ -172,7 +182,8 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "013",
@@ -186,7 +197,8 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "014",
@@ -200,7 +212,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "015",
@@ -214,7 +227,8 @@ export const SEED = {
    "fechaProbParto": "2027-03-01",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "016",
@@ -228,7 +242,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "017",
@@ -242,7 +257,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "018",
@@ -256,7 +272,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "019",
@@ -270,7 +287,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "020",
@@ -284,7 +302,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "021",
@@ -298,7 +317,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "022",
@@ -312,7 +332,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "023",
@@ -326,7 +347,8 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "024",
@@ -340,7 +362,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "025",
@@ -354,7 +377,8 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "026",
@@ -368,7 +392,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "027",
@@ -382,7 +407,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "028",
@@ -396,7 +422,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "029",
@@ -410,7 +437,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "030",
@@ -424,7 +452,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "031",
@@ -438,7 +467,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "032",
@@ -452,7 +482,8 @@ export const SEED = {
    "fechaProbParto": "2026-12-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "033",
@@ -466,7 +497,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "034",
@@ -480,7 +512,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "035",
@@ -494,7 +527,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "036",
@@ -508,7 +542,8 @@ export const SEED = {
    "fechaProbParto": "2027-01-30",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "037",
@@ -522,7 +557,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "038",
@@ -536,7 +572,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-02",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "039",
@@ -550,7 +587,8 @@ export const SEED = {
    "fechaProbParto": "2027-01-31",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "040",
@@ -564,7 +602,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-24",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "041",
@@ -578,7 +617,8 @@ export const SEED = {
    "fechaProbParto": "2026-09-06",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "042",
@@ -592,7 +632,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "043",
@@ -606,7 +647,8 @@ export const SEED = {
    "fechaProbParto": "2026-09-06",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "044",
@@ -620,7 +662,8 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "045",
@@ -634,7 +677,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "046",
@@ -648,7 +692,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "047",
@@ -662,7 +707,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "048",
@@ -676,7 +722,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "049",
@@ -690,7 +737,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "050",
@@ -704,7 +752,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "051",
@@ -718,7 +767,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "052",
@@ -732,7 +782,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "053",
@@ -746,7 +797,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "054",
@@ -760,7 +812,8 @@ export const SEED = {
    "fechaProbParto": "2027-02-21",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "055",
@@ -774,7 +827,8 @@ export const SEED = {
    "fechaProbParto": "2027-03-02",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "5.º viaje"
+   "notas": "5.º viaje",
+   "tipo": "vaca"
   },
   {
    "chapeta": "056",
@@ -788,7 +842,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "5.º viaje"
+   "notas": "5.º viaje",
+   "tipo": "vaca"
   },
   {
    "chapeta": "057",
@@ -802,7 +857,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "5.º viaje"
+   "notas": "5.º viaje",
+   "tipo": "vaca"
   },
   {
    "chapeta": "058",
@@ -816,7 +872,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "059",
@@ -830,7 +887,8 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
   },
   {
    "chapeta": "060",
@@ -844,7 +902,38 @@ export const SEED = {
    "fechaProbParto": "",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": ""
+   "notas": "",
+   "tipo": "vaca"
+  },
+  {
+   "chapeta": "Eclipse",
+   "codigo": "",
+   "genetica": "",
+   "fechaNac": "2023-01-02",
+   "sexo": "Macho",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": "Toro reproductor",
+   "tipo": "toro"
+  },
+  {
+   "chapeta": "Timoteo",
+   "codigo": "",
+   "genetica": "",
+   "fechaNac": "2023-03-17",
+   "sexo": "Macho",
+   "ultimoParto": "",
+   "criaActual": "",
+   "fechaPrenez": "",
+   "fechaProbParto": "",
+   "estado": "ACTIVA",
+   "fechaSalida": "",
+   "notas": "Toro reproductor",
+   "tipo": "toro"
   }
  ],
  "terneros": [
@@ -859,7 +948,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Marcos",
@@ -872,7 +962,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Lolita",
@@ -885,7 +976,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": 154.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Julio",
@@ -898,7 +990,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Augusto",
@@ -911,7 +1004,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Karina",
@@ -924,7 +1018,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 141.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Venus",
@@ -937,7 +1032,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Minerva",
@@ -950,7 +1046,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 124.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Aurora",
@@ -963,7 +1060,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 157.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Victoria",
@@ -976,7 +1074,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Fallecido: Enfermedad",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Iris",
@@ -989,7 +1088,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 93.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Frida",
@@ -1002,7 +1102,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 78.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Apolo",
@@ -1015,7 +1116,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Pepa",
@@ -1028,7 +1130,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 102.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Fortuna",
@@ -1041,7 +1144,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 105.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Helena",
@@ -1054,7 +1158,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 117.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Alma",
@@ -1067,7 +1172,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 116.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Calista",
@@ -1080,7 +1186,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 113.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Brisa",
@@ -1093,7 +1200,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Fallecida el 20/05/2026",
    "ultimoPeso": 127.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Ulises",
@@ -1106,7 +1214,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Cassandra",
@@ -1119,7 +1228,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Colacho",
@@ -1132,7 +1242,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Monica",
@@ -1145,7 +1256,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 110.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Crispeta",
@@ -1158,7 +1270,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Afrodita",
@@ -1171,7 +1284,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 87.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Chocolate",
@@ -1184,7 +1298,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Zeus",
@@ -1197,7 +1312,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Reina",
@@ -1210,7 +1326,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 111.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "India",
@@ -1223,7 +1340,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 97.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Paty",
@@ -1236,7 +1354,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 123.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Blanquillo",
@@ -1249,7 +1368,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Azabache",
@@ -1262,7 +1382,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Jupiter",
@@ -1275,7 +1396,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Penélope",
@@ -1288,7 +1410,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 72.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Luna",
@@ -1301,7 +1424,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 86.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Cerbero",
@@ -1314,7 +1438,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Palomo",
@@ -1327,7 +1452,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Diana",
@@ -1340,7 +1466,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 94.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Artemisa",
@@ -1353,7 +1480,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 90.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Flora",
@@ -1366,7 +1494,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Fallecida en marzo 2026 (fecha aproximada)",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Freya",
@@ -1379,7 +1508,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 87.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Maya",
@@ -1392,7 +1522,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 57.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Mercurio",
@@ -1405,7 +1536,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 58.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Odín",
@@ -1418,7 +1550,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "",
    "ultimoPeso": 52.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Bambi",
@@ -1431,7 +1564,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Capuchino",
@@ -1444,7 +1578,8 @@ export const SEED = {
    "brucelosis": "Sí",
    "observaciones": "",
    "ultimoPeso": 43.0,
-   "fechaUltimoPesaje": "2026-04-03"
+   "fechaUltimoPesaje": "2026-04-03",
+   "genetica": ""
   },
   {
    "nombre": "Abril",
@@ -1457,7 +1592,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Nacido del parto de vaca 54",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Vendido",
@@ -1470,7 +1606,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Macho, vendido al nacer a Ganadero Munar",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Jennifer",
@@ -1481,9 +1618,10 @@ export const SEED = {
    "fechaSalida": "",
    "tipoSalida": "",
    "brucelosis": "No",
-   "observaciones": "Nacida del parto de vaca 057",
+   "observaciones": "⭐ Primera Gyr Pura nacida en Ganadería La Piedad. Nacida del parto de vaca 057.",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": "Gyr Pura"
   },
   {
    "nombre": "Cría 047 (murió)",
@@ -1496,7 +1634,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Nació enfermo, falleció",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Cría 048 (murió)",
@@ -1509,7 +1648,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Nació enfermo, falleció",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Cría 053 (murió)",
@@ -1522,7 +1662,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Ternero muerto",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   },
   {
    "nombre": "Princesa",
@@ -1535,7 +1676,8 @@ export const SEED = {
    "brucelosis": "No",
    "observaciones": "Nacida del parto de vaca 052",
    "ultimoPeso": null,
-   "fechaUltimoPesaje": ""
+   "fechaUltimoPesaje": "",
+   "genetica": ""
   }
  ],
  "servicios": [
@@ -1586,6 +1728,76 @@ export const SEED = {
    "material": "Embrión sexado",
    "raza": "",
    "fecha": "2026-07-17",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "017",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "014",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "037",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "018",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "028",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "024",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": ""
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "029",
+   "cria": "",
+   "material": "Estro Zoo + monta natural",
+   "raza": "Eclipse y Timoteo",
+   "fecha": "2026-08-06",
    "resultado": "PENDIENTE",
    "fechaConfirmacion": ""
   }
@@ -2553,6 +2765,87 @@ export const SEED = {
    "fecha": "2026-04-28",
    "precio": null,
    "causa": "Monta natural (toro)"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "TORO",
+   "refId": "Eclipse",
+   "tipo": "ALTA_TORO",
+   "fecha": "2023-01-02",
+   "precio": null,
+   "causa": "Toro reproductor"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "TORO",
+   "refId": "Timoteo",
+   "tipo": "ALTA_TORO",
+   "fecha": "2023-03-17",
+   "precio": null,
+   "causa": "Toro reproductor"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "017",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "014",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "037",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "018",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "028",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "024",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "029",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo"
   }
  ],
  "tratamientos": [

@@ -167,6 +167,7 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
   { background: var(--yellow-pale); color: #b26a00; }
 .badge-prenada, .badge-preñada { background: var(--pink-pale); color: var(--pink); }
 .badge-parida, .badge-ia, .badge-te { background: var(--blue-pale); color: var(--blue); }
+.badge-mn { background: #FFF3E0; color: #e65100; }
 
 /* ═══════ MODALES ═══════ */
 .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 500;

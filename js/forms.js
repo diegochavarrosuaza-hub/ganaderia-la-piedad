@@ -190,27 +190,36 @@ export function formSalidaTernero(t, tipo, ctx) {
 
 // ── SERVICIOS ─────────────────────────────────────────────────────
 export function formServicio(tipo, ctx, chapeta = '') {
-  const esIA = tipo === 'IA';
-  const activas = ctx.state.vacas.filter(v => v.estado === 'ACTIVA').map(v => v.chapeta);
+  const esIA = tipo === 'IA', esMN = tipo === 'MN';
+  const activas = ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && v.tipo !== 'toro').map(v => v.chapeta);
+  const toros = ctx.state.vacas.filter(v => v.tipo === 'toro' && v.estado === 'ACTIVA').map(v => v.chapeta);
+  const titulo = esMN ? '🐂 Registrar monta con toro'
+    : (esIA ? '💉 Registrar inseminación' : '🔬 Registrar transferencia de embrión');
   formModal({
-    title: esIA ? '💉 Registrar inseminación' : '🔬 Registrar transferencia de embrión',
+    title: titulo,
     fields: [
       { name: 'chapeta', label: 'Vaca (chapeta)', type: 'select', required: true, value: chapeta,
         options: activas, half: true },
       { name: 'fecha', label: 'Fecha del servicio', type: 'date', required: true, value: hoyISO(), half: true },
-      { name: 'material', label: esIA ? 'Tipo de semen' : 'Tipo de embrión', half: true,
-        placeholder: esIA ? 'Sexado, convencional…' : 'Plus x Plus…' },
+      esMN
+        ? { name: 'material', label: 'Tratamiento / celo', half: true, placeholder: 'Estro Zoo…' }
+        : { name: 'material', label: esIA ? 'Tipo de semen' : 'Tipo de embrión', half: true,
+            placeholder: esIA ? 'Sexado, convencional…' : 'Plus x Plus…' },
+      ...(esMN ? [{ name: 'raza', label: 'Toro(s)', half: true,
+          placeholder: toros.length ? toros.join(' y ') : 'Nombre del toro' }] : []),
       ...(esIA ? [{ name: 'raza', label: 'Raza del semen', half: true, placeholder: 'Gyr, Holstein…' }] : []),
-      { name: 'cria', label: esIA ? 'Nombre cría esperada (opcional)' : 'Embrión / cría (opcional)' },
+      { name: 'cria', label: esIA ? 'Nombre cría esperada (opcional)' : 'Cría esperada (opcional)' },
     ],
     async onSubmit(v) {
       await db.add('servicios', {
         tipo, chapeta: v.chapeta, cria: v.cria, material: v.material,
         raza: v.raza || '', fecha: v.fecha, resultado: 'PENDIENTE', fechaConfirmacion: '',
       });
-      await logic.registrarEvento('VACA', v.chapeta, esIA ? 'INSEMINACIÓN' : 'TRANSFERENCIA',
-        { fecha: v.fecha, causa: v.material });
-      toast(`${esIA ? 'Inseminación' : 'Transferencia'} de la vaca ${v.chapeta} registrada. En ±45 días podrás confirmar el resultado.`);
+      const tipoEvento = esMN ? 'MONTA' : (esIA ? 'INSEMINACIÓN' : 'TRANSFERENCIA');
+      await logic.registrarEvento('VACA', v.chapeta, tipoEvento,
+        { fecha: v.fecha, causa: [v.material, v.raza].filter(Boolean).join(' — ') });
+      const nombre = esMN ? 'Monta' : (esIA ? 'Inseminación' : 'Transferencia');
+      toast(`${nombre} de la vaca ${v.chapeta} registrada. En ±45 días podrás confirmar el resultado.`);
       ctx.refresh();
     },
   });

@@ -1,7 +1,7 @@
 // Vista Inicio — el tablero de control del hato
 import { fmtFecha, esc, mesLabel } from '../util.js';
 import { columnChart, hbarChart, attachTooltips } from '../charts.js';
-import { kpisHato, nacimientosPorMes, geneticasHato, alertas } from '../logic.js';
+import { kpisHato, nacimientosPorMes, geneticasHato, alertas, TIPO_SERVICIO } from '../logic.js';
 import { imprimir, construirInformeGeneral } from '../print.js';
 
 export function render(el, ctx) {
@@ -27,6 +27,10 @@ export function render(el, ctx) {
       <div class="kpi-card blue clickable" data-nav="terneros">
         <div class="kpi-val">${hato.ternerosVivos}</div>
         <div class="kpi-label">🐮 Terneros vivos</div>
+      </div>
+      <div class="kpi-card clickable" data-nav="vacas">
+        <div class="kpi-val">${hato.toros}</div>
+        <div class="kpi-label">🐂 Toros</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-val">${hato.totalAnimales}</div>
@@ -79,7 +83,7 @@ function renderAlertas(al) {
       p.dias === 0 ? '¡hoy!' : `en ${p.dias} días`));
   }
   for (const s of al.serviciosPorConfirmar) {
-    items.push(alerta('info', '💉', `Vaca <b>${esc(s.chapeta)}</b>: ${s.tipo === 'TE' ? 'transferencia' : 'inseminación'} del ${fmtFecha(s.fecha)} sin confirmar`,
+    items.push(alerta('info', '💉', `Vaca <b>${esc(s.chapeta)}</b>: ${TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)} sin confirmar`,
       `hace ${s.dias} días — ya se puede palpar`));
   }
   for (const t of al.reaplicaciones) {

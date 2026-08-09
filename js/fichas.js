@@ -120,6 +120,7 @@ export function abrirFichaTernero(nombre, ctx) {
         <div class="fd"><b>Madre</b>${madre ? '🐄 Vaca ' + esc(madre.chapeta) : (esc(t.codigoMadre) || '—')}</div>
         <div class="fd"><b>Último peso</b>${t.ultimoPeso ? fmtNum(t.ultimoPeso, 1) + ' kg (' + fmtFecha(t.fechaUltimoPesaje) + ')' : '—'}</div>
         <div class="fd"><b>Ganancia diaria</b>${gdp != null ? fmtNum(gdp * 1000, 0) + ' g/día' : '— (necesita 2+ pesajes)'}</div>
+        ${t.genetica ? `<div class="fd"><b>Raza / genética</b>${esc(t.genetica)}</div>` : ''}
         <div class="fd"><b>Brucelosis</b>${esc(t.brucelosis) || 'No'}</div>
         ${t.fechaSalida ? `<div class="fd"><b>Salida</b>${fmtFecha(t.fechaSalida)}</div>` : ''}
       </div>

@@ -1,7 +1,7 @@
 // print.js — informes en PDF usando el diálogo de impresión del navegador
 // (en el computador: "Guardar como PDF"; en el celular: "Guardar como PDF" o imprimir)
 import { esc, fmtFecha, hoyISO, diasEntre, mesLabel } from './util.js';
-import { kpisHato, alertas, nacimientosPorMes, geneticasHato } from './logic.js';
+import { kpisHato, alertas, nacimientosPorMes, geneticasHato, TIPO_SERVICIO } from './logic.js';
 import { columnChart, hbarChart } from './charts.js';
 
 // Llena #print-root, ajusta el título (nombre sugerido del PDF) y abre el diálogo.
@@ -50,7 +50,7 @@ export function construirInformeGeneral(state) {
   const avisos = [
     ...al.partosVencidos.map(p => `Vaca ${esc(p.chapeta)}: parto previsto el ${fmtFecha(p.fechaProbParto)} (hace ${-p.dias} días) — registrar o revisar`),
     ...al.partosProximos.map(p => `Vaca ${esc(p.chapeta)}: parto probable el ${fmtFecha(p.fechaProbParto)} (${p.dias === 0 ? 'hoy' : 'en ' + p.dias + ' días'})`),
-    ...al.serviciosPorConfirmar.map(s => `Vaca ${esc(s.chapeta)}: ${s.tipo === 'TE' ? 'transferencia' : 'inseminación'} del ${fmtFecha(s.fecha)} lista para confirmar`),
+    ...al.serviciosPorConfirmar.map(s => `Vaca ${esc(s.chapeta)}: ${TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)} lista para confirmar`),
   ];
 
   const nacimientos = nacimientosPorMes(state, 12);
