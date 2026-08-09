@@ -1,7 +1,12 @@
 // Vista Respaldo — exportar/importar los datos y ayuda
-import { exportarTodo, importarTodo } from '../db.js';
+import { exportarTodo, importarTodo, respaldoPrevio } from '../db.js';
 import { download, hoyISO, fmtNum } from '../util.js';
 import { toast, confirmar } from '../ui.js';
+
+const fmtFechaCorta = iso => {
+  const [y, m, d] = String(iso).slice(0, 10).split('-');
+  return `${d}/${m}/${y}`;
+};
 
 export function render(el, ctx) {
   const { state } = ctx;
@@ -28,6 +33,7 @@ export function render(el, ctx) {
         <button class="btn btn-ghost" id="btn-importar">⬆️ Restaurar desde respaldo</button>
         <input type="file" id="file-import" accept=".json,application/json" hidden>
       </div>
+      <div id="previo-box"></div>
     </div>
 
     <div class="card">
@@ -48,6 +54,21 @@ export function render(el, ctx) {
       </p>
     </div>
   `;
+
+  // Si hubo una actualización automática de datos, ofrecer lo que había antes.
+  respaldoPrevio().then(prev => {
+    const caja = el.querySelector('#previo-box');
+    if (!prev || !caja) return;
+    caja.innerHTML = `<div class="hint" style="margin-top:12px;">💡
+      <span>La app actualizó los datos del hato el ${fmtFechaCorta(prev.fecha)}.
+      Guardamos por si acaso lo que había antes.
+      <button class="btn btn-ghost btn-sm" id="btn-previo" style="margin-left:6px;">⬇️ Descargar datos anteriores</button></span></div>`;
+    caja.querySelector('#btn-previo').onclick = () => {
+      download(`datos-anteriores-la-piedad-${prev.fecha.slice(0, 10)}.json`,
+        JSON.stringify({ app: 'ganaderia-la-piedad', version: 3, exportado: prev.fecha, datos: prev.datos }, null, 1));
+      toast('Descargado. Si necesitas volver a esos datos, usa “Restaurar desde respaldo”.', 'info');
+    };
+  });
 
   el.querySelector('#btn-exportar').onclick = async () => {
     const respaldo = await exportarTodo();

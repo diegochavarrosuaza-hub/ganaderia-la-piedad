@@ -1,5 +1,8 @@
 // db.js — almacenamiento local (IndexedDB) con carga inicial desde seed-data.js
-import { SEED } from './seed-data.js';
+import { SEED, SEED_VERSION } from './seed-data.js';
+
+// Queda en true si al abrir la app se actualizaron los datos del hato.
+export let datosActualizados = false;
 
 const DB_NAME = 'ganaderia-la-piedad';
 const DB_VERSION = 3; // v3: se agregó 'tratamientos' (sanidad)
@@ -64,18 +67,44 @@ async function metaGet(key) {
 }
 function metaSet(key, value) { return req2p(tx('meta', 'readwrite').put({ key, value })); }
 
-// Carga los datos semilla en CADA store que exista pero esté vacío. Así una
-// instalación limpia se siembra completa y una actualización (ej. v2→v3, que
-// agrega 'tratamientos') también recibe la semilla del store nuevo, sin duplicar
-// lo ya cargado.
+// Siembra / actualiza los datos del hato.
+//  · Instalación nueva → carga la semilla completa.
+//  · Semilla más nueva que la del dispositivo (SEED_VERSION distinta) → guarda
+//    un respaldo de seguridad de lo que hubiera y recarga los datos, para que
+//    TODOS los dispositivos vean las mismas correcciones.
+//  · Igual versión → solo rellena stores vacíos (ej. uno agregado por upgrade).
 async function seedSiVacio() {
+  const versionLocal = await metaGet('seedVersion');
+  const primeraVez = !(await metaGet('seeded'));
+
+  if (!primeraVez && versionLocal !== SEED_VERSION) {
+    // Copia de seguridad de lo que tenía el dispositivo, por si acaso.
+    try {
+      const previo = await loadState();
+      await metaSet('respaldoPrevio', {
+        fecha: new Date().toISOString(), versionAnterior: versionLocal || '(inicial)', datos: previo,
+      });
+    } catch { /* si falla el respaldo, seguimos: la semilla es la fuente buena */ }
+    for (const s of STORES) {
+      await clear(s);
+      if (SEED[s] && SEED[s].length) await bulkAdd(s, SEED[s]);
+    }
+    await metaSet('seedVersion', SEED_VERSION);
+    datosActualizados = true;
+    return;
+  }
+
   for (const s of STORES) {
     if (!(SEED[s] && SEED[s].length)) continue;
     const existente = await all(s);
     if (!existente.length) await bulkAdd(s, SEED[s]);
   }
-  if (!(await metaGet('seeded'))) await metaSet('seeded', new Date().toISOString());
+  if (primeraVez) await metaSet('seeded', new Date().toISOString());
+  if (versionLocal !== SEED_VERSION) await metaSet('seedVersion', SEED_VERSION);
 }
+
+// Respaldo de seguridad guardado antes de la última actualización de datos.
+export function respaldoPrevio() { return metaGet('respaldoPrevio'); }
 
 // Estado completo en memoria (la finca es pequeña: leer todo es instantáneo)
 export async function loadState() {

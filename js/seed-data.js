@@ -1,6 +1,9 @@
-// Datos migrados de 'Ganadería La Piedad.xlsx' el 2026-07-12
-// Actualizado el 2026-07-13: Freya viva, Flora fallecida (mar 2026),
-// vacas 055-060 (5.º viaje) nacimiento de Jennifer (vaca 057, 22/05/2026) y Brisa fallecida (20/05/2026).
+// Datos del hato de Ganadería La Piedad.
+// SEED_VERSION: súbela cada vez que cambien estos datos. Los dispositivos que
+// ya tienen la app instalada detectan la versión nueva y se actualizan solos
+// (guardando antes un respaldo de seguridad de lo que tenían).
+export const SEED_VERSION = '2026-07-21-reproduccion';
+
 export const SEED = {
  "vacas": [
   {

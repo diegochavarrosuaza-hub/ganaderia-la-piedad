@@ -1,5 +1,7 @@
 // app.js — arranque, navegación entre pestañas y estado global
+import * as db from './db.js';
 import { initDB, loadState } from './db.js';
+import { toast } from './ui.js';
 import * as dashboard from './views/dashboard.js';
 import * as vacas from './views/vacas.js';
 import * as terneros from './views/terneros.js';
@@ -44,6 +46,9 @@ async function main() {
     await initDB();
     ctx.state = await loadState();
     renderVista();
+    if (db.datosActualizados) {
+      toast('✅ Datos del hato actualizados a la última versión.', 'info');
+    }
   } catch (err) {
     document.getElementById('view').innerHTML =
       `<div class="card"><h2>😕 Algo falló al abrir la app</h2>
