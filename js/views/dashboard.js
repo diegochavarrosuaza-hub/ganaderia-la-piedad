@@ -28,6 +28,11 @@ export function render(el, ctx) {
         <div class="kpi-val">${hato.ternerosVivos}</div>
         <div class="kpi-label">🐮 Terneros vivos</div>
       </div>
+      <div class="kpi-card ${hato.sinServicio ? 'yellow' : ''} clickable" data-sinservicio>
+        <div class="kpi-val">${hato.sinServicio}</div>
+        <div class="kpi-label">⏰ Sin servicio</div>
+        <div class="kpi-sub">${hato.sinServicio ? 'ya pasó el descanso, sin monta ni IA' : 'todas en proceso ✔'}</div>
+      </div>
       <div class="kpi-card clickable" data-nav="toros">
         <div class="kpi-val">${hato.toros}</div>
         <div class="kpi-label">🐂 Toros</div>
@@ -65,6 +70,9 @@ export function render(el, ctx) {
   `;
 
   attachTooltips(el);
+  // La tarjeta de "sin servicio" lleva a Vacas con ese filtro puesto
+  const cardSS = el.querySelector('[data-sinservicio]');
+  if (cardSS) cardSS.onclick = () => ctx.nav('vacas', { filtro: 'SIN_SERVICIO' });
   el.querySelector('#btn-informe').onclick = () =>
     imprimir('informe-la-piedad', 'Informe general de la finca', construirInformeGeneral(state));
   el.querySelectorAll('[data-nav]').forEach(k =>

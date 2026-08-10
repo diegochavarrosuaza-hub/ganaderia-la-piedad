@@ -183,10 +183,74 @@ export function gdpDe(state, nombre) {
 export const esToro = a => a.tipo === 'toro';
 export const soloVacas = arr => arr.filter(x => !esToro(x));
 
+// ── Estado reproductivo de una vaca ───────────────────────────────
+// Días de espera tras el parto antes de considerar que una vaca está atrasada.
+// En trópico / doble propósito se usa un margen más amplio que en lechería.
+export const ESPERA_POSPARTO = 90;   // días de descanso normal tras parir
+export const DIAS_DIAGNOSTICO = 30;  // antes de esto un servicio aún no se puede evaluar
+
+/*
+ * Devuelve cómo va cada vaca en su ciclo reproductivo:
+ *   PREÑADA   → tiene preñez activa
+ *   ESPERANDO → le hicieron un servicio y falta confirmar
+ *   DESCANSO  → parió hace poco (menos de ESPERA_POSPARTO días)
+ *   SIN_SERVICIO → ya pasó el descanso y no tiene ningún servicio: hay que actuar
+ *   NOVILLA   → nunca ha parido (no aplica el conteo de días vacía)
+ */
+export function estadoReproductivo(state, vaca) {
+  if (esToro(vaca) || vaca.estado !== 'ACTIVA') return { estado: 'NO_APLICA' };
+
+  const hoy = hoyISO();
+  if (state.prenez.some(p => p.chapeta === vaca.chapeta && p.estado === 'PREÑADA')) {
+    return { estado: 'PREÑADA' };
+  }
+
+  // Servicios hechos después del último parto (o todos, si nunca ha parido)
+  const servicios = state.servicios.filter(s => s.chapeta === vaca.chapeta
+    && (!vaca.ultimoParto || (s.fecha || '') > vaca.ultimoParto));
+  const pendiente = servicios.filter(s => s.resultado === 'PENDIENTE')
+    .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))[0];
+
+  const diasVacia = vaca.ultimoParto ? diasEntre(vaca.ultimoParto, hoy) : null;
+
+  if (pendiente) {
+    const d = diasEntre(pendiente.fecha, hoy);
+    return { estado: 'ESPERANDO', diasVacia, servicios: servicios.length,
+      diasServicio: d, listoParaPalpar: d != null && d >= DIAS_DIAGNOSTICO };
+  }
+
+  if (!vaca.ultimoParto) return { estado: 'NOVILLA', servicios: servicios.length };
+
+  if (diasVacia != null && diasVacia <= ESPERA_POSPARTO) {
+    return { estado: 'DESCANSO', diasVacia, servicios: servicios.length };
+  }
+
+  return { estado: 'SIN_SERVICIO', diasVacia, servicios: servicios.length };
+}
+
+// Vacas sin servicio (ya pasó el descanso posparto y no hay nada en marcha),
+// ordenadas de la más atrasada a la menos.
+export function vacasSinServicio(state) {
+  return state.vacas
+    .filter(v => !esToro(v) && v.estado === 'ACTIVA')
+    .map(v => ({ vaca: v, ...estadoReproductivo(state, v) }))
+    .filter(x => x.estado === 'SIN_SERVICIO')
+    .sort((a, b) => (b.diasVacia || 0) - (a.diasVacia || 0));
+}
+
+// Semáforo por días vacía: verde ≤100, amarillo 101-150, rojo >150
+export function semaforoDiasVacia(dias) {
+  if (dias == null) return '';
+  if (dias > 150) return 'rojo';
+  if (dias > 100) return 'amarillo';
+  return 'verde';
+}
+
 export function kpisHato(state) {
   const v = state.vacas.filter(x => !esToro(x)), t = state.terneros;
   return {
     toros: state.vacas.filter(x => esToro(x) && x.estado === 'ACTIVA').length,
+    sinServicio: vacasSinServicio(state).length,
     vacasActivas: v.filter(x => x.estado === 'ACTIVA').length,
     vacasVendidas: v.filter(x => x.estado === 'VENDIDA').length,
     vacasFallecidas: v.filter(x => x.estado === 'FALLECIDA').length,

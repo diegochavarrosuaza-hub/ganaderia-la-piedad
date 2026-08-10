@@ -34,9 +34,10 @@ function renderVista() {
   window.scrollTo({ top: 0 });
 }
 
-function irA(nombre) {
+function irA(nombre, opciones) {
   if (!VISTAS[nombre]) return;
   ctx.vistaActual = nombre;
+  ctx.opciones = opciones || null; // p. ej. { filtro: 'SIN_SERVICIO' }
   document.querySelectorAll('.tabs .tab').forEach(t =>
     t.classList.toggle('active', t.dataset.nav === nombre));
   renderVista();

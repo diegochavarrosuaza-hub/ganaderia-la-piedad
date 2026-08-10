@@ -41,6 +41,13 @@ export function abrirFichaVaca(chapeta, ctx) {
         <div class="fd"><b>Último parto</b>${fmtFecha(vaca.ultimoParto)}</div>
         <div class="fd"><b>Cría actual</b>${esc(vaca.criaActual) || '—'}</div>
         ${prenezActiva ? `<div class="fd"><b>Parto probable</b>🍼 ${fmtFecha(prenezActiva.fechaProbParto)}</div>` : ''}
+        ${(() => {
+          const r = logic.estadoReproductivo(state, vaca);
+          if (r.estado === 'SIN_SERVICIO') return `<div class="fd"><b>Reproducción</b>⏰ ${r.diasVacia} días sin servicio</div>`;
+          if (r.estado === 'ESPERANDO') return `<div class="fd"><b>Reproducción</b>⏳ esperando confirmación (${r.diasServicio} d)</div>`;
+          if (r.estado === 'DESCANSO') return `<div class="fd"><b>Reproducción</b>descansando (${r.diasVacia} d posparto)</div>`;
+          return '';
+        })()}
         ${vaca.fechaSalida ? `<div class="fd"><b>Fecha salida</b>${fmtFecha(vaca.fechaSalida)}</div>` : ''}
       </div>
       <div class="fab-row">${acciones}</div>

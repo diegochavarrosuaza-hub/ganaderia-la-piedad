@@ -168,6 +168,10 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
 .badge-prenada, .badge-preñada { background: var(--pink-pale); color: var(--pink); }
 .badge-parida, .badge-ia, .badge-te { background: var(--blue-pale); color: var(--blue); }
 .badge-mn { background: #FFF3E0; color: #e65100; }
+/* Semáforo de días sin servicio: verde ≤100, amarillo 101-150, rojo >150 */
+.badge-sinservicio-verde    { background: var(--green-pale);  color: var(--green-dark); }
+.badge-sinservicio-amarillo { background: var(--yellow-pale); color: #b26a00; }
+.badge-sinservicio-rojo     { background: var(--red-pale);    color: var(--red); }
 
 /* ═══════ MODALES ═══════ */
 .modal-back { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 500;

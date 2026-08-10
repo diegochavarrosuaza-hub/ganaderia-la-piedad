@@ -1,7 +1,7 @@
 // print.js — informes en PDF usando el diálogo de impresión del navegador
 // (en el computador: "Guardar como PDF"; en el celular: "Guardar como PDF" o imprimir)
 import { esc, fmtFecha, hoyISO, diasEntre, mesLabel } from './util.js';
-import { kpisHato, alertas, nacimientosPorMes, geneticasHato, TIPO_SERVICIO } from './logic.js';
+import { kpisHato, alertas, nacimientosPorMes, geneticasHato, TIPO_SERVICIO, vacasSinServicio } from './logic.js';
 import { columnChart, hbarChart } from './charts.js';
 
 // Llena #print-root, ajusta el título (nombre sugerido del PDF) y abre el diálogo.
@@ -54,12 +54,14 @@ export function construirInformeGeneral(state) {
   ];
 
   const nacimientos = nacimientosPorMes(state, 12);
+  const sinServicio = vacasSinServicio(state);
 
   return `
     <h2>El hato</h2>
     <div class="print-resumen">
       <div><b>${hato.vacasActivas}</b><span>Vacas activas</span></div>
       <div><b>${hato.prenadas}</b><span>Preñadas</span></div>
+      <div><b>${hato.sinServicio}</b><span>Sin servicio</span></div>
       <div><b>${hato.ternerosVivos}</b><span>Terneros vivos</span></div>
       <div><b>${hato.totalAnimales}</b><span>Animales en total</span></div>
     </div>
@@ -80,6 +82,14 @@ export function construirInformeGeneral(state) {
         } },
       { key: 'observaciones', label: 'Observaciones' },
     ], activas) : '<p class="print-nota">Ninguna.</p>'}
+
+    <h2>Vacas sin servicio (${sinServicio.length})</h2>
+    ${sinServicio.length ? tablaPrint([
+      { key: 'chapeta', label: 'Vaca', render: x => esc(x.vaca.chapeta) },
+      { key: 'ultimoParto', label: 'Último parto', render: x => fmtFecha(x.vaca.ultimoParto) },
+      { key: 'diasVacia', label: 'Días sin servicio', num: true, render: x => String(x.diasVacia) },
+      { key: 'criaActual', label: 'Cría actual', render: x => esc(x.vaca.criaActual) },
+    ], sinServicio) : '<p class="print-nota">Ninguna: todas están preñadas o en proceso. ✔</p>'}
 
     <h2>Nacimientos y genética</h2>
     <div class="print-chart">${columnChart(nacimientos.map(m => ({ label: mesLabel(m.key), value: m.value })), { money: false, height: 200 })}</div>
