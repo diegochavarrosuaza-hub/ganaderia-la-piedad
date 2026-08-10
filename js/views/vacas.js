@@ -11,11 +11,8 @@ export function render(el, ctx) {
   const { state } = ctx;
   let filas = [...state.vacas].sort((a, b) =>
     a.chapeta.localeCompare(b.chapeta, 'es', { numeric: true }));
-  if (filtro.estado === 'TOROS') filas = filas.filter(v => v.tipo === 'toro');
-  else {
-    filas = filas.filter(v => v.tipo !== 'toro');
-    if (filtro.estado) filas = filas.filter(v => v.estado === filtro.estado);
-  }
+  filas = filas.filter(v => v.tipo !== 'toro'); // los toros tienen su propia pestaña
+  if (filtro.estado) filas = filas.filter(v => v.estado === filtro.estado);
   if (filtro.q) {
     const q = filtro.q.toLowerCase();
     filas = filas.filter(v => [v.chapeta, v.codigo, v.genetica, v.criaActual]
@@ -32,14 +29,13 @@ export function render(el, ctx) {
         <option value="VENDIDA" ${filtro.estado === 'VENDIDA' ? 'selected' : ''}>Vendidas</option>
         <option value="FALLECIDA" ${filtro.estado === 'FALLECIDA' ? 'selected' : ''}>Fallecidas</option>
         <option value="">Todas</option>
-        <option value="TOROS" ${filtro.estado === 'TOROS' ? 'selected' : ''}>🐂 Toros</option>
       </select>
-      <span class="muted" style="font-size:13px;">${filas.length} ${filtro.estado === 'TOROS' ? 'toros' : 'vacas'}</span>
+      <span class="muted" style="font-size:13px;">${filas.length} vacas</span>
     </div>
 
     <div class="table-wrap">${tablaHTML({
       columns: [
-        { key: 'chapeta', label: 'Chapeta', render: v => `<b>${esc(v.chapeta)}</b>${v.tipo === 'toro' ? ' 🐂' : ''}` },
+        { key: 'chapeta', label: 'Chapeta', render: v => `<b>${esc(v.chapeta)}</b>` },
         { key: 'codigo', label: 'Código' },
         { key: 'genetica', label: 'Genética' },
         { key: 'edad', label: 'Edad', render: v => edadTexto(v.fechaNac) },

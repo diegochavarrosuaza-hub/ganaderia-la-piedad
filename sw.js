@@ -1,6 +1,6 @@
 // Service worker — deja la app disponible sin internet.
 // Al cambiar cualquier archivo de la app, sube la versión para que se actualice.
-const CACHE = 'la-piedad-v16';
+const CACHE = 'la-piedad-v17';
 const ARCHIVOS = [
   './',
   './index.html',
@@ -18,6 +18,7 @@ const ARCHIVOS = [
   './js/seed-data.js',
   './js/views/dashboard.js',
   './js/views/vacas.js',
+  './js/views/toros.js',
   './js/views/terneros.js',
   './js/views/reproduccion.js',
   './js/views/sanidad.js',

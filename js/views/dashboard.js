@@ -28,7 +28,7 @@ export function render(el, ctx) {
         <div class="kpi-val">${hato.ternerosVivos}</div>
         <div class="kpi-label">🐮 Terneros vivos</div>
       </div>
-      <div class="kpi-card clickable" data-nav="vacas">
+      <div class="kpi-card clickable" data-nav="toros">
         <div class="kpi-val">${hato.toros}</div>
         <div class="kpi-label">🐂 Toros</div>
       </div>
