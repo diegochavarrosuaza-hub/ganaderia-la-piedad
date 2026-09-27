@@ -2,6 +2,7 @@
 import { exportarTodo, importarTodo, respaldoPrevio } from '../db.js';
 import { download, hoyISO, fmtNum } from '../util.js';
 import { toast, confirmar } from '../ui.js';
+import * as sync from '../sync.js';
 
 const fmtFechaCorta = iso => {
   const [y, m, d] = String(iso).slice(0, 10).split('-');
@@ -20,7 +21,35 @@ export function render(el, ctx) {
     ['📋 Eventos', state.eventos.length],
   ];
 
+  const cfg = sync.getConfig();
+  const activa = sync.haySync();
+
   el.innerHTML = `
+    <div class="card">
+      <h2>🔄 Sincronizar entre dispositivos
+        <span class="h2-note">${activa ? 'activa ✅' : 'sin configurar'}</span></h2>
+      <p style="font-size:14px; line-height:1.6; margin-bottom:12px;">
+        ${activa
+          ? 'La tablet y el celular comparten los mismos datos. Se sincroniza sola al abrir la app, cuando vuelve el internet y cada 5 minutos. Sin señal la app sigue funcionando: los cambios suben después.'
+          : 'Hoy cada aparato guarda lo suyo por separado: lo que se registra en la tablet no se ve en el celular. Al configurar esto, todos los aparatos ven lo mismo.'}
+      </p>
+      <div class="f-row" style="max-width:560px;">
+        <label>Enlace del proyecto (URL)</label>
+        <input type="text" id="sync-url" placeholder="https://xxxx.supabase.co" value="${cfg.url}">
+      </div>
+      <div class="f-row" style="max-width:560px;">
+        <label>Clave pública (anon key)</label>
+        <input type="password" id="sync-key" placeholder="eyJhbG..." value="${cfg.key ? '' : ''}">
+        <div class="f-help">${cfg.key ? 'Ya hay una clave guardada; escribe una nueva solo si la vas a cambiar.' : 'Se guarda solo en este dispositivo.'}</div>
+      </div>
+      <div class="fab-row">
+        <button class="btn btn-primary btn-sm" id="sync-guardar">Guardar y probar</button>
+        ${activa ? '<button class="btn btn-blue btn-sm" id="sync-ahora">🔄 Sincronizar ahora</button>' : ''}
+        ${activa ? '<button class="btn btn-danger btn-sm" id="sync-quitar">Desconectar</button>' : ''}
+      </div>
+      <div id="sync-estado" class="muted" style="font-size:13px; margin-top:8px;"></div>
+    </div>
+
     <div class="card">
       <h2>💾 Respaldo de los datos</h2>
       <p style="font-size:14px; line-height:1.6; margin-bottom:12px;">
@@ -69,6 +98,60 @@ export function render(el, ctx) {
       toast('Descargado. Si necesitas volver a esos datos, usa “Restaurar desde respaldo”.', 'info');
     };
   });
+
+  // ── Sincronización ──
+  sync.ultimaSync().then(f => {
+    const cont = el.querySelector('#sync-estado');
+    if (cont && f) cont.textContent = 'Última sincronización: ' + new Date(f).toLocaleString('es-CO');
+  });
+
+  el.querySelector('#sync-guardar').onclick = async () => {
+    const url = el.querySelector('#sync-url').value.trim();
+    const keyEscrita = el.querySelector('#sync-key').value.trim();
+    const key = keyEscrita || sync.getConfig().key;
+    if (!url || !key) return toast('Faltan el enlace y la clave.', 'error');
+    sync.setConfig(url, key);
+    const cont = el.querySelector('#sync-estado');
+    cont.textContent = 'Probando la conexión…';
+    try {
+      await sync.probarConexion();
+      cont.textContent = 'Conexión correcta. Sincronizando…';
+      const r = await sync.sincronizar();
+      toast(`Sincronización activada ✅ (subidos ${r.subidos}, bajados ${r.bajados})`);
+      ctx.refresh();
+    } catch (err) {
+      cont.textContent = '';
+      toast(err.message, 'error');
+    }
+  };
+
+  const btnAhora = el.querySelector('#sync-ahora');
+  if (btnAhora) btnAhora.onclick = async () => {
+    btnAhora.disabled = true;
+    const txt = btnAhora.textContent;
+    btnAhora.textContent = '⏳ Sincronizando…';
+    try {
+      const r = await sync.sincronizar();
+      if (r.ok) {
+        toast(`Listo: subidos ${r.subidos}, bajados ${r.bajados}.`);
+        if (r.bajados) return ctx.refresh();
+      } else {
+        toast(r.motivo === 'sin-internet' ? 'Sin internet ahora mismo.' : 'Falta configurar.', 'error');
+      }
+    } catch (err) {
+      toast(err.message, 'error');
+    }
+    btnAhora.disabled = false;
+    btnAhora.textContent = txt;
+  };
+
+  const btnQuitar = el.querySelector('#sync-quitar');
+  if (btnQuitar) btnQuitar.onclick = async () => {
+    if (!(await confirmar('¿Desconectar este dispositivo de la sincronización? Los datos que ya tiene se quedan aquí, pero dejará de compartirlos.', { peligro: true, okLabel: 'Desconectar' }))) return;
+    sync.setConfig('', '');
+    toast('Sincronización desconectada.', 'info');
+    ctx.refresh();
+  };
 
   el.querySelector('#btn-exportar').onclick = async () => {
     const respaldo = await exportarTodo();

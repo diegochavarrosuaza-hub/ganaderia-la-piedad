@@ -2,6 +2,7 @@
 import * as db from './db.js';
 import { initDB, loadState } from './db.js';
 import { toast } from './ui.js';
+import * as sync from './sync.js';
 import * as dashboard from './views/dashboard.js';
 import * as vacas from './views/vacas.js';
 import * as toros from './views/toros.js';
@@ -51,12 +52,19 @@ async function main() {
     if (db.datosActualizados) {
       toast('✅ Datos del hato actualizados a la última versión.', 'info');
     }
+    sincronizar({ silencioso: true });
   } catch (err) {
     document.getElementById('view').innerHTML =
       `<div class="card"><h2>😕 Algo falló al abrir la app</h2>
        <p style="font-size:14px;">${err.message}</p></div>`;
     return;
   }
+
+  // ── Sincronización entre dispositivos ──────────────────────────
+  // Al volver el internet y cada 5 minutos, para que la tablet y el celular
+  // se mantengan al día solos.
+  window.addEventListener('online', () => sincronizar({ silencioso: true }));
+  setInterval(() => sincronizar({ silencioso: true }), 5 * 60 * 1000);
 
   // La barra de pestañas se pega justo debajo del encabezado, mida lo que mida
   const ajustarTopbar = () => {
@@ -94,6 +102,34 @@ async function main() {
       location.reload();
     });
     navigator.serviceWorker.register('sw.js').catch(() => { /* opcional */ });
+  }
+}
+
+// Sincroniza y refresca la pantalla si llegaron datos nuevos de otro aparato.
+let sincronizando = false;
+export async function sincronizar({ silencioso = false } = {}) {
+  if (sincronizando || !sync.haySync()) return null;
+  sincronizando = true;
+  try {
+    const r = await sync.sincronizar();
+    if (r && r.ok) {
+      if (r.bajados > 0) {
+        await refresh();
+        toast(`🔄 Llegaron ${r.bajados} cambio(s) de otro dispositivo.`, 'info');
+      } else if (!silencioso) {
+        toast('🔄 Todo está al día.', 'info');
+      }
+    } else if (!silencioso && r) {
+      toast(r.motivo === 'sin-internet'
+        ? 'Sin internet: se sincronizará cuando vuelva la señal.'
+        : 'La sincronización no está configurada.', 'info');
+    }
+    return r;
+  } catch (err) {
+    if (!silencioso) toast('No se pudo sincronizar: ' + err.message, 'error');
+    return null;
+  } finally {
+    sincronizando = false;
   }
 }
 
