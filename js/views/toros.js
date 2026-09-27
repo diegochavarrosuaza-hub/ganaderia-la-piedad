@@ -4,6 +4,7 @@ import { fmtFecha, esc, edadTexto, hoyISO } from '../util.js';
 import { tablaHTML, badge, toast, formModal, confirmar } from '../ui.js';
 import { registrarEvento, montasDeToro } from '../logic.js';
 import { abrirFichaVaca } from '../fichas.js';
+import { avatarHTML, abrirFoto, iniciarRonda } from '../fotos.js';
 
 export function render(el, ctx) {
   const { state } = ctx;
@@ -17,10 +18,12 @@ export function render(el, ctx) {
       <b>Reproducción → 🐂 Monta con toro</b>.</span></div>
     <div class="fab-row">
       <button class="btn btn-primary" id="btn-nuevo">➕ Registrar toro</button>
+      <button class="btn btn-ghost" id="btn-ronda">📷 Ronda de fotos</button>
     </div>
     <div class="table-wrap">${tablaHTML({
       columns: [
-        { key: 'chapeta', label: 'Nombre', render: t => `🐂 <b>${esc(t.chapeta)}</b>` },
+        { key: 'chapeta', label: 'Nombre', render: t =>
+            `<span class="nombre-con-foto">${avatarHTML(state, t, { tam: 'sm', editable: true })}<b>${esc(t.chapeta)}</b></span>` },
         { key: 'genetica', label: 'Raza / genética' },
         { key: 'fechaNac', label: 'Nacimiento', render: t => fmtFecha(t.fechaNac) },
         { key: 'edad', label: 'Edad', render: t => edadTexto(t.fechaNac) },
@@ -41,6 +44,11 @@ export function render(el, ctx) {
   `;
 
   el.querySelector('#btn-nuevo').onclick = () => formToro(null, ctx);
+  el.querySelector('#btn-ronda').onclick = () => iniciarRonda(ctx, 'toros');
+  el.querySelectorAll('[data-foto]').forEach(a => a.addEventListener('click', () => {
+    const t = toros.find(x => x.uid === a.dataset.foto);
+    if (t) abrirFoto(t, ctx);
+  }));
   el.querySelectorAll('[data-editar]').forEach(b => b.addEventListener('click', () => {
     formToro(ctx.state.vacas.find(v => v.chapeta === b.dataset.editar), ctx);
   }));

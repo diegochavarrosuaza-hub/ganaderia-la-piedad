@@ -4,6 +4,7 @@ import { tablaHTML, badge, redibujarSoloTabla } from '../ui.js';
 import { gdpDe } from '../logic.js';
 import { formNuevoTernero, formPesaje } from '../forms.js';
 import { abrirFichaTernero } from '../fichas.js';
+import { avatarHTML, iniciarRonda } from '../fotos.js';
 
 let filtro = { q: '', estado: 'vivos' };
 
@@ -25,6 +26,7 @@ export function render(el, ctx) {
     <div class="toolbar">
       <button class="btn btn-primary" id="btn-nuevo">➕ Nuevo ternero</button>
       <button class="btn btn-ghost" id="btn-pesar">⚖️ Registrar pesaje</button>
+      <button class="btn btn-ghost" id="btn-ronda">📷 Ronda de fotos</button>
       <input class="search" id="t-q" placeholder="🔍 Nombre, madre…" value="${esc(filtro.q)}">
       <select class="filter-sel" id="t-estado">
         <option value="vivos" ${filtro.estado === 'vivos' ? 'selected' : ''}>Vivos</option>
@@ -38,7 +40,7 @@ export function render(el, ctx) {
 
     <div class="table-wrap">${tablaHTML({
       columns: [
-        { key: 'nombre', label: 'Nombre', render: t => `<b>${esc(t.nombre)}</b>${t.genetica ? ` <span class="muted">· ${esc(t.genetica)}</span>` : ''}` },
+        { key: 'nombre', label: 'Nombre', render: t => `<span class="nombre-con-foto">${avatarHTML(state, t, { tam: 'sm' })}<span><b>${esc(t.nombre)}</b>${t.genetica ? ` <span class="muted">· ${esc(t.genetica)}</span>` : ''}</span></span>` },
         { key: 'sexo', label: 'Sexo' },
         { key: 'edad', label: 'Edad', render: t => edadTexto(t.fechaNac) },
         { key: 'codigoMadre', label: 'Madre', render: t => t.codigoMadre ? '🐄 ' + esc(t.codigoMadre) : '' },
@@ -57,6 +59,7 @@ export function render(el, ctx) {
   `;
 
   el.querySelector('#btn-nuevo').onclick = () => formNuevoTernero(ctx);
+  el.querySelector('#btn-ronda').onclick = () => iniciarRonda(ctx, 'terneros');
   el.querySelector('#btn-pesar').onclick = () => formPesaje(ctx);
   el.querySelector('#t-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
   el.querySelector('#t-estado').onchange = e => { filtro.estado = e.target.value; render(el, ctx); };

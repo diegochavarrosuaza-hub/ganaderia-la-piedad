@@ -4,6 +4,7 @@ import { tablaHTML, badge, redibujarSoloTabla } from '../ui.js';
 import { prenezActivaDe, estadoReproductivo, semaforoDiasVacia, ajustes } from '../logic.js';
 import { formNuevaVaca } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
+import { avatarHTML, iniciarRonda } from '../fotos.js';
 import { imprimir, construirListaVacas } from '../print.js';
 
 let filtro = { q: '', estado: 'ACTIVA' };
@@ -42,6 +43,7 @@ export function render(el, ctx) {
     <div class="hint">💡 <span>Toca cualquier vaca para ver su <b>hoja de vida completa</b>: crías, servicios, preñeces y acciones (parto, venta…).</span></div>
     <div class="toolbar">
       <button class="btn btn-primary" id="btn-nueva">➕ Nueva vaca</button>
+      <button class="btn btn-ghost" id="btn-ronda">📷 Ronda de fotos</button>
       <input class="search" id="v-q" placeholder="🔍 Chapeta, código, cría…" value="${esc(filtro.q)}">
       <select class="filter-sel" id="v-estado">
         <option value="ACTIVA" ${filtro.estado === 'ACTIVA' ? 'selected' : ''}>Activas</option>
@@ -60,7 +62,8 @@ export function render(el, ctx) {
 
     <div class="table-wrap">${tablaHTML({
       columns: [
-        { key: 'chapeta', label: 'Chapeta', render: v => `<b>${esc(v.chapeta)}</b>` },
+        { key: 'chapeta', label: 'Chapeta', render: v =>
+            `<span class="nombre-con-foto">${avatarHTML(state, v, { tam: 'sm' })}<b>${esc(v.chapeta)}</b></span>` },
         { key: 'codigo', label: 'Código' },
         { key: 'genetica', label: 'Genética' },
         { key: 'edad', label: 'Edad', render: v => edadTexto(v.fechaNac) },
@@ -90,6 +93,7 @@ export function render(el, ctx) {
   `;
 
   el.querySelector('#btn-nueva').onclick = () => formNuevaVaca(ctx);
+  el.querySelector('#btn-ronda').onclick = () => iniciarRonda(ctx, 'vacas');
   el.querySelector('#btn-lista-vacas').onclick = () => {
     const nombreFiltro = el.querySelector('#v-estado').selectedOptions[0]?.textContent.trim() || '';
     imprimir('vacas-' + (filtro.estado || 'todas').toLowerCase(), 'Lista de vacas', construirListaVacas(state, filas, repro),

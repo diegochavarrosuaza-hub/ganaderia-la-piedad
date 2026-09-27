@@ -20,6 +20,7 @@ export function render(el, ctx) {
     ['🤰 Preñeces', state.prenez.length],
     ['⚖️ Pesajes', state.pesajes.length],
     ['🩺 Tratamientos', (state.tratamientos || []).length],
+    ['📷 Fotos', (state.fotos || []).length],
     ['📋 Eventos', state.eventos.length],
   ];
 

@@ -16,7 +16,7 @@ import * as db from './db.js';
 const URL_KEY = 'la-piedad-sync-url';
 const API_KEY = 'la-piedad-sync-key';
 const TABLA = 'registros';
-const PAGINA = 500; // filas por petición al bajar
+const PAGINA = 200; // filas por petición al bajar (con fotos, una página puede pesar varios MB)
 
 export const getConfig = () => ({
   url: (localStorage.getItem(URL_KEY) || '').replace(/\/+$/, ''),
@@ -163,9 +163,21 @@ async function _sincronizar() {
   }
   const tandas = [...unicos.values()];
 
+  // Tandas por cantidad Y por tamaño: 400 vacas caben en una petición, pero
+  // 400 fotos no. Máximo ~1,5 MB por petición.
+  const grupos = [];
+  let actual = [], bytes = 0;
+  for (const t of tandas) {
+    const b = JSON.stringify(t.fila).length;
+    if (actual.length && (actual.length >= 400 || bytes + b > 1_500_000)) {
+      grupos.push(actual); actual = []; bytes = 0;
+    }
+    actual.push(t); bytes += b;
+  }
+  if (actual.length) grupos.push(actual);
+
   let subidos = 0, errorSubida = null;
-  for (let i = 0; i < tandas.length; i += 400) {
-    const tanda = tandas.slice(i, i + 400);
+  for (const tanda of grupos) {
     try {
       const r = await fetch(`${url}/rest/v1/${TABLA}?on_conflict=uid`, {
         method: 'POST',

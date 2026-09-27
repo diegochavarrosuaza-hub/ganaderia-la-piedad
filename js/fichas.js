@@ -5,6 +5,7 @@ import * as logic from './logic.js';
 import { sparkline } from './charts.js';
 import * as forms from './forms.js';
 import { imprimirFicha } from './print.js';
+import * as fotos from './fotos.js';
 
 export function abrirFichaVaca(chapeta, ctx) {
   const { state } = ctx;
@@ -48,10 +49,13 @@ export function abrirFichaVaca(chapeta, ctx) {
     + `<div class="fab-row">${secundarias.filter(Boolean).join('')}</div>`;
 
   const cuerpo = `
+      <div class="ficha-top">
+      <!--foto-->${fotos.avatarHTML(state, vaca, { editable: true })}<!--/foto-->
       <div class="ficha-head">
-        <span class="ficha-id">Chapeta ${esc(vaca.chapeta)}</span>
+        <span class="ficha-id">${logic.esToro(vaca) ? '🐂 ' : 'Chapeta '}${esc(vaca.chapeta)}</span>
         ${badge(vaca.estado)}
         ${vaca.genetica ? `<span class="muted">Genética: ${esc(vaca.genetica)}</span>` : ''}
+      </div>
       </div>
       <div class="ficha-datos">
         <div class="fd"><b>Código</b>${esc(vaca.codigo) || '—'}</div>
@@ -119,11 +123,13 @@ export function abrirFichaVaca(chapeta, ctx) {
         const completo = cuerpo.replace(
           seccion('📋 Últimos eventos', eventos.map(filaEvento), 'Sin eventos.'),
           seccion('📋 Historial completo', todosEventos.map(filaEvento), 'Sin eventos.'));
-        return imprimirFicha('vaca-' + vaca.chapeta, `Hoja de vida — Vaca ${vaca.chapeta}`, completo);
+        return conFotoParaPDF(vaca, completo).then(html =>
+          imprimirFicha('vaca-' + vaca.chapeta, `Hoja de vida — Vaca ${vaca.chapeta}`, html));
       }
       closeModal(); acc[b.dataset.f]();
     }));
   conectarEdicion(modal, ctx);
+  conectarFoto(modal, vaca, ctx, () => abrirFichaVaca(vaca.chapeta, ctx));
 }
 
 export function abrirFichaTernero(nombre, ctx) {
@@ -147,10 +153,13 @@ export function abrirFichaTernero(nombre, ctx) {
   ].filter(Boolean).join('');
 
   const cuerpo = `
+      <div class="ficha-top">
+      <!--foto-->${fotos.avatarHTML(state, t, { editable: true })}<!--/foto-->
       <div class="ficha-head">
         <span class="ficha-id">${esc(t.nombre)}</span>
         ${badge(t.activo ? 'VIVO' : (t.tipoSalida || 'NO'))}
         <span class="muted">${esc(t.sexo) || ''}</span>
+      </div>
       </div>
       <div class="ficha-datos">
         <div class="fd"><b>Nacimiento</b>${fmtFecha(t.fechaNac)} (${edadTexto(t.fechaNac)})</div>
@@ -198,12 +207,26 @@ export function abrirFichaTernero(nombre, ctx) {
   modal.querySelectorAll('[data-f]').forEach(b =>
     b.addEventListener('click', () => {
       if (b.dataset.f === 'pdf') {
-        return imprimirFicha('ternero-' + t.nombre.toLowerCase().replace(/\s+/g, '-'),
-          `Hoja de vida — ${t.nombre}`, cuerpo);
+        return conFotoParaPDF(t, cuerpo).then(html =>
+          imprimirFicha('ternero-' + t.nombre.toLowerCase().replace(/\s+/g, '-'), `Hoja de vida — ${t.nombre}`, html));
       }
       closeModal(); acc[b.dataset.f]();
     }));
   conectarEdicion(modal, ctx);
+  conectarFoto(modal, t, ctx, () => abrirFichaTernero(t.nombre, ctx));
+}
+
+// Tocar la foto (o el ícono, si no tiene) abre la foto para verla o cambiarla,
+// y al terminar vuelve a la misma hoja de vida.
+function conectarFoto(modal, animal, ctx, volver) {
+  const el = modal.querySelector('[data-foto]');
+  if (el) el.onclick = () => { closeModal(); fotos.abrirFoto(animal, ctx, { volver }); };
+}
+
+// En el PDF va la foto grande en vez del circulito.
+async function conFotoParaPDF(animal, html) {
+  const g = await fotos.fotoGrande(animal);
+  return g ? html.replace(/<!--foto-->[\s\S]*?<!--\/foto-->/, `<img class="print-foto" src="${g}" alt="">`) : html;
 }
 
 // Una línea de la bitácora en el historial (pantalla y PDF).

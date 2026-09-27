@@ -286,6 +286,15 @@ export async function pasarANovilla(ternero, { chapeta, fecha, codigo = '', gene
     notas: `Criada en la finca: antes ternera "${ternero.nombre}"`
       + (ternero.codigoMadre ? `, hija de la vaca ${ternero.codigoMadre}` : '') + '.',
   });
+  // La foto de la ternera la acompaña en su vida de vaca.
+  const nueva = (await db.all('vacas')).find(v => v.chapeta === chapeta);
+  for (const s of ['fotos', 'fotosGrandes']) {
+    const f = await db.getPorUid(s, 'foto:' + ternero.uid);
+    if (nueva && f && !f.deletedAt) {
+      const { id, uid, updatedAt, pendienteSubir, ...resto } = f;
+      await db.upsertPorUid(s, 'foto:' + nueva.uid, { ...resto, animal: nueva.uid });
+    }
+  }
   ternero.activo = false;
   ternero.tipoSalida = 'NOVILLA';
   ternero.fechaSalida = f;

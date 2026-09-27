@@ -16,11 +16,15 @@ import { SEED, SEED_VERSION } from './seed-data.js';
 export let datosActualizados = false;
 
 const DB_NAME = 'ganaderia-la-piedad';
-const DB_VERSION = 4; // v3: 'tratamientos' (sanidad) · v4: 'ajustes' + índice por uid
+const DB_VERSION = 5; // v3: 'tratamientos' · v4: 'ajustes' + índice por uid · v5: fotos
 // Las facturas se manejan fuera de la app (Google Sheets + Claude); aquí solo el hato.
 // 'ajustes' guarda un solo registro con los parámetros de la finca; al estar en
 // la lista, viaja entre dispositivos con la sincronización igual que lo demás.
-export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'tratamientos', 'eventos', 'ajustes'];
+export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'tratamientos', 'eventos', 'ajustes',
+  'fotos', 'fotosGrandes'];
+// Las fotos grandes NO se cargan en memoria con lo demás (pesan): se leen una
+// por una cuando se van a ver o imprimir.
+const SOLO_BAJO_DEMANDA = new Set(['fotosGrandes']);
 
 // Los registros que existían antes de la sincronización se sellan con esta
 // fecha (y no con "ahora"): son, por definición, más viejos que cualquier
@@ -170,6 +174,20 @@ export function putCrudo(store, obj) {
   return req2p(tx(store, 'readwrite').put(obj));
 }
 
+// Crea o reemplaza el registro con ese uid (uno por animal, como las fotos).
+// Si estaba borrado, vuelve a la vida: poner una foto nueva es decisión nueva.
+export async function upsertPorUid(store, uid, datos) {
+  const prev = await getPorUid(store, uid);
+  const r = { ...datos, uid, updatedAt: ahora() };
+  r.pendienteSubir = r.updatedAt;
+  if (prev) r.id = prev.id;
+  return putCrudo(store, r);
+}
+export async function borrarPorUid(store, uid) {
+  const prev = await getPorUid(store, uid);
+  if (prev && !prev.deletedAt) return del(store, prev.id);
+}
+
 // Quita la marca de "pendiente" SOLO si el registro no cambió después de
 // subirse (si cambió, la marca nueva es otra y se queda para la próxima).
 export async function marcarSubido(store, uid, versionSubida) {
@@ -231,6 +249,8 @@ export function claveEstable(store, r) {
     case 'tratamientos': return `trat:${r.fecha || ''}:${norm(r.producto)}:${norm(r.aplicadoA)}`;
     case 'eventos':      return `evt:${r.timestamp || ''}:${norm(r.refId)}:${norm(r.tipo)}:${r.fecha || ''}`;
     case 'ajustes':      return 'ajustes:finca'; // un solo registro para toda la finca
+    case 'fotos':
+    case 'fotosGrandes': return `foto:${r.animal || ''}`;
     default:             return `${store}:?`;
   }
 }
@@ -276,7 +296,7 @@ async function aplicarSeed() {
   if (!primeraVez) {
     try {
       const copia = {};
-      for (const s of STORES) copia[s] = await allRaw(s);
+      for (const s of STORES) if (!SOLO_BAJO_DEMANDA.has(s)) copia[s] = await allRaw(s);
       const lista = (await metaGet('respaldosPrevios')) || [];
       lista.unshift({ fecha: ahora(), versionAnterior: versionLocal || '(inicial)', datos: copia });
       await metaSet('respaldosPrevios', lista.slice(0, 3)); // las últimas 3 copias
@@ -308,8 +328,9 @@ export async function respaldosPrevios() {
 
 // Estado completo en memoria (la finca es pequeña: leer todo es instantáneo)
 export async function loadState() {
-  const listas = await Promise.all(STORES.map(s => all(s)));
-  return Object.fromEntries(STORES.map((s, i) => [s, listas[i]]));
+  const stores = STORES.filter(s => !SOLO_BAJO_DEMANDA.has(s));
+  const listas = await Promise.all(stores.map(s => all(s)));
+  return Object.fromEntries(stores.map((s, i) => [s, listas[i]]));
 }
 
 // ── Respaldo ──────────────────────────────────────────────────────
