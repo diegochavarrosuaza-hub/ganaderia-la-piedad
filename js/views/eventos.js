@@ -1,6 +1,7 @@
-// Vista Eventos — bitácora de todo lo que pasa en la finca (solo lectura)
+// Vista Eventos — bitácora de todo lo que pasa en la finca; cada línea se corrige
 import { fmtFecha, fmtMoney, esc } from '../util.js';
 import { tablaHTML, badge } from '../ui.js';
+import { formEditarEvento } from '../forms.js';
 
 let filtro = { q: '' };
 
@@ -17,7 +18,7 @@ export function render(el, ctx) {
   el.innerHTML = `
     <div class="toolbar">
       <input class="search" id="e-q" placeholder="🔍 Buscar en la bitácora…" value="${esc(filtro.q)}">
-      <span class="muted" style="font-size:13px;">Todo queda anotado aquí automáticamente</span>
+      <span class="muted" style="font-size:13px;">Todo queda anotado aquí · toca una línea para corregirla</span>
     </div>
     <div class="table-wrap">${tablaHTML({
       columns: [
@@ -30,9 +31,15 @@ export function render(el, ctx) {
         { key: 'causa', label: 'Detalle' },
       ],
       rows: filas,
+      rowAttr: e => `class="row-click" data-ev="${e.id}"`,
       emptyMsg: 'La bitácora está vacía.',
     })}</div>
   `;
+
+  el.querySelectorAll('tr[data-ev]').forEach(tr => tr.addEventListener('click', () => {
+    const ev = ctx.state.eventos.find(x => x.id === Number(tr.dataset.ev));
+    if (ev) formEditarEvento(ev, ctx);
+  }));
 
   el.querySelector('#e-q').oninput = e => {
     filtro.q = e.target.value; render(el, ctx);

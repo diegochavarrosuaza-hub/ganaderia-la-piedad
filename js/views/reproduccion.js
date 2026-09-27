@@ -1,8 +1,10 @@
 // Vista Reproducción — servicios (IA/TE), confirmaciones y preñeces activas
 import { fmtFecha, esc, diasEntre, hoyISO } from '../util.js';
 import { tablaHTML, badge, toast, confirmar } from '../ui.js';
-import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO } from '../logic.js';
-import { formServicio, formPrenez, formParto } from '../forms.js';
+import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO,
+         origenDe, ORIGEN_PRENEZ, DIAS_PREPARTO } from '../logic.js';
+import { formServicio, formPrenez, formParto,
+         formEditarPrenez, formEditarServicio } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
 
 export function render(el, ctx) {
@@ -53,9 +55,22 @@ export function render(el, ctx) {
               if (d <= 30) return `<span class="badge badge-prenada">${d} días</span>`;
               return d + ' días';
             } },
+          { key: 'origen', label: 'Origen', render: p => {
+              const o = origenDe(p);
+              return o ? badge(ORIGEN_PRENEZ[o]) : '<span class="muted">por confirmar</span>';
+            } },
+          { key: 'fechaPreparto', label: 'Preparto', render: p => {
+              if (p.fechaPreparto) return '🌾 ' + fmtFecha(p.fechaPreparto);
+              const d = diasEntre(hoyISO(), p.fechaProbParto);
+              return (d != null && d >= 0 && d <= DIAS_PREPARTO)
+                ? '<span class="badge badge-vencido">falta iniciar</span>' : '';
+            } },
           { key: 'observaciones', label: 'Observaciones' },
-          { key: '_a', label: '', render: p =>
-              `<button class="btn btn-pink btn-sm" data-parto="${esc(p.chapeta)}">🍼 Registrar parto</button>` },
+          { key: '_a', label: '', render: p => `
+              <div class="act-cell">
+                <button class="btn btn-pink btn-sm" data-parto="${esc(p.chapeta)}">🍼 Parto</button>
+                <button class="btn-icon" title="Corregir esta preñez" data-edp="${p.id}">✏️</button>
+              </div>` },
         ],
         rows: activas,
         rowAttr: p => `data-vaca="${esc(p.chapeta)}"`,
@@ -79,11 +94,13 @@ export function render(el, ctx) {
                 ? '<span class="badge badge-vigente">listo para palpar</span>'
                 : `<span class="muted">${d != null ? 45 - d + ' días para palpar' : ''}</span>`;
             } },
-          { key: '_a', label: '', render: s => s.resultado === 'PENDIENTE' ? `
+          { key: '_a', label: '', render: s => `
               <div class="act-cell">
-                <button class="btn btn-pink btn-sm" data-conf="PREÑADA" data-id="${s.id}">✅ Preñada</button>
-                <button class="btn btn-ghost btn-sm" data-conf="VACÍA" data-id="${s.id}">❌ Vacía</button>
-              </div>` : '' },
+                ${s.resultado === 'PENDIENTE' ? `
+                  <button class="btn btn-pink btn-sm" data-conf="PREÑADA" data-id="${s.id}">✅ Preñada</button>
+                  <button class="btn btn-ghost btn-sm" data-conf="VACÍA" data-id="${s.id}">❌ Vacía</button>` : ''}
+                <button class="btn-icon" title="Corregir este servicio" data-eds="${s.id}">✏️</button>
+              </div>` },
         ],
         rows: servicios,
         emptyMsg: 'No hay servicios registrados.',
@@ -94,11 +111,18 @@ export function render(el, ctx) {
   el.querySelector('#btn-ia').onclick = () => formServicio('IA', ctx);
   el.querySelector('#btn-te').onclick = () => formServicio('TE', ctx);
   el.querySelector('#btn-mn').onclick = () => formServicio('MN', ctx);
-  el.querySelector('#btn-prenez').onclick = () => {
-    const activasV = ctx.state.vacas.filter(v => v.estado === 'ACTIVA');
-    if (!activasV.length) return toast('No hay vacas activas.', 'error');
-    formPrenezSelector(ctx);
-  };
+  el.querySelector('#btn-prenez').onclick = () => formPrenez('', ctx);
+
+  el.querySelectorAll('[data-edp]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const p = ctx.state.prenez.find(x => x.id === Number(b.dataset.edp));
+    if (p) formEditarPrenez(p, ctx);
+  }));
+  el.querySelectorAll('[data-eds]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const s = ctx.state.servicios.find(x => x.id === Number(b.dataset.eds));
+    if (s) formEditarServicio(s, ctx);
+  }));
   el.querySelectorAll('[data-parto]').forEach(b =>
     b.addEventListener('click', e => { e.stopPropagation(); formParto(b.dataset.parto, ctx); }));
   el.querySelectorAll('tr[data-vaca]').forEach(tr =>
@@ -128,27 +152,3 @@ export function render(el, ctx) {
   }));
 }
 
-// Selector rápido de vaca para preñez directa
-function formPrenezSelector(ctx) {
-  const sinPrenez = ctx.state.vacas.filter(v => v.estado === 'ACTIVA'
-    && !ctx.state.prenez.some(p => p.chapeta === v.chapeta && p.estado === 'PREÑADA'));
-  if (!sinPrenez.length) return toast('Todas las vacas activas ya tienen preñez registrada.', 'info');
-  // Reutilizamos formPrenez pidiendo primero la chapeta
-  import('../ui.js').then(({ formModal }) => {
-    formModal({
-      title: '🤰 Registrar preñez directa',
-      fields: [
-        { name: 'chapeta', label: 'Vaca (chapeta)', type: 'select', required: true,
-          options: sinPrenez.map(v => v.chapeta) },
-        { name: 'fechaPrenez', label: 'Fecha de preñez', type: 'date', required: true, value: hoyISO() },
-        { name: 'observaciones', label: 'Observaciones', placeholder: 'Monta natural, toro…' },
-      ],
-      async onSubmit(v) {
-        const { crearPrenez } = await import('../logic.js');
-        const fpp = await crearPrenez({ chapeta: v.chapeta, fechaPrenez: v.fechaPrenez, observaciones: v.observaciones });
-        toast(`Preñez registrada. Parto esperado: ${fmtFecha(fpp)}.`);
-        ctx.refresh();
-      },
-    });
-  });
-}

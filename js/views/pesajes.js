@@ -2,8 +2,8 @@
 import * as db from '../db.js';
 import { fmtFecha, fmtNum, esc, hoyISO, edadMeses } from '../util.js';
 import { tablaHTML, toast, confirmar, openModal, closeModal } from '../ui.js';
-import { registrarPesaje } from '../logic.js';
-import { formPesaje } from '../forms.js';
+import { registrarPesaje, eliminarPesaje } from '../logic.js';
+import { formPesaje, formEditarPesaje } from '../forms.js';
 import { abrirFichaTernero } from '../fichas.js';
 
 export function render(el, ctx) {
@@ -24,8 +24,11 @@ export function render(el, ctx) {
         { key: 'peso', label: 'Peso', num: true, render: p => `<b>${fmtNum(p.peso, 1)} kg</b>` },
         { key: 'edadMeses', label: 'Edad al pesar', render: p => p.edadMeses != null ? fmtNum(p.edadMeses, 1) + ' meses' : '' },
         { key: 'observaciones', label: 'Observaciones' },
-        { key: '_a', label: '', render: p =>
-            `<button class="btn-icon" title="Eliminar" data-del="${p.id}">🗑️</button>` },
+        { key: '_a', label: '', render: p => `
+            <div class="act-cell">
+              <button class="btn-icon" title="Corregir" data-edit="${p.id}">✏️</button>
+              <button class="btn-icon" title="Eliminar" data-del="${p.id}">🗑️</button>
+            </div>` },
       ],
       rows: filas,
       rowAttr: p => `class="row-click" data-nombre="${esc(p.nombre)}"`,
@@ -40,12 +43,18 @@ export function render(el, ctx) {
       if (e.target.closest('button')) return;
       abrirFichaTernero(tr.dataset.nombre, ctx);
     }));
+  el.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    const p = ctx.state.pesajes.find(x => x.id === Number(b.dataset.edit));
+    if (p) formEditarPesaje(p, ctx);
+  }));
   el.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async e => {
     e.stopPropagation();
     const p = ctx.state.pesajes.find(x => x.id === Number(b.dataset.del));
     if (!p) return;
     if (!(await confirmar(`¿Eliminar el pesaje de <b>${esc(p.nombre)}</b> del ${fmtFecha(p.fecha)} (${p.peso} kg)?`, { peligro: true, okLabel: 'Eliminar' }))) return;
-    await db.del('pesajes', p.id);
+    // Por aquí y no por db.del: hay que volver a sacar el último peso del ternero.
+    await eliminarPesaje(p);
     toast('Pesaje eliminado.', 'info');
     ctx.refresh();
   }));

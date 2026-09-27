@@ -12,7 +12,7 @@ export function render(el, ctx) {
   const geneticas = geneticasHato(state);
 
   const nAlertas = al.partosVencidos.length + al.partosProximos.length
-    + al.serviciosPorConfirmar.length + al.reaplicaciones.length;
+    + al.serviciosPorConfirmar.length + al.reaplicaciones.length + al.preparto.length;
 
   el.innerHTML = `
     <div class="kpi-grid">
@@ -89,6 +89,10 @@ function renderAlertas(al) {
   for (const p of al.partosProximos) {
     items.push(alerta('pink', '🍼', `Vaca <b>${esc(p.chapeta)}</b>: parto probable el ${fmtFecha(p.fechaProbParto)}`,
       p.dias === 0 ? '¡hoy!' : `en ${p.dias} días`));
+  }
+  for (const p of al.preparto) {
+    items.push(alerta('warning', '🌾', `Vaca <b>${esc(p.chapeta)}</b>: ya va siendo hora del preparto`,
+      p.dias === 0 ? 'pare hoy' : `pare en ${p.dias} días`));
   }
   for (const s of al.serviciosPorConfirmar) {
     items.push(alerta('info', '💉', `Vaca <b>${esc(s.chapeta)}</b>: ${TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)} sin confirmar`,

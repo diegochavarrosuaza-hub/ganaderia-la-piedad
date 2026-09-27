@@ -52,27 +52,29 @@ export function abrirFichaVaca(chapeta, ctx) {
       </div>
       <div class="fab-row">${acciones}</div>
 
-      ${seccion('🍼 Crías registradas', crias.map(c => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(c.fechaNac)}</span>
-          <span><b>${esc(c.nombre)}</b> (${esc(c.sexo) || '?'}) ${c.activo ? '' : '· ' + badge(c.tipoSalida || 'NO')}</span>
-        </div>`), 'Sin crías vinculadas a esta chapeta.')}
+      <div class="hint hint-sm">✏️ Toca cualquier línea del historial para corregirla o borrarla.</div>
 
-      ${seccion('💉 Servicios (IA / TE)', servicios.map(s => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(s.fecha)}</span>
+      ${seccion('🍼 Crías registradas', crias.map(c => fila('cria', `data-nombre="${esc(c.nombre)}"`, `
+          <span class="hist-fecha">${fmtFecha(c.fechaNac)}</span>
+          <span><b>${esc(c.nombre)}</b> (${esc(c.sexo) || '?'}) ${c.activo ? '' : '· ' + badge(c.tipoSalida || 'NO')}</span>`,
+        '↗')), 'Sin crías vinculadas a esta chapeta.')}
+
+      ${seccion('💉 Servicios (monta, IA, TE)', servicios.map(s => fila('servicio', `data-id="${s.id}"`, `
+          <span class="hist-fecha">${fmtFecha(s.fecha)}</span>
           <span>${badge(s.tipo)} ${esc([s.material, s.raza].filter(Boolean).join(' · '))}
-          → ${badge(s.resultado)}</span>
-        </div>`), 'Sin servicios registrados.')}
+          → ${badge(s.resultado)}</span>`)), 'Sin servicios registrados.')}
 
-      ${seccion('🤰 Preñeces', preneces.map(p => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(p.fechaPrenez)}</span>
-          <span>${badge(p.estado)} parto probable ${fmtFecha(p.fechaProbParto)}
-          ${p.observaciones ? '· <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>
-        </div>`), 'Sin preñeces registradas.')}
+      ${seccion('🤰 Preñeces', preneces.map(p => fila('prenez', `data-id="${p.id}"`, `
+          <span class="hist-fecha">${fmtFecha(p.fechaPrenez)}</span>
+          <span>${badge(p.estado)} ${origenBadge(p)} parto probable ${fmtFecha(p.fechaProbParto)}
+          ${p.fechaPreparto ? '· 🌾 preparto desde ' + fmtFecha(p.fechaPreparto) : ''}
+          ${p.observaciones ? '· <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>`)),
+        'Sin preñeces registradas.')}
 
-      ${seccion('📋 Últimos eventos', eventos.map(e => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
-          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtMoney(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>
-        </div>`), 'Sin eventos.')}
+      ${seccion('📋 Últimos eventos', eventos.map(e => fila('evento', `data-id="${e.id}"`, `
+          <span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
+          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtMoney(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>`)),
+        'Sin eventos.')}
     `;
 
   const modal = openModal({
@@ -96,6 +98,7 @@ export function abrirFichaVaca(chapeta, ctx) {
       }
       closeModal(); acc[b.dataset.f]();
     }));
+  conectarEdicion(modal, ctx);
 }
 
 export function abrirFichaTernero(nombre, ctx) {
@@ -139,15 +142,17 @@ export function abrirFichaTernero(nombre, ctx) {
           <div class="sparkline-wrap chart-box">${sparkline(pesos.map(p => ({ x: p.fecha, y: p.peso })), { width: 380, height: 64 })}</div>
         </div>` : ''}
 
-      ${seccion('⚖️ Pesajes', pesos.slice().reverse().map(p => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(p.fecha)}</span>
-          <span><b>${fmtNum(p.peso, 1)} kg</b>${p.observaciones ? ' · <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>
-        </div>`), 'Sin pesajes todavía.')}
+      <div class="hint hint-sm">✏️ Toca cualquier línea del historial para corregirla o borrarla.</div>
 
-      ${seccion('📋 Últimos eventos', eventos.map(e => `
-        <div class="hist-item"><span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
-          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtNum(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>
-        </div>`), 'Sin eventos.')}
+      ${seccion('⚖️ Pesajes', pesos.slice().reverse().map(p => fila('pesaje', `data-id="${p.id}"`, `
+          <span class="hist-fecha">${fmtFecha(p.fecha)}</span>
+          <span><b>${fmtNum(p.peso, 1)} kg</b>${p.observaciones ? ' · <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>`)),
+        'Sin pesajes todavía.')}
+
+      ${seccion('📋 Últimos eventos', eventos.map(e => fila('evento', `data-id="${e.id}"`, `
+          <span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
+          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtNum(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>`)),
+        'Sin eventos.')}
     `;
 
   const modal = openModal({
@@ -170,10 +175,47 @@ export function abrirFichaTernero(nombre, ctx) {
       }
       closeModal(); acc[b.dataset.f]();
     }));
+  conectarEdicion(modal, ctx);
 }
 
 function seccion(titulo, items, vacio) {
   return `<div class="ficha-sec"><h3>${titulo}</h3>
     <div class="hist-list">${items.length ? items.join('') : `<div class="empty-note">${esc(vacio)}</div>`}</div>
   </div>`;
+}
+
+// Cada línea del historial se puede tocar para corregirla o borrarla.
+function fila(tipo, attrs, interior, icono = '✏️') {
+  return `<div class="hist-item hist-ed" data-ed="${tipo}" ${attrs}>${interior}
+    <button class="hist-lapiz" type="button" title="Tocar para corregir">${icono}</button>
+  </div>`;
+}
+
+// Cómo quedó preñada: antes solo se escribía en las observaciones, por eso las
+// preñeces viejas se deducen del texto (logic.origenDe).
+function origenBadge(p) {
+  const o = logic.origenDe(p);
+  return o ? badge(logic.ORIGEN_PRENEZ[o]) : '';
+}
+
+// Abre el formulario de corrección que corresponda a la línea tocada.
+function conectarEdicion(modal, ctx) {
+  modal.querySelectorAll('[data-ed]').forEach(linea => linea.addEventListener('click', () => {
+    const tipo = linea.dataset.ed;
+    if (tipo === 'cria') { closeModal(); return abrirFichaTernero(linea.dataset.nombre, ctx); }
+
+    const id = Number(linea.dataset.id);
+    const store = { servicio: 'servicios', prenez: 'prenez', evento: 'eventos', pesaje: 'pesajes' }[tipo];
+    const registro = store && ctx.state[store].find(x => x.id === id);
+    if (!registro) return;
+
+    const abrir = {
+      servicio: forms.formEditarServicio,
+      prenez: forms.formEditarPrenez,
+      evento: forms.formEditarEvento,
+      pesaje: forms.formEditarPesaje,
+    }[tipo];
+    closeModal();
+    abrir(registro, ctx);
+  }));
 }

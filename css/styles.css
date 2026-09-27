@@ -187,12 +187,20 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
 .modal-close { border: none; background: var(--gray-light); border-radius: 50%; width: 32px; height: 32px;
                font-size: 15px; cursor: pointer; }
 .modal-body { padding: 6px 20px 20px; }
-.modal-actions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 14px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 14px;
+                 flex-wrap: wrap; align-items: center; }
+.modal-actions .ma-sep { flex: 1 1 0; }
 
 /* Formularios */
 .f-row  { margin-bottom: 12px; }
 .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
 @media (max-width: 520px) { .f-grid { grid-template-columns: 1fr; } }
+/* En el celular los tres botones no caben en una línea: Eliminar baja solo,
+   lejos del pulgar y separado de Guardar. */
+@media (max-width: 520px) {
+  .modal-actions .ma-sep { display: none; }
+  .modal-actions [data-r="del"] { order: 3; width: 100%; margin-top: 6px; }
+}
 .f-row label { display: block; font-size: 12.5px; font-weight: 700; color: var(--gray-dark);
                margin-bottom: 5px; }
 .f-row label .req { color: var(--red); }
@@ -253,6 +261,14 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
              background: var(--green-bg); border-radius: 8px; align-items: baseline; }
 .hist-item .hist-fecha { color: var(--ink-muted); font-size: 12.5px; white-space: nowrap;
                          font-variant-numeric: tabular-nums; }
+/* Líneas del historial que se pueden tocar para corregirlas */
+.hist-item.hist-ed { cursor: pointer; }
+.hist-item.hist-ed:active { background: #d7e8d7; }
+.hist-lapiz { margin-left: auto; align-self: center; background: none; border: none;
+              font-size: 15px; line-height: 1; padding: 4px 2px 4px 10px; cursor: pointer;
+              opacity: .5; }
+.hist-item.hist-ed:hover .hist-lapiz { opacity: 1; }
+.hint-sm { padding: 8px 12px; font-size: 12.5px; margin: 12px 0 2px; }
 
 /* ═══════ VARIOS ═══════ */
 .pagin { display: flex; gap: 6px; justify-content: center; padding: 14px 0 4px; flex-wrap: wrap; }
@@ -305,7 +321,8 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
   .print-chart { max-width: 620px; margin-bottom: 10px; break-inside: avoid; }
 
   /* La ficha reutiliza su HTML de pantalla: se ocultan botones y se aplanan colores */
-  .print-ficha .fab-row, .print-ficha .btn { display: none !important; }
+  .print-ficha .fab-row, .print-ficha .btn,
+  .print-ficha .hist-lapiz, .print-ficha .hint { display: none !important; }
   .print-ficha .badge { border: 1px solid #888; background: none !important; color: #111 !important; }
   .print-ficha .hist-item { background: none; border-bottom: 1px solid #e2e2e2; border-radius: 0; }
   .print-ficha .ficha-id { color: #111; }

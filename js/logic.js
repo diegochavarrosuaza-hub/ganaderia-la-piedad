@@ -5,6 +5,22 @@ import { hoyISO, addDias, diasEntre, mesKey, ultimosMeses, toDate } from './util
 export const DIAS_GESTACION = { IA: 280, TE: 273, MN: 280 };
 // Nombre legible de cada tipo de servicio
 export const TIPO_SERVICIO = { IA: 'inseminación', TE: 'transferencia', MN: 'monta natural' };
+// De dónde viene una preñez. Antes la monta con toro era solo una nota escrita;
+// ahora se guarda clasificada, que es lo que permite medir qué funciona mejor.
+export const ORIGEN_PRENEZ = { MN: 'Monta con toro', IA: 'Inseminación', TE: 'Transferencia' };
+// Días antes del parto en que la vaca entra a preparto (dieta y manejo especial).
+export const DIAS_PREPARTO = 45;
+
+// Las preñeces registradas antes de esta versión no tienen 'origen' guardado:
+// se deduce del texto que se escribió en observaciones.
+export function origenDe(p) {
+  if (p.origen) return p.origen;
+  const o = String(p.observaciones || '').toLowerCase();
+  if (o.includes('transferencia') || o.includes('embri')) return 'TE';
+  if (o.includes('inseminaci')) return 'IA';
+  if (o.includes('toro') || o.includes('monta')) return 'MN';
+  return '';
+}
 
 // ── Log de eventos ────────────────────────────────────────────────
 export function registrarEvento(categoria, refId, tipo, extra = {}) {
@@ -25,7 +41,8 @@ export function prenezActivaDe(state, chapeta) {
   return state.prenez.find(p => p.chapeta === String(chapeta) && p.estado === 'PREÑADA');
 }
 
-export async function crearPrenez({ chapeta, fechaPrenez, dias = 280, observaciones = '' }) {
+export async function crearPrenez({ chapeta, fechaPrenez, origen = 'MN', dias, observaciones = '',
+                                   fechaPreparto = '', fechaProbParto = '' }) {
   chapeta = String(chapeta).trim();
   if (!chapeta) throw new Error('Falta la chapeta de la vaca.');
   const prenez = await db.all('prenez');
@@ -33,18 +50,105 @@ export async function crearPrenez({ chapeta, fechaPrenez, dias = 280, observacio
     throw new Error(`La vaca ${chapeta} ya tiene una preñez activa.`);
   }
   const fp = fechaPrenez || hoyISO();
-  const fechaProbParto = addDias(fp, dias);
-  await db.add('prenez', { chapeta, fechaPrenez: fp, fechaProbParto, observaciones, estado: 'PREÑADA' });
+  const gest = Number(dias) || DIAS_GESTACION[origen] || 280;
+  // La fecha de parto se calcula sola, salvo que nos la den (vaca comprada preñada).
+  const fpp = fechaProbParto || addDias(fp, gest);
+  await db.add('prenez', {
+    chapeta, fechaPrenez: fp, fechaProbParto: fpp, origen,
+    fechaPreparto, observaciones, estado: 'PREÑADA',
+  });
+  await refrescarPrenezEnVaca(chapeta);
+  await registrarEvento('VACA', chapeta, 'PREÑEZ',
+    { fecha: fp, causa: [ORIGEN_PRENEZ[origen], observaciones].filter(Boolean).join(' — ') });
+  return fpp;
+}
 
+// Deja en la vaca la fecha de la preñez que esté activa (o la borra si no hay).
+// Se llama después de crear, editar o eliminar una preñez para que la ficha de
+// la vaca nunca quede mostrando una preñez que ya no existe.
+async function refrescarPrenezEnVaca(chapeta) {
   const vacas = await db.all('vacas');
-  const vaca = vacas.find(v => v.chapeta === chapeta);
-  if (vaca) {
-    vaca.fechaPrenez = fp;
-    vaca.fechaProbParto = fechaProbParto;
-    await db.put('vacas', vaca);
+  const vaca = vacas.find(v => v.chapeta === String(chapeta));
+  if (!vaca) return;
+  const activa = (await db.all('prenez'))
+    .find(p => p.chapeta === String(chapeta) && p.estado === 'PREÑADA');
+  vaca.fechaPrenez = activa ? activa.fechaPrenez : '';
+  vaca.fechaProbParto = activa ? activa.fechaProbParto : '';
+  await db.put('vacas', vaca);
+}
+
+// ── Correcciones: editar o eliminar lo ya registrado ──────────────
+// Todo lo que la app anota se puede corregir; si no, un dato mal metido
+// se queda para siempre y la gente deja de confiar en la app.
+export async function actualizarPrenez(prenez, cambios) {
+  const estadoAntes = prenez.estado;
+  Object.assign(prenez, cambios);
+  await db.put('prenez', prenez);
+  await refrescarPrenezEnVaca(prenez.chapeta);
+  if (estadoAntes !== prenez.estado) {
+    await registrarEvento('VACA', prenez.chapeta, 'CORRECCIÓN',
+      { fecha: prenez.fechaPrenez, causa: `Preñez: ${estadoAntes} → ${prenez.estado}` });
   }
-  await registrarEvento('VACA', chapeta, 'PREÑEZ', { fecha: fp, causa: observaciones });
-  return fechaProbParto;
+}
+
+export async function eliminarPrenez(prenez) {
+  await db.del('prenez', prenez.id);
+  await refrescarPrenezEnVaca(prenez.chapeta);
+  await registrarEvento('VACA', prenez.chapeta, 'CORRECCIÓN',
+    { fecha: prenez.fechaPrenez, causa: 'Se eliminó la preñez del ' + prenez.fechaPrenez });
+}
+
+export async function actualizarServicio(servicio, cambios) {
+  Object.assign(servicio, cambios);
+  await db.put('servicios', servicio);
+}
+
+export async function eliminarServicio(servicio) {
+  await db.del('servicios', servicio.id);
+  await registrarEvento('VACA', servicio.chapeta, 'CORRECCIÓN',
+    { fecha: servicio.fecha,
+      causa: `Se eliminó la ${TIPO_SERVICIO[servicio.tipo] || 'servicio'} del ${servicio.fecha}` });
+}
+
+export async function actualizarEvento(evento, cambios) {
+  Object.assign(evento, cambios);
+  await db.put('eventos', evento);
+}
+
+// Los eventos son la bitácora: borrar uno no deja rastro a propósito
+// (si dejara rastro, borrar el rastro crearía otro, sin fin).
+export function eliminarEvento(evento) {
+  return db.del('eventos', evento.id);
+}
+
+export async function actualizarPesaje(pesaje, cambios) {
+  const nombreAntes = pesaje.nombre;
+  Object.assign(pesaje, cambios);
+  if (pesaje.peso != null) pesaje.peso = Number(pesaje.peso);
+  await db.put('pesajes', pesaje);
+  await recalcularUltimoPeso(nombreAntes);
+  if (pesaje.nombre !== nombreAntes) await recalcularUltimoPeso(pesaje.nombre);
+}
+
+export async function eliminarPesaje(pesaje) {
+  await db.del('pesajes', pesaje.id);
+  await recalcularUltimoPeso(pesaje.nombre);
+}
+
+// El "último peso" del ternero es un resumen de sus pesajes: si se edita o se
+// borra uno, hay que volver a sacarlo o el ternero queda con un peso fantasma.
+export async function recalcularUltimoPeso(nombre) {
+  const clave = String(nombre || '').trim().toLowerCase();
+  const terneros = await db.all('terneros');
+  const t = terneros.find(x => x.nombre.trim().toLowerCase() === clave);
+  if (!t) return;
+  const suyos = (await db.all('pesajes'))
+    .filter(p => String(p.nombre || '').trim().toLowerCase() === clave)
+    .sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
+  const ultimo = suyos[suyos.length - 1];
+  t.ultimoPeso = ultimo ? Number(ultimo.peso) : null;
+  t.fechaUltimoPesaje = ultimo ? ultimo.fecha : '';
+  await db.put('terneros', t);
 }
 
 // ── Servicios (inseminación / transferencia) ──────────────────────
@@ -58,6 +162,7 @@ export async function confirmarServicio(servicio, resultado) {
     const fechaProbParto = await crearPrenez({
       chapeta: servicio.chapeta,
       fechaPrenez: servicio.fecha,
+      origen: servicio.tipo,
       dias: DIAS_GESTACION[servicio.tipo] || 280,
       observaciones: 'Por ' + etiqueta,
     });
@@ -302,7 +407,8 @@ export function kpisReproduccion(state) {
 // ── Alertas para el tablero ───────────────────────────────────────
 export function alertas(state) {
   const hoy = hoyISO();
-  const out = { partosProximos: [], partosVencidos: [], serviciosPorConfirmar: [], reaplicaciones: [] };
+  const out = { partosProximos: [], partosVencidos: [], serviciosPorConfirmar: [],
+                reaplicaciones: [], preparto: [] };
 
   for (const t of (state.tratamientos || [])) {
     if (t.estado !== 'PENDIENTE' || !t.fechaReaplicar) continue;
@@ -320,6 +426,14 @@ export function alertas(state) {
   }
   out.partosProximos.sort((a, b) => a.dias - b.dias);
   out.partosVencidos.sort((a, b) => a.dias - b.dias);
+
+  // Vacas que ya deberían estar en preparto y a las que no se les ha anotado.
+  for (const p of state.prenez) {
+    if (p.estado !== 'PREÑADA' || !p.fechaProbParto || p.fechaPreparto) continue;
+    const dias = diasEntre(hoy, p.fechaProbParto);
+    if (dias != null && dias >= 0 && dias <= DIAS_PREPARTO) out.preparto.push({ ...p, dias });
+  }
+  out.preparto.sort((a, b) => a.dias - b.dias);
 
   for (const s of state.servicios) {
     if (s.resultado !== 'PENDIENTE' || !s.fecha) continue;

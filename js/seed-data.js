@@ -1,8 +1,10 @@
 // Datos del hato de Ganadería La Piedad.
+// Reconstruido desde el respaldo de la tablet del 27/09/2026 (lo que tiene la
+// mamá) más las correcciones que pidió Diego ese día.
 // SEED_VERSION: súbela cada vez que cambien estos datos. Los dispositivos que
 // ya tienen la app instalada detectan la versión nueva y se actualizan solos
 // (guardando antes un respaldo de seguridad de lo que tenían).
-export const SEED_VERSION = '2026-08-09-sexo-toros';
+export const SEED_VERSION = '2026-09-27-editar-todo';
 export const SEED = {
  "vacas": [
   {
@@ -20,7 +22,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:001",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "002",
@@ -37,7 +39,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:002",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "003",
@@ -54,7 +56,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:003",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "004",
@@ -71,7 +73,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:004",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "005",
@@ -88,7 +90,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:005",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "006",
@@ -105,7 +107,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:006",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "007",
@@ -122,7 +124,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:007",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "008",
@@ -139,7 +141,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:008",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "009",
@@ -156,7 +158,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:009",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "010",
@@ -173,7 +175,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:010",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "011",
@@ -190,7 +192,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:011",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "012",
@@ -207,7 +209,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:012",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "013",
@@ -224,7 +226,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:013",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "014",
@@ -241,7 +243,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:014",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "015",
@@ -258,7 +260,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:015",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "016",
@@ -275,7 +277,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:016",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "017",
@@ -292,7 +294,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:017",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "018",
@@ -309,7 +311,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:018",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "019",
@@ -326,7 +328,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:019",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "020",
@@ -343,7 +345,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:020",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "021",
@@ -360,7 +362,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:021",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "022",
@@ -377,7 +379,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:022",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "023",
@@ -394,7 +396,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:023",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "024",
@@ -411,7 +413,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:024",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "025",
@@ -428,7 +430,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:025",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "026",
@@ -445,7 +447,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:026",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "027",
@@ -462,7 +464,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:027",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "028",
@@ -479,7 +481,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:028",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "029",
@@ -496,7 +498,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:029",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "030",
@@ -513,7 +515,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:030",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "031",
@@ -530,7 +532,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:031",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "032",
@@ -547,7 +549,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:032",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "033",
@@ -564,7 +566,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:033",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "034",
@@ -581,7 +583,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:034",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "035",
@@ -591,14 +593,14 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "2025-11-13",
    "criaActual": "Crispeta",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-08-03",
+   "fechaProbParto": "2027-05-10",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "",
+   "notas": "Se le hizo transferencia de embrion, pendiente por confirmar",
    "tipo": "vaca",
    "uid": "vaca:035",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "036",
@@ -615,7 +617,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:036",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "037",
@@ -632,7 +634,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:037",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "038",
@@ -649,7 +651,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:038",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "039",
@@ -666,7 +668,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:039",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "040",
@@ -683,7 +685,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:040",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "041",
@@ -700,7 +702,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:041",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "042",
@@ -717,7 +719,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:042",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "043",
@@ -734,7 +736,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:043",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "044",
@@ -751,7 +753,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:044",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "045",
@@ -768,7 +770,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:045",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "046",
@@ -785,7 +787,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:046",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "047",
@@ -802,7 +804,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:047",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "048",
@@ -819,7 +821,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:048",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "049",
@@ -836,7 +838,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:049",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "050",
@@ -853,7 +855,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:050",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "051",
@@ -861,7 +863,7 @@ export const SEED = {
    "genetica": "F1",
    "fechaNac": "",
    "sexo": "Hembra",
-   "ultimoParto": "2026-05-05",
+   "ultimoParto": "2026-05-08",
    "criaActual": "Cría vendida",
    "fechaPrenez": "",
    "fechaProbParto": "",
@@ -870,7 +872,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:051",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "052",
@@ -887,7 +889,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:052",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "053",
@@ -904,7 +906,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:053",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "054",
@@ -921,7 +923,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:054",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "055",
@@ -938,7 +940,7 @@ export const SEED = {
    "notas": "5.º viaje",
    "tipo": "vaca",
    "uid": "vaca:055",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "056",
@@ -955,7 +957,7 @@ export const SEED = {
    "notas": "5.º viaje",
    "tipo": "vaca",
    "uid": "vaca:056",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "057",
@@ -972,7 +974,7 @@ export const SEED = {
    "notas": "5.º viaje",
    "tipo": "vaca",
    "uid": "vaca:057",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "058",
@@ -982,14 +984,14 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "",
    "criaActual": "",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-01-29",
+   "fechaProbParto": "2026-10-29",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "",
+   "notas": "La compramos preñada por tranferencia de embrion de toro Bronco fecha posible parto. 29 octubre 2026",
    "tipo": "vaca",
    "uid": "vaca:058",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "059",
@@ -999,14 +1001,14 @@ export const SEED = {
    "sexo": "Hembra",
    "ultimoParto": "",
    "criaActual": "",
-   "fechaPrenez": "",
-   "fechaProbParto": "",
+   "fechaPrenez": "2026-01-29",
+   "fechaProbParto": "2026-10-29",
    "estado": "ACTIVA",
    "fechaSalida": "",
-   "notas": "",
+   "notas": "Comprada preñada por transferencia de embrión del toro Bronco.",
    "tipo": "vaca",
    "uid": "vaca:059",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "060",
@@ -1023,7 +1025,7 @@ export const SEED = {
    "notas": "",
    "tipo": "vaca",
    "uid": "vaca:060",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "Eclipse",
@@ -1040,7 +1042,7 @@ export const SEED = {
    "notas": "Toro reproductor",
    "tipo": "toro",
    "uid": "vaca:eclipse",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "Timoteo",
@@ -1057,7 +1059,7 @@ export const SEED = {
    "notas": "Toro reproductor",
    "tipo": "toro",
    "uid": "vaca:timoteo",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ],
  "terneros": [
@@ -1075,7 +1077,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:carbón",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Marcos",
@@ -1091,7 +1093,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:marcos",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Lolita",
@@ -1103,11 +1105,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "Sí",
    "observaciones": "",
-   "ultimoPeso": 154.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 228,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:lolita",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Julio",
@@ -1123,7 +1125,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:julio",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Augusto",
@@ -1139,7 +1141,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:augusto",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Karina",
@@ -1151,11 +1153,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 141.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 211,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:karina",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Venus",
@@ -1171,7 +1173,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:venus",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Minerva",
@@ -1183,11 +1185,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 124.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 201,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:minerva",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Aurora",
@@ -1199,11 +1201,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 157.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 239,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:aurora",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Victoria",
@@ -1219,7 +1221,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:victoria",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Iris",
@@ -1231,11 +1233,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 93.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 159,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:iris",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Frida",
@@ -1247,11 +1249,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 78.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 112,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:frida",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Apolo",
@@ -1267,7 +1269,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:apolo",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Pepa",
@@ -1279,11 +1281,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 102.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 134,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:pepa",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Fortuna",
@@ -1295,11 +1297,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 105.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 163,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:fortuna",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Helena",
@@ -1311,11 +1313,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 117.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 149,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:helena",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Alma",
@@ -1327,11 +1329,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 116.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 149,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:alma",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Calista",
@@ -1343,11 +1345,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 113.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 126,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:calista",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Brisa",
@@ -1359,11 +1361,11 @@ export const SEED = {
    "tipoSalida": "FALLECIDO",
    "brucelosis": "No",
    "observaciones": "Fallecida el 20/05/2026",
-   "ultimoPeso": 127.0,
+   "ultimoPeso": 127,
    "fechaUltimoPesaje": "2026-04-03",
    "genetica": "",
    "uid": "ternero:brisa",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Ulises",
@@ -1379,7 +1381,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:ulises",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Cassandra",
@@ -1391,11 +1393,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 154,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:cassandra",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Colacho",
@@ -1411,7 +1413,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:colacho",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Monica",
@@ -1423,11 +1425,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 110.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 146,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:monica",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Crispeta",
@@ -1439,11 +1441,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 127,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:crispeta",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Afrodita",
@@ -1455,11 +1457,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 87.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 164,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:afrodita",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Chocolate",
@@ -1475,7 +1477,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:chocolate",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Zeus",
@@ -1491,7 +1493,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:zeus",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Reina",
@@ -1503,11 +1505,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 111.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 149,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:reina",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "India",
@@ -1519,11 +1521,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 97.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 153,
+   "fechaUltimoPesaje": "2026-06-21",
    "genetica": "",
    "uid": "ternero:india",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Paty",
@@ -1535,11 +1537,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 123.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 129,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:paty",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Blanquillo",
@@ -1555,7 +1557,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:blanquillo",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Azabache",
@@ -1571,7 +1573,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:azabache",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Jupiter",
@@ -1587,7 +1589,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:jupiter",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Penélope",
@@ -1599,11 +1601,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 72.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 128,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:penélope",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Luna",
@@ -1615,11 +1617,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 86.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 154,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:luna",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Cerbero",
@@ -1635,7 +1637,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:cerbero",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Palomo",
@@ -1651,7 +1653,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:palomo",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Diana",
@@ -1663,11 +1665,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 94.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 165,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:diana",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Artemisa",
@@ -1679,11 +1681,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 90.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 152,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:artemisa",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Flora",
@@ -1699,7 +1701,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:flora",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Freya",
@@ -1711,11 +1713,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 87.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 155,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:freya",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Maya",
@@ -1727,11 +1729,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 57.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 110,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:maya",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Mercurio",
@@ -1743,11 +1745,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 58.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 108,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:mercurio",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Odín",
@@ -1759,11 +1761,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "",
-   "ultimoPeso": 52.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 124,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:odín",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Bambi",
@@ -1775,11 +1777,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "Sí",
    "observaciones": "",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 123,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:bambi",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Capuchino",
@@ -1791,11 +1793,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "Sí",
    "observaciones": "",
-   "ultimoPeso": 43.0,
-   "fechaUltimoPesaje": "2026-04-03",
+   "ultimoPeso": 102,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:capuchino",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Abril",
@@ -1807,19 +1809,19 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "Nacido del parto de vaca 54",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 105,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:abril",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Vendido",
    "sexo": "Macho",
-   "fechaNac": "2026-05-05",
+   "fechaNac": "2026-05-08",
    "codigoMadre": "051",
    "activo": false,
-   "fechaSalida": "2026-05-05",
+   "fechaSalida": "2026-05-08",
    "tipoSalida": "VENDIDO",
    "brucelosis": "No",
    "observaciones": "Macho, vendido al nacer a Ganadero Munar",
@@ -1827,7 +1829,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:vendido",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Jennifer",
@@ -1839,11 +1841,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "⭐ Primera Gyr Pura nacida en Ganadería La Piedad. Nacida del parto de vaca 057.",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 120,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "Gyr Pura",
    "uid": "ternero:jennifer",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Cría 047 (murió)",
@@ -1859,7 +1861,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:cría 047 (murió)",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Cría 048 (murió)",
@@ -1875,7 +1877,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:cría 048 (murió)",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Cría 053 (murió)",
@@ -1891,7 +1893,7 @@ export const SEED = {
    "fechaUltimoPesaje": "",
    "genetica": "",
    "uid": "ternero:cría 053 (murió)",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "nombre": "Princesa",
@@ -1903,11 +1905,11 @@ export const SEED = {
    "tipoSalida": "",
    "brucelosis": "No",
    "observaciones": "Nacida del parto de vaca 052",
-   "ultimoPeso": null,
-   "fechaUltimoPesaje": "",
+   "ultimoPeso": 90,
+   "fechaUltimoPesaje": "2026-09-23",
    "genetica": "",
    "uid": "ternero:princesa",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ],
  "servicios": [
@@ -1921,7 +1923,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:042:2026-07-17:TE",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "TE",
@@ -1933,7 +1935,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:022:2026-07-17:TE",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "TE",
@@ -1945,7 +1947,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:035:2026-07-17:TE",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "TE",
@@ -1957,7 +1959,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:060:2026-07-17:TE",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "TE",
@@ -1969,7 +1971,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:057:2026-07-17:TE",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -1981,7 +1983,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:017:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -1993,7 +1995,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:014:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -2005,7 +2007,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:037:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -2017,7 +2019,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:018:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -2029,7 +2031,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:028:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -2041,7 +2043,7 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:024:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "tipo": "MN",
@@ -2053,7 +2055,283 @@ export const SEED = {
    "resultado": "PENDIENTE",
    "fechaConfirmacion": "",
    "uid": "serv:029:2026-08-06:MN",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "048",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-22",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:048:2026-07-22:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "020",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-22",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:020:2026-07-22:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "033",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-22",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:033:2026-07-22:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "001",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-22",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:001:2026-07-22:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "005",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-30",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:005:2026-07-30:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "021",
+   "cria": "",
+   "material": "",
+   "raza": "Ecli",
+   "fecha": "2026-07-30",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:021:2026-07-30:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "004",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-30",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:004:2026-07-30:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "014",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-01",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:014:2026-08-01:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "037",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-07",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:037:2026-08-07:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "037",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-07",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:037:2026-08-07:MN#1",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "018",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-07",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:018:2026-08-07:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "028",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-07",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:028:2026-08-07:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "011",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-14",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:011:2026-08-14:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "016",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-14",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:016:2026-08-14:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "019",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-24",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:019:2026-07-24:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "026",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-07-31",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:026:2026-07-31:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "027",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-14",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:027:2026-08-14:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "034",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-07",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:034:2026-08-07:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "045",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-05",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:045:2026-08-05:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "047",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-05",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:047:2026-08-05:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "050",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-14",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:050:2026-08-14:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "051",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-08-14",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:051:2026-08-14:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "tipo": "MN",
+   "chapeta": "054",
+   "cria": "",
+   "material": "",
+   "raza": "Eclipse",
+   "fecha": "2026-06-05",
+   "resultado": "PENDIENTE",
+   "fechaConfirmacion": "",
+   "uid": "serv:054:2026-06-05:MN",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ],
  "prenez": [
@@ -2063,8 +2341,10 @@ export const SEED = {
    "fechaProbParto": "2025-08-21",
    "observaciones": "Parto 2025-07-17 — Cría: Julio",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:041:2024-11-11",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "043",
@@ -2072,17 +2352,21 @@ export const SEED = {
    "fechaProbParto": "2025-08-21",
    "observaciones": "Parto 2025-05-27 — Cría: Carbón",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:043:2024-11-11",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "051",
    "fechaPrenez": "2025-08-14",
    "fechaProbParto": "2026-05-24",
-   "observaciones": "Parto 2026-05-05 — Cría: Vendido",
+   "observaciones": "Parto 2026-05-08 — Cría: Vendido",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:051:2025-08-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "052",
@@ -2090,8 +2374,10 @@ export const SEED = {
    "fechaProbParto": "2026-02-21",
    "observaciones": "Parto 2026-07-03 — Cría: Princesa",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:052:2025-05-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "053",
@@ -2099,8 +2385,10 @@ export const SEED = {
    "fechaProbParto": "2026-02-21",
    "observaciones": "Fecha incierta | Parto 2026-05-20",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:053:2025-05-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "054",
@@ -2108,8 +2396,10 @@ export const SEED = {
    "fechaProbParto": "2026-02-21",
    "observaciones": "Parto 2026-04-25 — Cría: Abril",
    "estado": "PARIDA",
+   "origen": "",
+   "fechaPreparto": "",
    "uid": "prenez:054:2025-05-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "043",
@@ -2117,8 +2407,10 @@ export const SEED = {
    "fechaProbParto": "2026-09-06",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:043:2025-11-30",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "041",
@@ -2126,8 +2418,10 @@ export const SEED = {
    "fechaProbParto": "2026-09-06",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:041:2025-11-30",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "012",
@@ -2135,8 +2429,10 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:012:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "044",
@@ -2144,8 +2440,10 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:044:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "025",
@@ -2153,8 +2451,10 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:025:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "023",
@@ -2162,8 +2462,10 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:023:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "013",
@@ -2171,8 +2473,10 @@ export const SEED = {
    "fechaProbParto": "2026-11-21",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:013:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "007",
@@ -2180,8 +2484,10 @@ export const SEED = {
    "fechaProbParto": "2026-12-31",
    "observaciones": "Inseminación — Nelore",
    "estado": "PREÑADA",
+   "origen": "IA",
+   "fechaPreparto": "",
    "uid": "prenez:007:2026-03-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "032",
@@ -2189,8 +2495,10 @@ export const SEED = {
    "fechaProbParto": "2026-12-31",
    "observaciones": "Inseminación — Nelore",
    "estado": "PREÑADA",
+   "origen": "IA",
+   "fechaPreparto": "",
    "uid": "prenez:032:2026-03-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "008",
@@ -2198,8 +2506,10 @@ export const SEED = {
    "fechaProbParto": "2027-01-29",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:008:2026-04-24",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "039",
@@ -2207,8 +2517,10 @@ export const SEED = {
    "fechaProbParto": "2027-01-31",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:039:2026-04-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "046",
@@ -2216,8 +2528,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:046:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "006",
@@ -2225,8 +2539,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:006:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "010",
@@ -2234,8 +2550,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:010:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "031",
@@ -2243,8 +2561,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:031:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "030",
@@ -2252,8 +2572,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-03",
    "observaciones": "Transferencia de embrión sexado",
    "estado": "PREÑADA",
+   "origen": "TE",
+   "fechaPreparto": "",
    "uid": "prenez:030:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "040",
@@ -2261,8 +2583,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-24",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:040:2026-05-20",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "015",
@@ -2270,8 +2594,10 @@ export const SEED = {
    "fechaProbParto": "2027-03-01",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:015:2026-05-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "036",
@@ -2279,8 +2605,10 @@ export const SEED = {
    "fechaProbParto": "2027-01-30",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:036:2026-04-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "055",
@@ -2288,8 +2616,10 @@ export const SEED = {
    "fechaProbParto": "2027-03-02",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:055:2026-05-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "054",
@@ -2297,8 +2627,10 @@ export const SEED = {
    "fechaProbParto": "2027-02-21",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:054:2026-05-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "chapeta": "038",
@@ -2306,1056 +2638,837 @@ export const SEED = {
    "fechaProbParto": "2027-02-02",
    "observaciones": "Monta natural (toro)",
    "estado": "PREÑADA",
+   "origen": "MN",
+   "fechaPreparto": "",
    "uid": "prenez:038:2026-04-28",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "chapeta": "035",
+   "fechaPrenez": "2026-08-03",
+   "fechaProbParto": "2027-05-10",
+   "observaciones": "Por confirmar cuál pegó: transferencia de embrión del 17/07/2026 (parto sería el 16/04/2027) o monta con toro del 03/08/2026 (parto sería el 10/05/2027). Falta palpar.",
+   "estado": "PREÑADA",
+   "origen": "",
+   "fechaPreparto": "",
+   "uid": "prenez:035:2026-08-03",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "chapeta": "058",
+   "fechaPrenez": "2026-01-29",
+   "fechaProbParto": "2026-10-29",
+   "origen": "TE",
+   "fechaPreparto": "2026-09-15",
+   "observaciones": "Comprada preñada — transferencia de embrión del toro Bronco. El parto del 29/10 lo dio el vendedor; la fecha de la transferencia es estimada hacia atrás.",
+   "estado": "PREÑADA",
+   "uid": "prenez:058:2026-01-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "chapeta": "059",
+   "fechaPrenez": "2026-01-29",
+   "fechaProbParto": "2026-10-29",
+   "origen": "TE",
+   "fechaPreparto": "2026-09-15",
+   "observaciones": "Comprada preñada — transferencia de embrión del toro Bronco. El parto del 29/10 lo dio el vendedor; la fecha de la transferencia es estimada hacia atrás.",
+   "estado": "PREÑADA",
+   "uid": "prenez:059:2026-01-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ],
  "pesajes": [
   {
    "fecha": "2026-04-03",
    "nombre": "Eclipse",
-   "peso": 435.0,
+   "peso": 435,
    "edadMeses": null,
    "observaciones": "Toro — 3 años",
    "uid": "pesaje:eclipse:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Aurora",
-   "peso": 157.0,
-   "edadMeses": 7.0,
+   "peso": 157,
+   "edadMeses": 7,
    "observaciones": "",
    "uid": "pesaje:aurora:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Lolita",
-   "peso": 154.0,
-   "edadMeses": 10.0,
+   "peso": 154,
+   "edadMeses": 10,
    "observaciones": "",
    "uid": "pesaje:lolita:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Karina",
-   "peso": 141.0,
-   "edadMeses": 7.0,
+   "peso": 141,
+   "edadMeses": 7,
    "observaciones": "",
    "uid": "pesaje:karina:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Brisa",
-   "peso": 127.0,
-   "edadMeses": 5.0,
+   "peso": 127,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:brisa:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Minerva",
-   "peso": 124.0,
-   "edadMeses": 7.0,
+   "peso": 124,
+   "edadMeses": 7,
    "observaciones": "",
    "uid": "pesaje:minerva:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Paty",
-   "peso": 123.0,
-   "edadMeses": 4.0,
+   "peso": 123,
+   "edadMeses": 4,
    "observaciones": "",
    "uid": "pesaje:paty:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Helena",
-   "peso": 117.0,
-   "edadMeses": 5.0,
+   "peso": 117,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:helena:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Alma",
-   "peso": 116.0,
-   "edadMeses": 5.0,
+   "peso": 116,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:alma:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Calista",
-   "peso": 113.0,
-   "edadMeses": 5.0,
+   "peso": 113,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:calista:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Reina",
-   "peso": 111.0,
-   "edadMeses": 4.0,
+   "peso": 111,
+   "edadMeses": 4,
    "observaciones": "",
    "uid": "pesaje:reina:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Monica",
-   "peso": 110.0,
-   "edadMeses": 5.0,
+   "peso": 110,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:monica:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Casandra",
-   "peso": 105.0,
+   "peso": 105,
    "edadMeses": 4.5,
    "observaciones": "",
    "uid": "pesaje:casandra:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Fortuna",
-   "peso": 105.0,
-   "edadMeses": 5.0,
+   "peso": 105,
+   "edadMeses": 5,
    "observaciones": "",
    "uid": "pesaje:fortuna:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Pepa",
-   "peso": 102.0,
-   "edadMeses": 6.0,
+   "peso": 102,
+   "edadMeses": 6,
    "observaciones": "",
    "uid": "pesaje:pepa:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "India",
-   "peso": 97.0,
-   "edadMeses": 4.0,
+   "peso": 97,
+   "edadMeses": 4,
    "observaciones": "",
    "uid": "pesaje:india:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Diana",
-   "peso": 94.0,
-   "edadMeses": 3.0,
+   "peso": 94,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:diana:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Iris",
-   "peso": 93.0,
-   "edadMeses": 6.0,
+   "peso": 93,
+   "edadMeses": 6,
    "observaciones": "",
    "uid": "pesaje:iris:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Artemisa",
-   "peso": 90.0,
-   "edadMeses": 3.0,
+   "peso": 90,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:artemisa:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Freya",
-   "peso": 87.0,
-   "edadMeses": 3.0,
+   "peso": 87,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:freya:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Afrodita",
-   "peso": 87.0,
-   "edadMeses": 4.0,
+   "peso": 87,
+   "edadMeses": 4,
    "observaciones": "",
    "uid": "pesaje:afrodita:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Luna",
-   "peso": 86.0,
-   "edadMeses": 3.0,
+   "peso": 86,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:luna:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Frida",
-   "peso": 78.0,
-   "edadMeses": 6.0,
+   "peso": 78,
+   "edadMeses": 6,
    "observaciones": "",
    "uid": "pesaje:frida:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Penélope",
-   "peso": 72.0,
-   "edadMeses": 3.0,
+   "peso": 72,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:penélope:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Mercurio",
-   "peso": 58.0,
-   "edadMeses": 2.0,
+   "peso": 58,
+   "edadMeses": 2,
    "observaciones": "",
    "uid": "pesaje:mercurio:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Maya",
-   "peso": 57.0,
-   "edadMeses": 3.0,
+   "peso": 57,
+   "edadMeses": 3,
    "observaciones": "",
    "uid": "pesaje:maya:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Odín",
-   "peso": 52.0,
-   "edadMeses": 2.0,
+   "peso": 52,
+   "edadMeses": 2,
    "observaciones": "",
    "uid": "pesaje:odín:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   },
   {
    "fecha": "2026-04-03",
    "nombre": "Capuchino",
-   "peso": 43.0,
-   "edadMeses": 1.0,
+   "peso": 43,
+   "edadMeses": 1,
    "observaciones": "",
    "uid": "pesaje:capuchino:2026-04-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  }
- ],
- "eventos": [
-  {
-   "timestamp": "2026-04-11 12:48:29",
-   "categoria": "VACA",
-   "refId": "051",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-08-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:48:29:051:preñez:2025-08-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:49:23",
-   "categoria": "VACA",
-   "refId": "052",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-05-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:49:23:052:preñez:2025-05-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:49:57",
-   "categoria": "VACA",
-   "refId": "053",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-05-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:49:57:053:preñez:2025-05-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:49:58",
-   "categoria": "VACA",
-   "refId": "053",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-05-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:49:58:053:preñez:2025-05-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:50:34",
-   "categoria": "VACA",
-   "refId": "054",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-05-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:50:34:054:preñez:2025-05-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:50:36",
-   "categoria": "VACA",
-   "refId": "054",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-05-15",
-   "precio": null,
-   "causa": "Fecha incierta",
-   "uid": "evt:2026-04-11 12:50:36:054:preñez:2025-05-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-11 12:51:56",
-   "categoria": "TERNERO",
-   "refId": "Victoria",
-   "tipo": "FALLECIDO",
-   "fecha": "2026-04-10",
-   "precio": null,
-   "causa": "Enfermedad",
-   "uid": "evt:2026-04-11 12:51:56:victoria:fallecido:2026-04-10",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:41:35",
-   "categoria": "VACA",
-   "refId": "012",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Tranferencia de embrión",
-   "uid": "evt:2026-04-26 14:41:35:012:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:42:06",
-   "categoria": "VACA",
-   "refId": "044",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Tranferencia de embrión",
-   "uid": "evt:2026-04-26 14:42:06:044:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:42:42",
-   "categoria": "VACA",
-   "refId": "025",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Transferencia de embrión",
-   "uid": "evt:2026-04-26 14:42:42:025:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:43:03",
-   "categoria": "VACA",
-   "refId": "023",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Transferencia de embrión",
-   "uid": "evt:2026-04-26 14:43:03:023:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:43:20",
-   "categoria": "VACA",
-   "refId": "027",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Transferencia de embrión",
-   "uid": "evt:2026-04-26 14:43:20:027:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:43:37",
-   "categoria": "VACA",
-   "refId": "013",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-12",
-   "precio": null,
-   "causa": "Transferencia de embrión",
-   "uid": "evt:2026-04-26 14:43:37:013:preñez:2026-04-12",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:49:08",
-   "categoria": "TERNERO",
-   "refId": "Abril",
-   "tipo": "NACIMIENTO",
-   "fecha": "2026-04-25",
-   "precio": null,
-   "causa": "Madre: vaca 54",
-   "uid": "evt:2026-04-26 14:49:08:abril:nacimiento:2026-04-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-04-26 14:49:08",
-   "categoria": "VACA",
-   "refId": "054",
-   "tipo": "PARTO",
-   "fecha": "2026-04-25",
-   "precio": null,
-   "causa": "Abril",
-   "uid": "evt:2026-04-26 14:49:08:054:parto:2026-04-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-05-14 23:59:10",
-   "categoria": "TERNERO",
-   "refId": "Vendido",
-   "tipo": "NACIMIENTO",
-   "fecha": "2026-05-08",
-   "precio": null,
-   "causa": "Madre: vaca 51",
-   "uid": "evt:2026-05-14 23:59:10:vendido:nacimiento:2026-05-08",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-05-15 00:00:16",
-   "categoria": "TERNERO",
-   "refId": "Vendido",
-   "tipo": "VENDIDO",
-   "fecha": "2026-05-08",
-   "precio": 1800000.0,
-   "causa": "Ganadero Munar",
-   "uid": "evt:2026-05-15 00:00:16:vendido:vendido:2026-05-08",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "TERNERO",
-   "refId": "Freya",
-   "tipo": "CORRECCIÓN",
-   "fecha": "",
-   "precio": null,
-   "causa": "Estaba registrada como fallecida; sigue viva",
-   "uid": "evt:2026-07-13 12:00:00:freya:corrección:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "TERNERO",
-   "refId": "Flora",
-   "tipo": "FALLECIDO",
-   "fecha": "2026-03-15",
-   "precio": null,
-   "causa": "Fecha aproximada (marzo 2026)",
-   "uid": "evt:2026-07-13 12:00:00:flora:fallecido:2026-03-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "055",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "5.º viaje",
-   "uid": "evt:2026-07-13 12:00:00:055:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "056",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "5.º viaje",
-   "uid": "evt:2026-07-13 12:00:00:056:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "057",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "5.º viaje",
-   "uid": "evt:2026-07-13 12:00:00:057:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "058",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "Nueva",
-   "uid": "evt:2026-07-13 12:00:00:058:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "059",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "Nueva",
-   "uid": "evt:2026-07-13 12:00:00:059:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "VACA",
-   "refId": "060",
-   "tipo": "ALTA_VACA",
-   "fecha": "",
-   "precio": null,
-   "causa": "Nueva",
-   "uid": "evt:2026-07-13 12:00:00:060:alta_vaca:",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:00:00",
-   "categoria": "TERNERO",
-   "refId": "Jennifer",
-   "tipo": "NACIMIENTO",
-   "fecha": "2026-05-22",
-   "precio": null,
-   "causa": "Madre: vaca 057",
-   "uid": "evt:2026-07-13 12:00:00:jennifer:nacimiento:2026-05-22",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 12:30:00",
-   "categoria": "TERNERO",
-   "refId": "Brisa",
-   "tipo": "FALLECIDO",
-   "fecha": "2026-05-20",
-   "precio": null,
-   "causa": "",
-   "uid": "evt:2026-07-13 12:30:00:brisa:fallecido:2026-05-20",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "VACA",
-   "refId": "051",
-   "tipo": "PARTO",
-   "fecha": "2026-05-05",
-   "precio": null,
-   "causa": "Ternero macho vendido al nacer",
-   "uid": "evt:2026-07-13 13:00:00:051:parto:2026-05-05",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "VACA",
-   "refId": "047",
-   "tipo": "PARTO",
-   "fecha": "2026-03-17",
-   "precio": null,
-   "causa": "Ternero nació enfermo y murió",
-   "uid": "evt:2026-07-13 13:00:00:047:parto:2026-03-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "VACA",
-   "refId": "048",
-   "tipo": "PARTO",
-   "fecha": "2026-03-15",
-   "precio": null,
-   "causa": "Ternero nació enfermo y murió",
-   "uid": "evt:2026-07-13 13:00:00:048:parto:2026-03-15",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "VACA",
-   "refId": "053",
-   "tipo": "PARTO",
-   "fecha": "2026-05-20",
-   "precio": null,
-   "causa": "Ternero muerto",
-   "uid": "evt:2026-07-13 13:00:00:053:parto:2026-05-20",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "VACA",
-   "refId": "042",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-05-13",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-13 13:00:00:042:preñez:2026-05-13",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-13 13:00:00",
-   "categoria": "SANIDAD",
-   "refId": "Toda la lechería",
-   "tipo": "TRATAMIENTO",
-   "fecha": "2026-06-20",
-   "precio": null,
-   "causa": "Hemopar + Impulsor FE — reaplicar en 45 días",
-   "uid": "evt:2026-07-13 13:00:00:toda la lechería:tratamiento:2026-06-20",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "052",
-   "tipo": "PARTO",
-   "fecha": "2026-07-03",
-   "precio": null,
-   "causa": "Princesa",
-   "uid": "evt:2026-07-21 09:00:00:052:parto:2026-07-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "TERNERO",
-   "refId": "Princesa",
-   "tipo": "NACIMIENTO",
-   "fecha": "2026-07-03",
-   "precio": null,
-   "causa": "Madre: vaca 052",
-   "uid": "evt:2026-07-21 09:00:00:princesa:nacimiento:2026-07-03",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "027",
-   "tipo": "PÉRDIDA",
-   "fecha": "2026-07-21",
-   "precio": null,
-   "causa": "Perdió la cría — preñez cerrada",
-   "uid": "evt:2026-07-21 09:00:00:027:pérdida:2026-07-21",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "043",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-11-30",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:043:preñez:2025-11-30",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "041",
-   "tipo": "PREÑEZ",
-   "fecha": "2025-11-30",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:041:preñez:2025-11-30",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "012",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-02-14",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:012:preñez:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "044",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-02-14",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:044:preñez:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "025",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-02-14",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:025:preñez:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "023",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-02-14",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:023:preñez:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "013",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-02-14",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:013:preñez:2026-02-14",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "007",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-03-26",
-   "precio": null,
-   "causa": "Inseminación — Nelore",
-   "uid": "evt:2026-07-21 09:00:00:007:preñez:2026-03-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "032",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-03-26",
-   "precio": null,
-   "causa": "Inseminación — Nelore",
-   "uid": "evt:2026-07-21 09:00:00:032:preñez:2026-03-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "008",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-24",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:008:preñez:2026-04-24",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "039",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-26",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:039:preñez:2026-04-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "046",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-29",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:046:preñez:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "006",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-29",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:006:preñez:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "010",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-29",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:010:preñez:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "031",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-29",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:031:preñez:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "030",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-29",
-   "precio": null,
-   "causa": "Transferencia de embrión sexado",
-   "uid": "evt:2026-07-21 09:00:00:030:preñez:2026-04-29",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "040",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-05-20",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 09:00:00:040:preñez:2026-05-20",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "042",
-   "tipo": "TRANSFERENCIA",
-   "fecha": "2026-07-17",
-   "precio": null,
-   "causa": "Embrión sexado — pendiente por confirmar",
-   "uid": "evt:2026-07-21 09:00:00:042:transferencia:2026-07-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "022",
-   "tipo": "TRANSFERENCIA",
-   "fecha": "2026-07-17",
-   "precio": null,
-   "causa": "Embrión sexado — pendiente por confirmar",
-   "uid": "evt:2026-07-21 09:00:00:022:transferencia:2026-07-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "035",
-   "tipo": "TRANSFERENCIA",
-   "fecha": "2026-07-17",
-   "precio": null,
-   "causa": "Embrión sexado — pendiente por confirmar",
-   "uid": "evt:2026-07-21 09:00:00:035:transferencia:2026-07-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "060",
-   "tipo": "TRANSFERENCIA",
-   "fecha": "2026-07-17",
-   "precio": null,
-   "causa": "Embrión sexado — pendiente por confirmar",
-   "uid": "evt:2026-07-21 09:00:00:060:transferencia:2026-07-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 09:00:00",
-   "categoria": "VACA",
-   "refId": "057",
-   "tipo": "TRANSFERENCIA",
-   "fecha": "2026-07-17",
-   "precio": null,
-   "causa": "Embrión sexado — pendiente por confirmar",
-   "uid": "evt:2026-07-21 09:00:00:057:transferencia:2026-07-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 10:00:00",
-   "categoria": "VACA",
-   "refId": "015",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-05-25",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 10:00:00:015:preñez:2026-05-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 10:00:00",
-   "categoria": "VACA",
-   "refId": "036",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-25",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 10:00:00:036:preñez:2026-04-25",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 10:00:00",
-   "categoria": "VACA",
-   "refId": "055",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-05-26",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 10:00:00:055:preñez:2026-05-26",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 10:00:00",
-   "categoria": "VACA",
-   "refId": "054",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-05-17",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 10:00:00:054:preñez:2026-05-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-07-21 10:00:00",
-   "categoria": "VACA",
-   "refId": "038",
-   "tipo": "PREÑEZ",
-   "fecha": "2026-04-28",
-   "precio": null,
-   "causa": "Monta natural (toro)",
-   "uid": "evt:2026-07-21 10:00:00:038:preñez:2026-04-28",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "TORO",
-   "refId": "Eclipse",
-   "tipo": "ALTA_TORO",
-   "fecha": "2023-01-02",
-   "precio": null,
-   "causa": "Toro reproductor",
-   "uid": "evt:2026-08-09 09:00:00:eclipse:alta_toro:2023-01-02",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "TORO",
-   "refId": "Timoteo",
-   "tipo": "ALTA_TORO",
-   "fecha": "2023-03-17",
-   "precio": null,
-   "causa": "Toro reproductor",
-   "uid": "evt:2026-08-09 09:00:00:timoteo:alta_toro:2023-03-17",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "017",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:017:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "014",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:014:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "037",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:037:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "018",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:018:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "028",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:028:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "024",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:024:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
-  },
-  {
-   "timestamp": "2026-08-09 09:00:00",
-   "categoria": "VACA",
-   "refId": "029",
-   "tipo": "MONTA",
-   "fecha": "2026-08-06",
-   "precio": null,
-   "causa": "Estro Zoo — toros Eclipse y Timoteo",
-   "uid": "evt:2026-08-09 09:00:00:029:monta:2026-08-06",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Abril",
+   "peso": 58,
+   "edadMeses": 2,
+   "observaciones": "",
+   "uid": "pesaje:abril:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Afrodita",
+   "peso": 140,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:afrodita:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Alma",
+   "peso": 129,
+   "edadMeses": 8,
+   "observaciones": "",
+   "uid": "pesaje:alma:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Artemisa",
+   "peso": 136,
+   "edadMeses": 6,
+   "observaciones": "",
+   "uid": "pesaje:artemisa:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Aurora",
+   "peso": 195,
+   "edadMeses": 10,
+   "observaciones": "",
+   "uid": "pesaje:aurora:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Calista",
+   "peso": 112,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:calista:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Capuchino",
+   "peso": 80,
+   "edadMeses": 4,
+   "observaciones": "",
+   "uid": "pesaje:capuchino:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Cassandra",
+   "peso": 118,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:cassandra:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Crispeta",
+   "peso": 118,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:crispeta:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Diana",
+   "peso": 137,
+   "edadMeses": 6,
+   "observaciones": "",
+   "uid": "pesaje:diana:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Fortuna",
+   "peso": 119,
+   "edadMeses": 8,
+   "observaciones": "",
+   "uid": "pesaje:fortuna:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Freya",
+   "peso": 136,
+   "edadMeses": 6,
+   "observaciones": "",
+   "uid": "pesaje:freya:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Frida",
+   "peso": 96,
+   "edadMeses": 9,
+   "observaciones": "",
+   "uid": "pesaje:frida:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Helena",
+   "peso": 126,
+   "edadMeses": 8,
+   "observaciones": "",
+   "uid": "pesaje:helena:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "India",
+   "peso": 153,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:india:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Iris",
+   "peso": 139,
+   "edadMeses": 9,
+   "observaciones": "",
+   "uid": "pesaje:iris:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Jennifer",
+   "peso": 49,
+   "edadMeses": 1,
+   "observaciones": "",
+   "uid": "pesaje:jennifer:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Karina",
+   "peso": 164,
+   "edadMeses": 10,
+   "observaciones": "",
+   "uid": "pesaje:karina:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Lolita",
+   "peso": 160,
+   "edadMeses": 12,
+   "observaciones": "",
+   "uid": "pesaje:lolita:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Luna",
+   "peso": 128,
+   "edadMeses": 6,
+   "observaciones": "",
+   "uid": "pesaje:luna:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Maya",
+   "peso": 100,
+   "edadMeses": 5,
+   "observaciones": "",
+   "uid": "pesaje:maya:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Mercurio",
+   "peso": 116,
+   "edadMeses": 5,
+   "observaciones": "",
+   "uid": "pesaje:mercurio:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Minerva",
+   "peso": 150,
+   "edadMeses": 10,
+   "observaciones": "",
+   "uid": "pesaje:minerva:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Monica",
+   "peso": 125,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:monica:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Odín",
+   "peso": 91,
+   "edadMeses": 5,
+   "observaciones": "",
+   "uid": "pesaje:odín:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Paty",
+   "peso": 123,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:paty:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Penélope",
+   "peso": 112,
+   "edadMeses": 6,
+   "observaciones": "",
+   "uid": "pesaje:penélope:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Pepa",
+   "peso": 125,
+   "edadMeses": 8,
+   "observaciones": "",
+   "uid": "pesaje:pepa:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-06-21",
+   "nombre": "Reina",
+   "peso": 124,
+   "edadMeses": 7,
+   "observaciones": "",
+   "uid": "pesaje:reina:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Odín",
+   "peso": 124,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:odín:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Minerva",
+   "peso": 201,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:minerva:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Karina",
+   "peso": 211,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:karina:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Lolita",
+   "peso": 228,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:lolita:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Luna",
+   "peso": 154,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:luna:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Diana",
+   "peso": 165,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:diana:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Fortuna",
+   "peso": 163,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:fortuna:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Mercurio",
+   "peso": 108,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:mercurio:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Cassandra",
+   "peso": 154,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:cassandra:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Alma",
+   "peso": 149,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:alma:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Capuchino",
+   "peso": 102,
+   "edadMeses": null,
+   "observaciones": "Tiene #016",
+   "uid": "pesaje:capuchino:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Jennifer",
+   "peso": 120,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:jennifer:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Princesa",
+   "peso": 90,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:princesa:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Crispeta",
+   "peso": 127,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:crispeta:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Abril",
+   "peso": 105,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:abril:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Bambi",
+   "peso": 123,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:bambi:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Paty",
+   "peso": 149,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:paty:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Paty",
+   "peso": 129,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:paty:2026-09-23#1",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Reina",
+   "peso": 149,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:reina:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Frida",
+   "peso": 112,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:frida:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Maya",
+   "peso": 110,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:maya:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Aurora",
+   "peso": 239,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:aurora:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Penélope",
+   "peso": 128,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:penélope:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Monica",
+   "peso": 146,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:monica:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Freya",
+   "peso": 155,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:freya:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Artemisa",
+   "peso": 152,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:artemisa:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Afrodita",
+   "peso": 164,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:afrodita:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Calista",
+   "peso": 126,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:calista:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Helena",
+   "peso": 149,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:helena:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Pepa",
+   "peso": 134,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:pepa:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "fecha": "2026-09-23",
+   "nombre": "Iris",
+   "peso": 159,
+   "edadMeses": null,
+   "observaciones": "",
+   "uid": "pesaje:iris:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ],
  "tratamientos": [
@@ -3368,7 +3481,1780 @@ export const SEED = {
    "estado": "PENDIENTE",
    "notas": "",
    "uid": "trat:2026-06-20:hemopar + impulsor fe:toda la lechería",
-   "updatedAt": "2026-09-26T00:00:00.000Z"
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  }
+ ],
+ "eventos": [
+  {
+   "timestamp": "2026-04-11 12:48:29",
+   "categoria": "VACA",
+   "refId": "051",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-08-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:48:29:051:preñez:2025-08-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:49:23",
+   "categoria": "VACA",
+   "refId": "052",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-05-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:49:23:052:preñez:2025-05-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:49:57",
+   "categoria": "VACA",
+   "refId": "053",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-05-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:49:57:053:preñez:2025-05-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:49:58",
+   "categoria": "VACA",
+   "refId": "053",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-05-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:49:58:053:preñez:2025-05-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:50:34",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-05-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:50:34:054:preñez:2025-05-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:50:36",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-05-15",
+   "precio": null,
+   "causa": "Fecha incierta",
+   "uid": "evt:2026-04-11 12:50:36:054:preñez:2025-05-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-11 12:51:56",
+   "categoria": "TERNERO",
+   "refId": "Victoria",
+   "tipo": "FALLECIDO",
+   "fecha": "2026-04-10",
+   "precio": null,
+   "causa": "Enfermedad",
+   "uid": "evt:2026-04-11 12:51:56:victoria:fallecido:2026-04-10",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:41:35",
+   "categoria": "VACA",
+   "refId": "012",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Tranferencia de embrión",
+   "uid": "evt:2026-04-26 14:41:35:012:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:42:06",
+   "categoria": "VACA",
+   "refId": "044",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Tranferencia de embrión",
+   "uid": "evt:2026-04-26 14:42:06:044:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:42:42",
+   "categoria": "VACA",
+   "refId": "025",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Transferencia de embrión",
+   "uid": "evt:2026-04-26 14:42:42:025:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:43:03",
+   "categoria": "VACA",
+   "refId": "023",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Transferencia de embrión",
+   "uid": "evt:2026-04-26 14:43:03:023:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:43:20",
+   "categoria": "VACA",
+   "refId": "027",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Transferencia de embrión",
+   "uid": "evt:2026-04-26 14:43:20:027:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:43:37",
+   "categoria": "VACA",
+   "refId": "013",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-12",
+   "precio": null,
+   "causa": "Transferencia de embrión",
+   "uid": "evt:2026-04-26 14:43:37:013:preñez:2026-04-12",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:49:08",
+   "categoria": "TERNERO",
+   "refId": "Abril",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-04-25",
+   "precio": null,
+   "causa": "Madre: vaca 54",
+   "uid": "evt:2026-04-26 14:49:08:abril:nacimiento:2026-04-25",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-04-26 14:49:08",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "PARTO",
+   "fecha": "2026-04-25",
+   "precio": null,
+   "causa": "Abril",
+   "uid": "evt:2026-04-26 14:49:08:054:parto:2026-04-25",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-05-14 23:59:10",
+   "categoria": "TERNERO",
+   "refId": "Vendido",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-05-08",
+   "precio": null,
+   "causa": "Madre: vaca 51",
+   "uid": "evt:2026-05-14 23:59:10:vendido:nacimiento:2026-05-08",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-05-15 00:00:16",
+   "categoria": "TERNERO",
+   "refId": "Vendido",
+   "tipo": "VENDIDO",
+   "fecha": "2026-05-08",
+   "precio": 1800000,
+   "causa": "Ganadero Munar",
+   "uid": "evt:2026-05-15 00:00:16:vendido:vendido:2026-05-08",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Freya",
+   "tipo": "CORRECCIÓN",
+   "fecha": "",
+   "precio": null,
+   "causa": "Estaba registrada como fallecida; sigue viva",
+   "uid": "evt:2026-07-13 12:00:00:freya:corrección:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Flora",
+   "tipo": "FALLECIDO",
+   "fecha": "2026-03-15",
+   "precio": null,
+   "causa": "Fecha aproximada (marzo 2026)",
+   "uid": "evt:2026-07-13 12:00:00:flora:fallecido:2026-03-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "055",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje",
+   "uid": "evt:2026-07-13 12:00:00:055:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "056",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje",
+   "uid": "evt:2026-07-13 12:00:00:056:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "057",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "5.º viaje",
+   "uid": "evt:2026-07-13 12:00:00:057:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "058",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva",
+   "uid": "evt:2026-07-13 12:00:00:058:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "059",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva",
+   "uid": "evt:2026-07-13 12:00:00:059:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "VACA",
+   "refId": "060",
+   "tipo": "ALTA_VACA",
+   "fecha": "",
+   "precio": null,
+   "causa": "Nueva",
+   "uid": "evt:2026-07-13 12:00:00:060:alta_vaca:",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:00:00",
+   "categoria": "TERNERO",
+   "refId": "Jennifer",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-05-22",
+   "precio": null,
+   "causa": "Madre: vaca 057",
+   "uid": "evt:2026-07-13 12:00:00:jennifer:nacimiento:2026-05-22",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 12:30:00",
+   "categoria": "TERNERO",
+   "refId": "Brisa",
+   "tipo": "FALLECIDO",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": "",
+   "uid": "evt:2026-07-13 12:30:00:brisa:fallecido:2026-05-20",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "051",
+   "tipo": "PARTO",
+   "fecha": "2026-05-08",
+   "precio": null,
+   "causa": "Ternero macho vendido al nacer",
+   "uid": "evt:2026-07-13 13:00:00:051:parto:2026-05-08",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "047",
+   "tipo": "PARTO",
+   "fecha": "2026-03-17",
+   "precio": null,
+   "causa": "Ternero nació enfermo y murió",
+   "uid": "evt:2026-07-13 13:00:00:047:parto:2026-03-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "048",
+   "tipo": "PARTO",
+   "fecha": "2026-03-15",
+   "precio": null,
+   "causa": "Ternero nació enfermo y murió",
+   "uid": "evt:2026-07-13 13:00:00:048:parto:2026-03-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "053",
+   "tipo": "PARTO",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": "Ternero muerto",
+   "uid": "evt:2026-07-13 13:00:00:053:parto:2026-05-20",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "VACA",
+   "refId": "042",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-13",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-13 13:00:00:042:preñez:2026-05-13",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-13 13:00:00",
+   "categoria": "SANIDAD",
+   "refId": "Toda la lechería",
+   "tipo": "TRATAMIENTO",
+   "fecha": "2026-06-20",
+   "precio": null,
+   "causa": "Hemopar + Impulsor FE — reaplicar en 45 días",
+   "uid": "evt:2026-07-13 13:00:00:toda la lechería:tratamiento:2026-06-20",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "052",
+   "tipo": "PARTO",
+   "fecha": "2026-07-03",
+   "precio": null,
+   "causa": "Princesa",
+   "uid": "evt:2026-07-21 09:00:00:052:parto:2026-07-03",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "TERNERO",
+   "refId": "Princesa",
+   "tipo": "NACIMIENTO",
+   "fecha": "2026-07-03",
+   "precio": null,
+   "causa": "Madre: vaca 052",
+   "uid": "evt:2026-07-21 09:00:00:princesa:nacimiento:2026-07-03",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "027",
+   "tipo": "PÉRDIDA",
+   "fecha": "2026-07-21",
+   "precio": null,
+   "causa": "Perdió la cría — preñez cerrada",
+   "uid": "evt:2026-07-21 09:00:00:027:pérdida:2026-07-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "043",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-11-30",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:043:preñez:2025-11-30",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "041",
+   "tipo": "PREÑEZ",
+   "fecha": "2025-11-30",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:041:preñez:2025-11-30",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "012",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:012:preñez:2026-02-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "044",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:044:preñez:2026-02-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "025",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:025:preñez:2026-02-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "023",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:023:preñez:2026-02-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "013",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-02-14",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:013:preñez:2026-02-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "007",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-03-26",
+   "precio": null,
+   "causa": "Inseminación — Nelore",
+   "uid": "evt:2026-07-21 09:00:00:007:preñez:2026-03-26",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "032",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-03-26",
+   "precio": null,
+   "causa": "Inseminación — Nelore",
+   "uid": "evt:2026-07-21 09:00:00:032:preñez:2026-03-26",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "008",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-24",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:008:preñez:2026-04-24",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "039",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-26",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:039:preñez:2026-04-26",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "046",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:046:preñez:2026-04-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "006",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:006:preñez:2026-04-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "010",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:010:preñez:2026-04-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "031",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:031:preñez:2026-04-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "030",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-29",
+   "precio": null,
+   "causa": "Transferencia de embrión sexado",
+   "uid": "evt:2026-07-21 09:00:00:030:preñez:2026-04-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "040",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-20",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 09:00:00:040:preñez:2026-05-20",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "042",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar",
+   "uid": "evt:2026-07-21 09:00:00:042:transferencia:2026-07-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "022",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar",
+   "uid": "evt:2026-07-21 09:00:00:022:transferencia:2026-07-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "035",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar",
+   "uid": "evt:2026-07-21 09:00:00:035:transferencia:2026-07-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "060",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar",
+   "uid": "evt:2026-07-21 09:00:00:060:transferencia:2026-07-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 09:00:00",
+   "categoria": "VACA",
+   "refId": "057",
+   "tipo": "TRANSFERENCIA",
+   "fecha": "2026-07-17",
+   "precio": null,
+   "causa": "Embrión sexado — pendiente por confirmar",
+   "uid": "evt:2026-07-21 09:00:00:057:transferencia:2026-07-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "015",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-25",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 10:00:00:015:preñez:2026-05-25",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "036",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-25",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 10:00:00:036:preñez:2026-04-25",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "055",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-26",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 10:00:00:055:preñez:2026-05-26",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-05-17",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 10:00:00:054:preñez:2026-05-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-07-21 10:00:00",
+   "categoria": "VACA",
+   "refId": "038",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-04-28",
+   "precio": null,
+   "causa": "Monta natural (toro)",
+   "uid": "evt:2026-07-21 10:00:00:038:preñez:2026-04-28",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "TORO",
+   "refId": "Eclipse",
+   "tipo": "ALTA_TORO",
+   "fecha": "2023-01-02",
+   "precio": null,
+   "causa": "Toro reproductor",
+   "uid": "evt:2026-08-09 09:00:00:eclipse:alta_toro:2023-01-02",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "TORO",
+   "refId": "Timoteo",
+   "tipo": "ALTA_TORO",
+   "fecha": "2023-03-17",
+   "precio": null,
+   "causa": "Toro reproductor",
+   "uid": "evt:2026-08-09 09:00:00:timoteo:alta_toro:2023-03-17",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "017",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:017:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "014",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:014:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "037",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:037:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "018",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:018:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "028",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:028:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "024",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:024:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-08-09 09:00:00",
+   "categoria": "VACA",
+   "refId": "029",
+   "tipo": "MONTA",
+   "fecha": "2026-08-06",
+   "precio": null,
+   "causa": "Estro Zoo — toros Eclipse y Timoteo",
+   "uid": "evt:2026-08-09 09:00:00:029:monta:2026-08-06",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:43",
+   "categoria": "TERNERO",
+   "refId": "Abril",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 58,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:43:abril:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:43",
+   "categoria": "TERNERO",
+   "refId": "Afrodita",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 140,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:43:afrodita:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Alma",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 129,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:alma:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Artemisa",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 136,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:artemisa:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Aurora",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 195,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:aurora:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Calista",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 112,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:calista:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Capuchino",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 80,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:capuchino:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Cassandra",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 118,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:cassandra:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Crispeta",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 118,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:crispeta:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Diana",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 137,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:diana:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Fortuna",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 119,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:fortuna:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Freya",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 136,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:freya:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Frida",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 96,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:frida:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Helena",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 126,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:helena:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "India",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 153,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:india:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Iris",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 139,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:iris:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Jennifer",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 49,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:jennifer:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Karina",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 164,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:karina:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Lolita",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 160,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:lolita:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Luna",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 128,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:luna:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Maya",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 100,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:maya:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Mercurio",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 116,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:mercurio:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Minerva",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 150,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:minerva:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Monica",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 125,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:monica:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Odín",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 91,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:odín:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Paty",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 123,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:paty:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Penélope",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 112,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:penélope:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Pepa",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 125,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:pepa:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 10:39:44",
+   "categoria": "TERNERO",
+   "refId": "Reina",
+   "tipo": "PESAJE",
+   "fecha": "2026-06-21",
+   "precio": 124,
+   "causa": "",
+   "uid": "evt:2026-09-23 10:39:44:reina:pesaje:2026-06-21",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:08:46",
+   "categoria": "TERNERO",
+   "refId": "Odín",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 124,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:08:46:odín:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:09:27",
+   "categoria": "TERNERO",
+   "refId": "Minerva",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 201,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:09:27:minerva:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:10:43",
+   "categoria": "TERNERO",
+   "refId": "Karina",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 211,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:10:43:karina:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:12:03",
+   "categoria": "TERNERO",
+   "refId": "Lolita",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 228,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:12:03:lolita:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:18:20",
+   "categoria": "TERNERO",
+   "refId": "Luna",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 154,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:18:20:luna:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:21:05",
+   "categoria": "TERNERO",
+   "refId": "Diana",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 165,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:21:05:diana:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:22:02",
+   "categoria": "TERNERO",
+   "refId": "Fortuna",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 163,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:22:02:fortuna:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:25:05",
+   "categoria": "TERNERO",
+   "refId": "Mercurio",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 108,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:25:05:mercurio:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:27:05",
+   "categoria": "TERNERO",
+   "refId": "Cassandra",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 154,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:27:05:cassandra:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:28:35",
+   "categoria": "TERNERO",
+   "refId": "Alma",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 149,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:28:35:alma:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:30:16",
+   "categoria": "TERNERO",
+   "refId": "Capuchino",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 102,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:30:16:capuchino:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:32:43",
+   "categoria": "TERNERO",
+   "refId": "Jennifer",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 120,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:32:43:jennifer:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:36:48",
+   "categoria": "TERNERO",
+   "refId": "Princesa",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 90,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:36:48:princesa:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:38:14",
+   "categoria": "TERNERO",
+   "refId": "Crispeta",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 127,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:38:14:crispeta:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:39:32",
+   "categoria": "TERNERO",
+   "refId": "Abril",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 105,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:39:32:abril:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:40:51",
+   "categoria": "TERNERO",
+   "refId": "Bambi",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 123,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:40:51:bambi:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:41:58",
+   "categoria": "TERNERO",
+   "refId": "Paty",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 149,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:41:58:paty:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:44:15",
+   "categoria": "TERNERO",
+   "refId": "Paty",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 129,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:44:15:paty:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:44:51",
+   "categoria": "TERNERO",
+   "refId": "Reina",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 149,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:44:51:reina:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:46:57",
+   "categoria": "TERNERO",
+   "refId": "Frida",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 112,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:46:57:frida:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 11:48:05",
+   "categoria": "TERNERO",
+   "refId": "Maya",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 110,
+   "causa": "",
+   "uid": "evt:2026-09-23 11:48:05:maya:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:01:55",
+   "categoria": "TERNERO",
+   "refId": "Aurora",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 239,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:01:55:aurora:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:35:12",
+   "categoria": "TERNERO",
+   "refId": "Penélope",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 128,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:35:12:penélope:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:39:07",
+   "categoria": "TERNERO",
+   "refId": "Monica",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 146,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:39:07:monica:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:42:48",
+   "categoria": "TERNERO",
+   "refId": "Freya",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 155,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:42:48:freya:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:44:19",
+   "categoria": "TERNERO",
+   "refId": "Artemisa",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 152,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:44:19:artemisa:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:48:08",
+   "categoria": "TERNERO",
+   "refId": "Afrodita",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 164,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:48:08:afrodita:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:49:43",
+   "categoria": "TERNERO",
+   "refId": "Calista",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 126,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:49:43:calista:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:50:37",
+   "categoria": "TERNERO",
+   "refId": "Helena",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 149,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:50:37:helena:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:51:08",
+   "categoria": "TERNERO",
+   "refId": "Pepa",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 134,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:51:08:pepa:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-23 14:52:05",
+   "categoria": "TERNERO",
+   "refId": "Iris",
+   "tipo": "PESAJE",
+   "fecha": "2026-09-23",
+   "precio": 159,
+   "causa": "",
+   "uid": "evt:2026-09-23 14:52:05:iris:pesaje:2026-09-23",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:00:39",
+   "categoria": "VACA",
+   "refId": "048",
+   "tipo": "MONTA",
+   "fecha": "2026-07-22",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:00:39:048:monta:2026-07-22",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:01:23",
+   "categoria": "VACA",
+   "refId": "020",
+   "tipo": "MONTA",
+   "fecha": "2026-07-22",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:01:23:020:monta:2026-07-22",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:02:45",
+   "categoria": "VACA",
+   "refId": "033",
+   "tipo": "MONTA",
+   "fecha": "2026-07-22",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:02:45:033:monta:2026-07-22",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:03:12",
+   "categoria": "VACA",
+   "refId": "001",
+   "tipo": "MONTA",
+   "fecha": "2026-07-22",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:03:12:001:monta:2026-07-22",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:23:17",
+   "categoria": "VACA",
+   "refId": "005",
+   "tipo": "MONTA",
+   "fecha": "2026-07-30",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:23:17:005:monta:2026-07-30",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:23:53",
+   "categoria": "VACA",
+   "refId": "021",
+   "tipo": "MONTA",
+   "fecha": "2026-07-30",
+   "precio": null,
+   "causa": "Ecli",
+   "uid": "evt:2026-09-26 19:23:53:021:monta:2026-07-30",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:24:17",
+   "categoria": "VACA",
+   "refId": "004",
+   "tipo": "MONTA",
+   "fecha": "2026-07-30",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 19:24:17:004:monta:2026-07-30",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 19:39:42",
+   "categoria": "VACA",
+   "refId": "035",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-08-03",
+   "precio": null,
+   "causa": "Toro",
+   "uid": "evt:2026-09-26 19:39:42:035:preñez:2026-08-03",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 20:18:29",
+   "categoria": "VACA",
+   "refId": "014",
+   "tipo": "MONTA",
+   "fecha": "2026-08-01",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 20:18:29:014:monta:2026-08-01",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 20:19:21",
+   "categoria": "VACA",
+   "refId": "037",
+   "tipo": "MONTA",
+   "fecha": "2026-08-07",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 20:19:21:037:monta:2026-08-07",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 20:20:41",
+   "categoria": "VACA",
+   "refId": "037",
+   "tipo": "MONTA",
+   "fecha": "2026-08-07",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 20:20:41:037:monta:2026-08-07",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 20:21:52",
+   "categoria": "VACA",
+   "refId": "018",
+   "tipo": "MONTA",
+   "fecha": "2026-08-07",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 20:21:52:018:monta:2026-08-07",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-26 20:22:23",
+   "categoria": "VACA",
+   "refId": "028",
+   "tipo": "MONTA",
+   "fecha": "2026-08-07",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-26 20:22:23:028:monta:2026-08-07",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:33:14",
+   "categoria": "VACA",
+   "refId": "011",
+   "tipo": "MONTA",
+   "fecha": "2026-08-14",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:33:14:011:monta:2026-08-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:35:51",
+   "categoria": "VACA",
+   "refId": "016",
+   "tipo": "MONTA",
+   "fecha": "2026-08-14",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:35:51:016:monta:2026-08-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:37:07",
+   "categoria": "VACA",
+   "refId": "019",
+   "tipo": "MONTA",
+   "fecha": "2026-07-24",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:37:07:019:monta:2026-07-24",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:38:49",
+   "categoria": "VACA",
+   "refId": "026",
+   "tipo": "MONTA",
+   "fecha": "2026-07-31",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:38:49:026:monta:2026-07-31",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:40:07",
+   "categoria": "VACA",
+   "refId": "027",
+   "tipo": "MONTA",
+   "fecha": "2026-08-14",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:40:07:027:monta:2026-08-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:41:56",
+   "categoria": "VACA",
+   "refId": "034",
+   "tipo": "MONTA",
+   "fecha": "2026-08-07",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:41:56:034:monta:2026-08-07",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 06:51:42",
+   "categoria": "VACA",
+   "refId": "045",
+   "tipo": "MONTA",
+   "fecha": "2026-08-05",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 06:51:42:045:monta:2026-08-05",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 07:11:45",
+   "categoria": "VACA",
+   "refId": "047",
+   "tipo": "MONTA",
+   "fecha": "2026-08-05",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 07:11:45:047:monta:2026-08-05",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 07:13:34",
+   "categoria": "VACA",
+   "refId": "050",
+   "tipo": "MONTA",
+   "fecha": "2026-08-14",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 07:13:34:050:monta:2026-08-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 07:19:42",
+   "categoria": "VACA",
+   "refId": "051",
+   "tipo": "MONTA",
+   "fecha": "2026-08-14",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 07:19:42:051:monta:2026-08-14",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 07:27:34",
+   "categoria": "VACA",
+   "refId": "054",
+   "tipo": "MONTA",
+   "fecha": "2026-06-05",
+   "precio": null,
+   "causa": "Eclipse",
+   "uid": "evt:2026-09-27 07:27:34:054:monta:2026-06-05",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 10:00:00",
+   "categoria": "VACA",
+   "refId": "051",
+   "tipo": "CORRECCIÓN",
+   "fecha": "2026-05-08",
+   "precio": null,
+   "causa": "Fecha del parto corregida: 05/05/2026 → 08/05/2026 (dato de Diego, 27-sep)",
+   "uid": "evt:2026-09-27 10:00:00:051:corrección:2026-05-08",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 10:01:00",
+   "categoria": "VACA",
+   "refId": "058",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-01-29",
+   "precio": null,
+   "causa": "Transferencia (toro Bronco) — comprada preñada, parto previsto 29/10/2026",
+   "uid": "evt:2026-09-27 10:01:00:058:preñez:2026-01-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 10:02:00",
+   "categoria": "VACA",
+   "refId": "058",
+   "tipo": "PREPARTO",
+   "fecha": "2026-09-15",
+   "precio": null,
+   "causa": "Inicio del preparto",
+   "uid": "evt:2026-09-27 10:02:00:058:preparto:2026-09-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 10:01:01",
+   "categoria": "VACA",
+   "refId": "059",
+   "tipo": "PREÑEZ",
+   "fecha": "2026-01-29",
+   "precio": null,
+   "causa": "Transferencia (toro Bronco) — comprada preñada, parto previsto 29/10/2026",
+   "uid": "evt:2026-09-27 10:01:01:059:preñez:2026-01-29",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
+  },
+  {
+   "timestamp": "2026-09-27 10:02:01",
+   "categoria": "VACA",
+   "refId": "059",
+   "tipo": "PREPARTO",
+   "fecha": "2026-09-15",
+   "precio": null,
+   "causa": "Inicio del preparto",
+   "uid": "evt:2026-09-27 10:02:01:059:preparto:2026-09-15",
+   "updatedAt": "2026-09-27T12:00:00.000Z"
   }
  ]
 };

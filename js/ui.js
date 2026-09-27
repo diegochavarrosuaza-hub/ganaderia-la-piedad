@@ -59,8 +59,10 @@ export function confirmar(msg, { peligro = false, okLabel = 'Sí, continuar' } =
  *            options: ['A','B'] | [{value,label}], value, required, help,
  *            step, placeholder, readonly, half (media columna) }]
  * onSubmit(values) puede devolver Promise; si lanza/rechaza, el modal sigue abierto.
+ * onDelete: { mensaje, label, run() } pinta un botón 🗑️ que pide confirmación
+ *           antes de borrar. Sirve para corregir cualquier registro mal metido.
  */
-export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, afterRender }) {
+export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, afterRender, onDelete }) {
   const fhtml = fields.map(f => {
     const req = f.required ? ' <span class="req">*</span>' : '';
     let input;
@@ -93,6 +95,8 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
       <form id="fm">
         <div class="f-grid-auto">${fhtml}</div>
         <div class="modal-actions">
+          ${onDelete ? `<button type="button" class="btn btn-danger" data-r="del">🗑️ Eliminar</button>
+                        <span class="ma-sep"></span>` : ''}
           <button type="button" class="btn btn-ghost" data-r="cancel">Cancelar</button>
           <button type="submit" class="btn btn-primary">${esc(submitLabel)}</button>
         </div>
@@ -114,6 +118,13 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
 
   const form = modal.querySelector('#fm');
   modal.querySelector('[data-r="cancel"]').onclick = closeModal;
+
+  const btnDel = modal.querySelector('[data-r="del"]');
+  if (btnDel) btnDel.onclick = async () => {
+    // confirmar() reemplaza este modal; si dice que sí, ya no hay a qué volver.
+    if (!(await confirmar(onDelete.mensaje, { peligro: true, okLabel: onDelete.label || 'Sí, eliminar' }))) return;
+    try { await onDelete.run(); } catch (err) { toast(err.message || String(err), 'error'); }
+  };
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const values = {};
