@@ -16,7 +16,7 @@ export function render(el, ctx) {
     ctx.opciones = null;
   }
   let filas = [...state.vacas].sort((a, b) =>
-    a.chapeta.localeCompare(b.chapeta, 'es', { numeric: true }));
+    String(a.chapeta || '').localeCompare(String(b.chapeta || ''), 'es', { numeric: true }));
   filas = filas.filter(v => v.tipo !== 'toro'); // los toros tienen su propia pestaña
 
   // Estado reproductivo de cada vaca (para columna y filtros)

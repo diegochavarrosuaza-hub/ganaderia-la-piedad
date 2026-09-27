@@ -8,7 +8,7 @@ import { abrirFichaVaca } from '../fichas.js';
 export function render(el, ctx) {
   const { state } = ctx;
   const toros = state.vacas.filter(v => v.tipo === 'toro')
-    .sort((a, b) => a.chapeta.localeCompare(b.chapeta, 'es'));
+    .sort((a, b) => String(a.chapeta || '').localeCompare(String(b.chapeta || ''), 'es'));
 
   const montasDe = nombre => montasDeToro(state, nombre);
 
