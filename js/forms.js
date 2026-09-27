@@ -18,7 +18,15 @@ const RESULTADOS = [
   { value: 'PENDIENTE', label: '⏳ Pendiente por confirmar' },
   { value: 'PREÑADA', label: '✅ Preñada' },
   { value: 'VACÍA', label: '❌ Vacía (no funcionó)' },
+  { value: 'CERRADO', label: '➖ Cerrado (la preñez vino de otro servicio, o ya parió)' },
 ];
+const ETIQUETA_TIPO = { MN: 'Monta con toro', IA: 'Inseminación', TE: 'Transferencia' };
+const activasDe = ctx => ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).map(v => v.chapeta);
+const torosDe = ctx => ctx.state.vacas.filter(v => logic.esToro(v) && v.estado === 'ACTIVA').map(v => v.chapeta);
+const pendientesDe = (ctx, chapeta) => ctx.state.servicios
+  .filter(x => x.chapeta === String(chapeta) && x.resultado === 'PENDIENTE')
+  .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+const textoServicio = x => `${fmtFecha(x.fecha)} · ${ETIQUETA_TIPO[x.tipo] || x.tipo}${x.raza ? ' · ' + x.raza : ''}`;
 
 /*
  * Mantiene "parto probable" al día mientras se elige la fecha y el origen.
@@ -123,11 +131,23 @@ export function formPrenez(chapeta, ctx) {
     return toast('Todas las vacas activas ya tienen una preñez registrada.', 'info');
   }
 
+  // Si la vaca tiene montas o servicios pendientes, la preñez casi siempre
+  // viene de uno de ellos: se elige y queda todo enlazado (el servicio pasa a
+  // PREÑADA y los demás se cierran). Así no quedan montas "pendientes" eternas.
+  const opcionesServicio = c => [
+    ...pendientesDe(ctx, c).map(x => ({ value: String(x.id), label: textoServicio(x) })),
+    { value: '', label: 'Otro / no quedó registrado' },
+  ];
+  const primera = chapeta || disponibles[0];
+
   formModal({
     title: chapeta ? `🤰 Registrar preñez — vaca ${esc(chapeta)}` : '🤰 Registrar preñez',
     fields: [
       ...(chapeta ? [] : [{ name: 'chapeta', label: 'Vaca (chapeta)', type: 'select',
         required: true, options: disponibles }]),
+      { name: 'servicio', label: '¿De qué monta o servicio viene?', type: 'select',
+        options: opcionesServicio(primera),
+        help: 'Si eliges uno, la fecha y el origen se llenan solos.' },
       { name: 'origen', label: '¿Cómo quedó preñada?', type: 'select', value: 'MN', options: ORIGENES },
       { name: 'fechaPrenez', label: 'Fecha de la monta o del servicio', type: 'date',
         required: true, value: hoyISO(), half: true },
@@ -137,14 +157,135 @@ export function formPrenez(chapeta, ctx) {
       { name: 'observaciones', label: 'Observaciones', half: true,
         placeholder: 'Toro Eclipse, embrión de Bronco…' },
     ],
-    afterRender: autoFechaParto,
-    async onSubmit(v) {
-      const fpp = await logic.crearPrenez({
-        chapeta: chapeta || v.chapeta, fechaPrenez: v.fechaPrenez, origen: v.origen,
-        fechaProbParto: v.fechaProbParto, fechaPreparto: v.fechaPreparto,
-        observaciones: v.observaciones,
+    afterRender(form) {
+      autoFechaParto(form);
+      const selV = form.querySelector('[name="chapeta"]');
+      const selS = form.querySelector('[name="servicio"]');
+      const or = form.querySelector('[name="origen"]');
+      const fp = form.querySelector('[name="fechaPrenez"]');
+      const aplicar = () => {
+        const x = ctx.state.servicios.find(y => String(y.id) === selS.value);
+        if (!x) return;
+        or.value = x.tipo;
+        fp.value = x.fecha;
+        or.dispatchEvent(new Event('change'));
+      };
+      selS.addEventListener('change', aplicar);
+      if (selV) selV.addEventListener('change', () => {
+        selS.innerHTML = opcionesServicio(selV.value)
+          .map(o => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
+        aplicar();
       });
-      toast(`Preñez registrada. Parto esperado: ${fmtFecha(fpp)}.`);
+      aplicar();
+    },
+    async onSubmit(v) {
+      const c = chapeta || v.chapeta;
+      const x = ctx.state.servicios.find(y => String(y.id) === v.servicio);
+      let fpp, cerrados = 0;
+      if (x) {
+        const r = await logic.confirmarServicio(x, 'PREÑADA', {
+          fechaPrenez: v.fechaPrenez, fechaProbParto: v.fechaProbParto,
+          fechaPreparto: v.fechaPreparto, observaciones: v.observaciones,
+        });
+        fpp = r.fechaProbParto; cerrados = r.cerrados || 0;
+      } else {
+        fpp = await logic.crearPrenez({
+          chapeta: c, fechaPrenez: v.fechaPrenez, origen: v.origen,
+          fechaProbParto: v.fechaProbParto, fechaPreparto: v.fechaPreparto,
+          observaciones: v.observaciones,
+        });
+        cerrados = await logic.cerrarServiciosPendientes(c, { motivo: 'Se registró la preñez aparte' });
+      }
+      toast(`Preñez registrada. Parto esperado: ${fmtFecha(fpp)}.`
+        + (cerrados ? ` Se cerraron ${cerrados} servicio(s) que quedaban pendientes.` : ''));
+      ctx.refresh();
+    },
+  });
+}
+
+// ── Palpación: el resultado de todos los servicios pendientes de la vaca ──
+export function formPalpacion(chapeta, ctx) {
+  const pend = pendientesDe(ctx, chapeta);
+  if (!pend.length) return toast('Esta vaca no tiene montas ni servicios pendientes.', 'info');
+  formModal({
+    title: `🩺 Palpación — vaca ${esc(chapeta)}`,
+    submitLabel: 'Registrar resultado',
+    fields: [
+      { name: 'resultado', label: '¿Qué dijo la palpación?', type: 'select', options: [
+        { value: 'PREÑADA', label: '✅ Preñada' },
+        { value: 'VACÍA', label: '❌ Vacía' },
+      ] },
+      { name: 'servicio', label: '¿De cuál servicio quedó preñada?', type: 'select',
+        options: pend.map(x => ({ value: String(x.id), label: textoServicio(x) })),
+        help: pend.length > 1 ? 'Los demás se cierran solos.' : '' },
+      { name: 'fecha', label: 'Fecha de la palpación', type: 'date', value: hoyISO(), half: true },
+      { name: 'fechaPreparto', label: 'Inicio del preparto (si ya empezó)', type: 'date', half: true },
+      { name: 'observaciones', label: 'Observaciones' },
+    ],
+    async onSubmit(v) {
+      if (v.resultado === 'VACÍA') {
+        const n = await logic.palpacionNegativa(chapeta, { fecha: v.fecha, causa: v.observaciones });
+        toast(`Vaca ${chapeta} vacía: ${n} servicio(s) marcados como no exitosos.`);
+      } else {
+        const x = ctx.state.servicios.find(y => String(y.id) === v.servicio);
+        const r = await logic.confirmarServicio(x, 'PREÑADA', {
+          fechaPreparto: v.fechaPreparto, observaciones: v.observaciones,
+        });
+        toast(`Vaca ${chapeta} preñada 🎉 Parto esperado: ${fmtFecha(r.fechaProbParto)}.`);
+      }
+      ctx.refresh();
+    },
+  });
+}
+
+// ── Pérdida de la cría (aborto) ──
+export function formPerdida(chapeta, ctx) {
+  formModal({
+    title: `💔 Perdió la cría — vaca ${esc(chapeta)}`,
+    submitLabel: 'Registrar',
+    fields: [
+      { name: 'fecha', label: '¿Cuándo?', type: 'date', required: true, value: hoyISO(), half: true },
+      { name: 'causa', label: '¿Qué pasó? (si se sabe)', half: true, placeholder: 'Aborto, enfermedad…' },
+    ],
+    async onSubmit(v) {
+      await logic.perderPrenez(chapeta, v);
+      toast(`Registrado. La vaca ${chapeta} vuelve a la lista de las que necesitan servicio.`, 'info');
+      ctx.refresh();
+    },
+  });
+}
+
+// ── Preparto ──
+export function formPreparto(chapeta, ctx) {
+  formModal({
+    title: `🌾 Inicio del preparto — vaca ${esc(chapeta)}`,
+    submitLabel: 'Registrar',
+    fields: [
+      { name: 'fecha', label: '¿Desde cuándo?', type: 'date', required: true, value: hoyISO() },
+    ],
+    async onSubmit(v) {
+      await logic.marcarPreparto(chapeta, v.fecha);
+      toast(`Preparto de la vaca ${chapeta} registrado. 🌾`);
+      ctx.refresh();
+    },
+  });
+}
+
+// ── Ternera que pasa a vaca (novilla) ──
+export function formNovilla(t, ctx) {
+  formModal({
+    title: `🐄 ${esc(t.nombre)} pasa a ser vaca`,
+    submitLabel: 'Pasar a vaca',
+    fields: [
+      { name: 'chapeta', label: 'Chapeta que va a llevar', required: true, half: true, placeholder: '061' },
+      { name: 'fecha', label: 'Desde', type: 'date', required: true, value: hoyISO(), half: true },
+      { name: 'codigo', label: 'Código de registro (si tiene)', half: true },
+      { name: 'genetica', label: 'Genética', type: 'select', half: true,
+        value: t.genetica || '', options: [...new Set([t.genetica || '', ...GENETICAS])] },
+    ],
+    async onSubmit(v) {
+      await logic.pasarANovilla(t, v);
+      toast(`${t.nombre} ahora es la vaca ${v.chapeta}. 🐄`);
       ctx.refresh();
     },
   });
@@ -196,17 +337,26 @@ export function formParto(chapeta, ctx) {
         help: 'Si lo dejas vacío, solo se cierra la preñez.' },
       { name: 'sexoCria', label: 'Sexo de la cría', type: 'select', options: ['Macho', 'Hembra'], half: true },
       { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', options: ['No', 'Sí'], half: true },
-      { name: 'complicaciones', label: '¿Cómo salió todo?', type: 'select',
+      { name: 'criaEstado', label: '¿Cómo salió la cría?', type: 'select', options: [
+        { value: 'viva', label: '🐮 Viva' },
+        { value: 'muerta', label: '🕊️ Nació muerta o murió al nacer' },
+        { value: 'vendida', label: '💰 Se vendió al nacer' },
+      ], half: true },
+      { name: 'complicaciones', label: '¿Y la vaca?', type: 'select', half: true,
         options: [{ value: '', label: 'Todo bien' }, { value: 'si', label: 'Hubo complicaciones' }] },
     ],
     async onSubmit(v) {
+      if (v.criaEstado === 'viva' && v.criaNombre
+          && ctx.state.terneros.some(t => t.nombre.trim().toLowerCase() === v.criaNombre.trim().toLowerCase())) {
+        throw new Error(`Ya existe un ternero llamado "${v.criaNombre}". Ponle otro nombre.`);
+      }
       await logic.registrarParto({
-        chapeta, fechaParto: v.fechaParto, criaNombre: v.criaNombre,
+        chapeta, fechaParto: v.fechaParto, criaNombre: v.criaNombre, criaEstado: v.criaEstado,
         sexoCria: v.sexoCria, brucelosis: v.brucelosis, complicaciones: !!v.complicaciones,
       });
-      toast(v.criaNombre
-        ? `Parto registrado. Ternero "${v.criaNombre}" creado automáticamente. 🎉`
-        : 'Parto registrado.');
+      toast(v.criaEstado === 'viva'
+        ? (v.criaNombre ? `Parto registrado. Ternero "${v.criaNombre}" creado automáticamente. 🎉` : 'Parto registrado.')
+        : 'Parto registrado. Lo sentimos por la cría.', v.criaEstado === 'viva' ? 'success' : 'info');
       ctx.refresh();
     },
   });
@@ -230,11 +380,22 @@ export function formNuevoTernero(ctx) {
       if (ctx.state.terneros.some(t => t.nombre.trim().toLowerCase() === v.nombre.trim().toLowerCase())) {
         throw new Error(`Ya existe un ternero llamado "${v.nombre}".`);
       }
+      // Si la madre figura preñada, este ternero ES su parto: se registra como
+      // tal (cierra la preñez y actualiza la vaca) en vez de duplicar caminos.
+      if (v.codigoMadre && logic.prenezActivaDe(ctx.state, v.codigoMadre)) {
+        await logic.registrarParto({
+          chapeta: v.codigoMadre, fechaParto: v.fechaNac, criaNombre: v.nombre,
+          sexoCria: v.sexo, brucelosis: v.brucelosis, observaciones: v.observaciones,
+        });
+        toast(`Como la vaca ${v.codigoMadre} estaba preñada, quedó registrado como su parto. 🎉`);
+        return ctx.refresh();
+      }
       await db.add('terneros', {
         nombre: v.nombre, sexo: v.sexo, fechaNac: v.fechaNac, codigoMadre: v.codigoMadre,
         activo: true, fechaSalida: '', tipoSalida: '', brucelosis: v.brucelosis,
         observaciones: v.observaciones, ultimoPeso: null, fechaUltimoPesaje: '',
       });
+      if (v.codigoMadre) await logic.vincularCriaConMadre(v.codigoMadre, v.nombre, v.fechaNac);
       await logic.registrarEvento('TERNERO', v.nombre, 'ALTA_TERNERO',
         { fecha: v.fechaNac, causa: v.codigoMadre ? 'Madre: ' + v.codigoMadre : '' });
       toast(`Ternero ${v.nombre} registrado.`);
@@ -284,8 +445,8 @@ export function formSalidaTernero(t, tipo, ctx) {
 // ── SERVICIOS ─────────────────────────────────────────────────────
 export function formServicio(tipo, ctx, chapeta = '') {
   const esIA = tipo === 'IA', esMN = tipo === 'MN';
-  const activas = ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && v.tipo !== 'toro').map(v => v.chapeta);
-  const toros = ctx.state.vacas.filter(v => v.tipo === 'toro' && v.estado === 'ACTIVA').map(v => v.chapeta);
+  const activas = activasDe(ctx);
+  const toros = torosDe(ctx);
   const titulo = esMN ? '🐂 Registrar monta con toro'
     : (esIA ? '💉 Registrar inseminación' : '🔬 Registrar transferencia de embrión');
   formModal({
@@ -294,25 +455,36 @@ export function formServicio(tipo, ctx, chapeta = '') {
       { name: 'chapeta', label: 'Vaca (chapeta)', type: 'select', required: true, value: chapeta,
         options: activas, half: true },
       { name: 'fecha', label: 'Fecha del servicio', type: 'date', required: true, value: hoyISO(), half: true },
-      esMN
-        ? { name: 'material', label: 'Tratamiento / celo', half: true, placeholder: 'Estro Zoo…' }
-        : { name: 'material', label: esIA ? 'Tipo de semen' : 'Tipo de embrión', half: true,
-            placeholder: esIA ? 'Sexado, convencional…' : 'Plus x Plus…' },
-      ...(esMN ? [{ name: 'raza', label: 'Toro(s)', half: true,
-          placeholder: toros.length ? toros.join(' y ') : 'Nombre del toro' }] : []),
-      ...(esIA ? [{ name: 'raza', label: 'Raza del semen', half: true, placeholder: 'Gyr, Holstein…' }] : []),
-      { name: 'cria', label: esIA ? 'Nombre cría esperada (opcional)' : 'Cría esperada (opcional)' },
+      // Monta: los toros se ELIGEN, no se escriben (así no hay "Ecli" ni
+      // nombres distintos para el mismo animal, y la ficha del toro cuadra).
+      ...(esMN ? [toros.length
+        ? { name: 'toros', label: '¿Con qué toro(s)?', type: 'checks', options: toros,
+            value: toros.length === 1 ? toros : [] }
+        : { name: 'raza', label: 'Toro', placeholder: 'Nombre del toro',
+            help: 'Registra los toros en la pestaña Toros para elegirlos con un toque.' },
+        { name: 'material', label: 'Tratamiento / celo (opcional)', placeholder: 'Estro Zoo…' },
+      ] : [
+        { name: 'material', label: esIA ? 'Tipo de semen' : 'Tipo de embrión', half: true,
+          placeholder: esIA ? 'Sexado, convencional…' : 'Plus x Plus…' },
+        { name: 'raza', label: esIA ? 'Raza del semen' : 'Raza / toro donante', half: true,
+          placeholder: esIA ? 'Gyr, Holstein…' : 'Bronco…' },
+        { name: 'cria', label: 'Nombre pensado para la cría (opcional)' },
+      ]),
     ],
     async onSubmit(v) {
+      const elegidos = Array.isArray(v.toros) ? v.toros : [];
+      if (esMN && toros.length && !elegidos.length) throw new Error('Elige al menos un toro.');
+      const raza = esMN ? (elegidos.length ? elegidos.join(' y ') : (v.raza || '')) : (v.raza || '');
       await db.add('servicios', {
-        tipo, chapeta: v.chapeta, cria: v.cria, material: v.material,
-        raza: v.raza || '', fecha: v.fecha, resultado: 'PENDIENTE', fechaConfirmacion: '',
+        tipo, chapeta: v.chapeta, cria: v.cria || '', material: v.material || '',
+        raza, ...(elegidos.length ? { toros: elegidos } : {}),
+        fecha: v.fecha, resultado: 'PENDIENTE', fechaConfirmacion: '',
       });
       const tipoEvento = esMN ? 'MONTA' : (esIA ? 'INSEMINACIÓN' : 'TRANSFERENCIA');
       await logic.registrarEvento('VACA', v.chapeta, tipoEvento,
         { fecha: v.fecha, causa: [v.material, v.raza].filter(Boolean).join(' — ') });
       const nombre = esMN ? 'Monta' : (esIA ? 'Inseminación' : 'Transferencia');
-      toast(`${nombre} de la vaca ${v.chapeta} registrada. En ±45 días podrás confirmar el resultado.`);
+      toast(`${nombre} de la vaca ${v.chapeta} registrada. En unos ${logic.ajustes(ctx.state).diasPalpar} días se puede palpar.`);
       ctx.refresh();
     },
   });
@@ -351,12 +523,17 @@ export function formEditarServicio(s, ctx) {
         options: ORIGENES.filter(o => o.value) },
       { name: 'fecha', label: 'Fecha', type: 'date', required: true, value: s.fecha, half: true },
       { name: 'material', label: 'Semen / embrión / tratamiento', value: s.material, half: true },
-      { name: 'raza', label: 'Toro o raza', value: s.raza, half: true },
+      ...(s.tipo === 'MN' && torosDe(ctx).length
+        ? [{ name: 'toros', label: 'Toro(s)', type: 'checks', options: torosDe(ctx),
+             value: Array.isArray(s.toros) ? s.toros : torosDe(ctx).filter(t => (s.raza || '').toLowerCase().includes(t.toLowerCase())) }]
+        : [{ name: 'raza', label: 'Toro o raza', value: s.raza, half: true }]),
       { name: 'resultado', label: 'Resultado', type: 'select', value: s.resultado, options: RESULTADOS,
         help: 'Aquí solo se corrige el dato. Para que la app cree la preñez sola, usa el botón ✅ Preñada de Reproducción.' },
     ],
     async onSubmit(v) {
-      await logic.actualizarServicio(s, v);
+      const cambios = { ...v };
+      if (Array.isArray(v.toros)) { cambios.toros = v.toros; cambios.raza = v.toros.join(' y '); }
+      await logic.actualizarServicio(s, cambios);
       toast(`Servicio de la vaca ${s.chapeta} corregido.`);
       ctx.refresh();
     },

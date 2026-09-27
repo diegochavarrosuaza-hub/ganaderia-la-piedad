@@ -1,6 +1,6 @@
 // Service worker — deja la app disponible sin internet.
 // Al cambiar cualquier archivo de la app, sube la versión para que se actualice.
-const CACHE = 'la-piedad-v23';
+const CACHE = 'la-piedad-v25';
 const ARCHIVOS = [
   './',
   './index.html',
@@ -59,6 +59,10 @@ self.addEventListener('activate', e => {
 // en caché la versión buena de un archivo.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // SOLO archivos de la propia app. Las peticiones a la nube (Supabase) van
+  // directas: si el SW las atrapara, un fallo de red devolvería index.html con
+  // estado 200 y la app creería que "conectó" con una dirección inexistente.
+  if (new URL(e.request.url).origin !== location.origin) return;
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(cacheado => {
       const red = fetch(e.request)

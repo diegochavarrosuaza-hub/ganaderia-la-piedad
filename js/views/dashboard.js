@@ -3,6 +3,7 @@ import { fmtFecha, esc, mesLabel } from '../util.js';
 import { columnChart, hbarChart, attachTooltips } from '../charts.js';
 import { kpisHato, nacimientosPorMes, geneticasHato, alertas, TIPO_SERVICIO } from '../logic.js';
 import { imprimir, construirInformeGeneral } from '../print.js';
+import { abrirFichaVaca } from '../fichas.js';
 
 export function render(el, ctx) {
   const { state } = ctx;
@@ -77,6 +78,9 @@ export function render(el, ctx) {
     imprimir('informe-la-piedad', 'Informe general de la finca', construirInformeGeneral(state));
   el.querySelectorAll('[data-nav]').forEach(k =>
     k.addEventListener('click', () => ctx.nav(k.dataset.nav)));
+  // Cada aviso abre la vaca de la que habla: de ahí se resuelve de una vez.
+  el.querySelectorAll('.alert-item[data-vaca]').forEach(a =>
+    a.addEventListener('click', () => abrirFichaVaca(a.dataset.vaca, ctx)));
 }
 
 function renderAlertas(al) {
@@ -84,19 +88,19 @@ function renderAlertas(al) {
 
   for (const p of al.partosVencidos) {
     items.push(alerta('critical', '🐄', `Vaca <b>${esc(p.chapeta)}</b>: el parto estaba previsto para el ${fmtFecha(p.fechaProbParto)}`,
-      `hace ${-p.dias} días — regístralo o revisa`));
+      `hace ${-p.dias} días — regístralo o revisa`, p.chapeta));
   }
   for (const p of al.partosProximos) {
     items.push(alerta('pink', '🍼', `Vaca <b>${esc(p.chapeta)}</b>: parto probable el ${fmtFecha(p.fechaProbParto)}`,
-      p.dias === 0 ? '¡hoy!' : `en ${p.dias} días`));
+      p.dias === 0 ? '¡hoy!' : `en ${p.dias} días`, p.chapeta));
   }
   for (const p of al.preparto) {
     items.push(alerta('warning', '🌾', `Vaca <b>${esc(p.chapeta)}</b>: ya va siendo hora del preparto`,
-      p.dias === 0 ? 'pare hoy' : `pare en ${p.dias} días`));
+      p.dias === 0 ? 'pare hoy' : `pare en ${p.dias} días`, p.chapeta));
   }
   for (const s of al.serviciosPorConfirmar) {
-    items.push(alerta('info', '💉', `Vaca <b>${esc(s.chapeta)}</b>: ${TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)} sin confirmar`,
-      `hace ${s.dias} días — ya se puede palpar`));
+    items.push(alerta('info', '🩺', `Vaca <b>${esc(s.chapeta)}</b>: ${TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)} sin confirmar`,
+      `hace ${s.dias} días — toca palpar`, s.chapeta));
   }
   for (const t of al.reaplicaciones) {
     items.push(alerta(t.dias < 0 ? 'critical' : 'warning', '🩺',
@@ -110,10 +114,10 @@ function renderAlertas(al) {
   return items.join('');
 }
 
-function alerta(tipo, ico, html, extra) {
-  return `<div class="alert-item alert-${tipo}">
+function alerta(tipo, ico, html, extra, chapeta = '') {
+  return `<div class="alert-item alert-${tipo}"${chapeta ? ` data-vaca="${esc(chapeta)}" title="Abrir la vaca"` : ''}>
     <span class="alert-ico">${ico}</span>
     <span>${html}</span>
-    <span class="alert-extra">${esc(extra)}</span>
+    <span class="alert-extra">${esc(extra)}${chapeta ? ' ›' : ''}</span>
   </div>`;
 }

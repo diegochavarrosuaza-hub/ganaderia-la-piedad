@@ -15,19 +15,37 @@ export function abrirFichaVaca(chapeta, ctx) {
   const servicios = logic.serviciosDe(state, chapeta);
   const preneces = logic.prenecesDe(state, chapeta);
   const crias = logic.criasDe(state, chapeta);
-  const eventos = logic.eventosDe(state, chapeta).slice(0, 12);
+  const todosEventos = logic.eventosDe(state, chapeta);
+  const eventos = todosEventos.slice(0, 12);
   const activa = vaca.estado === 'ACTIVA';
 
-  const acciones = [
-    prenezActiva
-      ? `<button class="btn btn-pink btn-sm" data-f="parto">🍼 Registrar parto</button>`
-      : (activa ? `<button class="btn btn-pink btn-sm" data-f="prenez">🤰 Registrar preñez</button>` : ''),
-    activa ? `<button class="btn btn-blue btn-sm" data-f="ia">💉 Inseminar</button>` : '',
-    activa ? `<button class="btn btn-warn btn-sm" data-f="vender">💰 Vender</button>` : '',
-    activa ? `<button class="btn btn-danger btn-sm" data-f="fallecer">🕊️ Falleció</button>` : '',
+  // Solo se ofrece lo que tiene sentido en el estado actual de la vaca: una
+  // preñada no se insemina, y una que espera palpación no "registra preñez"
+  // a mano sino el resultado de la palpación.
+  const pendientes = servicios.filter(s => s.resultado === 'PENDIENTE');
+  const principales = [];
+  if (activa && !logic.esToro(vaca)) {
+    if (prenezActiva) {
+      principales.push(`<button class="btn btn-pink btn-sm" data-f="parto">🍼 Registrar parto</button>`);
+      if (!prenezActiva.fechaPreparto) principales.push(`<button class="btn btn-warn btn-sm" data-f="preparto">🌾 Empezó preparto</button>`);
+      principales.push(`<button class="btn btn-ghost btn-sm" data-f="perdida">💔 Perdió la cría</button>`);
+    } else {
+      principales.push(pendientes.length
+        ? `<button class="btn btn-pink btn-sm" data-f="palpar">🩺 Palpación</button>`
+        : `<button class="btn btn-pink btn-sm" data-f="prenez">🤰 Ya está preñada</button>`);
+      principales.push(`<button class="btn btn-warn btn-sm" data-f="mn">🐂 Monta con toro</button>`);
+      principales.push(`<button class="btn btn-blue btn-sm" data-f="ia">💉 Inseminar</button>`);
+      principales.push(`<button class="btn btn-blue btn-sm" data-f="te">🔬 Transferencia</button>`);
+    }
+  }
+  const secundarias = [
     `<button class="btn btn-ghost btn-sm" data-f="editar">✏️ Editar</button>`,
     `<button class="btn btn-ghost btn-sm" data-f="pdf">🖨️ PDF</button>`,
-  ].filter(Boolean).join('');
+    activa ? `<button class="btn btn-ghost btn-sm" data-f="vender">💰 Vender</button>` : '',
+    activa ? `<button class="btn btn-ghost btn-sm" data-f="fallecer">🕊️ Falleció</button>` : '',
+  ];
+  const acciones = (principales.length ? `<div class="fab-row fab-principal">${principales.join('')}</div>` : '')
+    + `<div class="fab-row">${secundarias.filter(Boolean).join('')}</div>`;
 
   const cuerpo = `
       <div class="ficha-head">
@@ -50,7 +68,7 @@ export function abrirFichaVaca(chapeta, ctx) {
         })()}
         ${vaca.fechaSalida ? `<div class="fd"><b>Fecha salida</b>${fmtFecha(vaca.fechaSalida)}</div>` : ''}
       </div>
-      <div class="fab-row">${acciones}</div>
+      ${acciones}
 
       <div class="hint hint-sm">✏️ Toca cualquier línea del historial para corregirla o borrarla.</div>
 
@@ -61,8 +79,9 @@ export function abrirFichaVaca(chapeta, ctx) {
 
       ${seccion('💉 Servicios (monta, IA, TE)', servicios.map(s => fila('servicio', `data-id="${s.id}"`, `
           <span class="hist-fecha">${fmtFecha(s.fecha)}</span>
-          <span>${badge(s.tipo)} ${esc([s.material, s.raza].filter(Boolean).join(' · '))}
-          → ${badge(s.resultado)}</span>`)), 'Sin servicios registrados.')}
+          <span>${badge(s.tipo)} ${esc([s.raza, s.material].filter(Boolean).join(' · '))}
+          → ${badge(s.resultado)}${s.cierre ? ' <span class="muted">· ' + esc(s.cierre) + '</span>' : ''}</span>`)),
+        'Sin servicios registrados.')}
 
       ${seccion('🤰 Preñeces', preneces.map(p => fila('prenez', `data-id="${p.id}"`, `
           <span class="hist-fecha">${fmtFecha(p.fechaPrenez)}</span>
@@ -71,10 +90,7 @@ export function abrirFichaVaca(chapeta, ctx) {
           ${p.observaciones ? '· <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>`)),
         'Sin preñeces registradas.')}
 
-      ${seccion('📋 Últimos eventos', eventos.map(e => fila('evento', `data-id="${e.id}"`, `
-          <span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
-          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtMoney(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>`)),
-        'Sin eventos.')}
+      ${seccion('📋 Últimos eventos', eventos.map(filaEvento), 'Sin eventos.')}
     `;
 
   const modal = openModal({
@@ -86,7 +102,12 @@ export function abrirFichaVaca(chapeta, ctx) {
   const acc = {
     parto: () => forms.formParto(vaca.chapeta, ctx),
     prenez: () => forms.formPrenez(vaca.chapeta, ctx),
+    palpar: () => forms.formPalpacion(vaca.chapeta, ctx),
+    preparto: () => forms.formPreparto(vaca.chapeta, ctx),
+    perdida: () => forms.formPerdida(vaca.chapeta, ctx),
+    mn: () => forms.formServicio('MN', ctx, vaca.chapeta),
     ia: () => forms.formServicio('IA', ctx, vaca.chapeta),
+    te: () => forms.formServicio('TE', ctx, vaca.chapeta),
     vender: () => forms.formEstadoVaca(vaca, 'VENDIDA', ctx),
     fallecer: () => forms.formEstadoVaca(vaca, 'FALLECIDA', ctx),
     editar: () => forms.formEditarVaca(vaca, ctx),
@@ -94,7 +115,11 @@ export function abrirFichaVaca(chapeta, ctx) {
   modal.querySelectorAll('[data-f]').forEach(b =>
     b.addEventListener('click', () => {
       if (b.dataset.f === 'pdf') {
-        return imprimirFicha('vaca-' + vaca.chapeta, `Hoja de vida — Vaca ${vaca.chapeta}`, cuerpo);
+        // En papel va el historial completo, no solo los últimos 12 eventos.
+        const completo = cuerpo.replace(
+          seccion('📋 Últimos eventos', eventos.map(filaEvento), 'Sin eventos.'),
+          seccion('📋 Historial completo', todosEventos.map(filaEvento), 'Sin eventos.'));
+        return imprimirFicha('vaca-' + vaca.chapeta, `Hoja de vida — Vaca ${vaca.chapeta}`, completo);
       }
       closeModal(); acc[b.dataset.f]();
     }));
@@ -113,6 +138,8 @@ export function abrirFichaTernero(nombre, ctx) {
 
   const acciones = [
     t.activo ? `<button class="btn btn-primary btn-sm" data-f="pesar">⚖️ Pesar</button>` : '',
+    // Una ternera que ya creció pasa a ser vaca y sigue su vida en Vacas.
+    (t.activo && t.sexo === 'Hembra') ? `<button class="btn btn-pink btn-sm" data-f="novilla">🐄 Pasar a vaca</button>` : '',
     t.activo ? `<button class="btn btn-warn btn-sm" data-f="vender">💰 Vender</button>` : '',
     t.activo ? `<button class="btn btn-danger btn-sm" data-f="fallecer">🕊️ Falleció</button>` : '',
     `<button class="btn btn-ghost btn-sm" data-f="editar">✏️ Editar</button>`,
@@ -163,6 +190,7 @@ export function abrirFichaTernero(nombre, ctx) {
 
   const acc = {
     pesar: () => forms.formPesaje(ctx, t.nombre),
+    novilla: () => forms.formNovilla(t, ctx),
     vender: () => forms.formSalidaTernero(t, 'VENDIDO', ctx),
     fallecer: () => forms.formSalidaTernero(t, 'FALLECIDO', ctx),
     editar: () => forms.formEditarTernero(t, ctx),
@@ -176,6 +204,13 @@ export function abrirFichaTernero(nombre, ctx) {
       closeModal(); acc[b.dataset.f]();
     }));
   conectarEdicion(modal, ctx);
+}
+
+// Una línea de la bitácora en el historial (pantalla y PDF).
+function filaEvento(e) {
+  return fila('evento', `data-id="${e.id}"`, `
+          <span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
+          <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtMoney(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>`);
 }
 
 function seccion(titulo, items, vacio) {

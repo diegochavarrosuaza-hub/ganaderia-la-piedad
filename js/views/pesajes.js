@@ -4,6 +4,7 @@ import { fmtFecha, fmtNum, esc, hoyISO, edadMeses } from '../util.js';
 import { tablaHTML, toast, confirmar, openModal, closeModal } from '../ui.js';
 import { registrarPesaje, eliminarPesaje } from '../logic.js';
 import { formPesaje, formEditarPesaje } from '../forms.js';
+import { imprimir, construirListaBascula } from '../print.js';
 import { abrirFichaTernero } from '../fichas.js';
 
 export function render(el, ctx) {
@@ -15,6 +16,7 @@ export function render(el, ctx) {
     <div class="fab-row">
       <button class="btn btn-primary" id="btn-uno">⚖️ Registrar pesaje</button>
       <button class="btn btn-blue" id="btn-masivo">📋 Pesaje masivo (día de báscula)</button>
+      <button class="btn btn-ghost" id="btn-lista">🖨️ Lista para la báscula (PDF)</button>
     </div>
 
     <div class="table-wrap">${tablaHTML({
@@ -38,6 +40,9 @@ export function render(el, ctx) {
 
   el.querySelector('#btn-uno').onclick = () => formPesaje(ctx);
   el.querySelector('#btn-masivo').onclick = () => pesajeMasivo(ctx);
+  el.querySelector('#btn-lista').onclick = () =>
+    imprimir('lista-bascula-' + hoyISO(), 'Lista para el día de báscula', construirListaBascula(state),
+      { subtitulo: `${state.terneros.filter(t => t.activo).length} terneros vivos` });
   el.querySelectorAll('tr[data-nombre]').forEach(tr =>
     tr.addEventListener('click', e => {
       if (e.target.closest('button')) return;

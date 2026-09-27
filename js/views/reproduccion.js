@@ -2,7 +2,7 @@
 import { fmtFecha, esc, diasEntre, hoyISO } from '../util.js';
 import { tablaHTML, badge, toast, confirmar } from '../ui.js';
 import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO,
-         origenDe, ORIGEN_PRENEZ, DIAS_PREPARTO } from '../logic.js';
+         origenDe, ORIGEN_PRENEZ, ajustes } from '../logic.js';
 import { formServicio, formPrenez, formParto,
          formEditarPrenez, formEditarServicio } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
@@ -10,6 +10,7 @@ import { abrirFichaVaca } from '../fichas.js';
 export function render(el, ctx) {
   const { state } = ctx;
   const k = kpisReproduccion(state);
+  const aj = ajustes(state);
 
   const activas = state.prenez.filter(p => p.estado === 'PREÑADA')
     .sort((a, b) => (a.fechaProbParto || '').localeCompare(b.fechaProbParto || ''));
@@ -26,12 +27,11 @@ export function render(el, ctx) {
         <div class="kpi-label">🤰 Preñadas ahora</div></div>
       <div class="kpi-card yellow"><div class="kpi-val">${k.pendientes}</div>
         <div class="kpi-label">⏳ Servicios por confirmar</div></div>
-      <div class="kpi-card blue"><div class="kpi-val">${k.tasaIA != null ? k.tasaIA + '%' : '—'}</div>
-        <div class="kpi-label">💉 Éxito inseminación</div>
-        <div class="kpi-sub">${k.tasaIA == null ? 'aún sin confirmaciones' : 'de los servicios confirmados'}</div></div>
-      <div class="kpi-card blue"><div class="kpi-val">${k.tasaTE != null ? k.tasaTE + '%' : '—'}</div>
-        <div class="kpi-label">🔬 Éxito transferencias</div>
-        <div class="kpi-sub">${k.tasaTE == null ? 'aún sin confirmaciones' : 'de los servicios confirmados'}</div></div>
+      ${[['🐂 Éxito monta', k.tasaMN], ['💉 Éxito inseminación', k.tasaIA], ['🔬 Éxito transferencias', k.tasaTE]]
+        .map(([label, t]) => `
+      <div class="kpi-card blue"><div class="kpi-val">${t ? t.pct + '%' : '—'}</div>
+        <div class="kpi-label">${label}</div>
+        <div class="kpi-sub">${t ? `de ${t.n} confirmado${t.n === 1 ? '' : 's'}` : 'aún sin confirmaciones'}</div></div>`).join('')}
     </div>
 
     <div class="fab-row">
@@ -62,7 +62,7 @@ export function render(el, ctx) {
           { key: 'fechaPreparto', label: 'Preparto', render: p => {
               if (p.fechaPreparto) return '🌾 ' + fmtFecha(p.fechaPreparto);
               const d = diasEntre(hoyISO(), p.fechaProbParto);
-              return (d != null && d >= 0 && d <= DIAS_PREPARTO)
+              return (d != null && d >= 0 && d <= aj.diasPreparto)
                 ? '<span class="badge badge-vencido">falta iniciar</span>' : '';
             } },
           { key: 'observaciones', label: 'Observaciones' },
@@ -85,14 +85,15 @@ export function render(el, ctx) {
           { key: 'tipo', label: 'Tipo', render: s => badge(s.tipo) },
           { key: 'chapeta', label: 'Vaca', render: s => `<b>${esc(s.chapeta)}</b>` },
           { key: 'fecha', label: 'Fecha', render: s => fmtFecha(s.fecha) },
-          { key: 'material', label: 'Semen / Embrión', render: s => esc([s.material, s.raza].filter(Boolean).join(' · ')) },
+          { key: 'material', label: 'Toro / semen / embrión', render: s => esc([s.raza, s.material].filter(Boolean).join(' · ')) },
           { key: 'resultado', label: 'Resultado', render: s => badge(s.resultado) },
           { key: 'espera', label: '', render: s => {
+              if (s.resultado === 'CERRADO') return `<span class="muted">${esc(s.cierre || '')}</span>`;
               if (s.resultado !== 'PENDIENTE') return s.fechaConfirmacion ? '<span class="muted">conf. ' + fmtFecha(s.fechaConfirmacion) + '</span>' : '';
               const d = diasEntre(s.fecha, hoyISO());
-              return d != null && d >= 45
+              return d != null && d >= aj.diasPalpar
                 ? '<span class="badge badge-vigente">listo para palpar</span>'
-                : `<span class="muted">${d != null ? 45 - d + ' días para palpar' : ''}</span>`;
+                : `<span class="muted">${d != null ? aj.diasPalpar - d + ' días para palpar' : ''}</span>`;
             } },
           { key: '_a', label: '', render: s => `
               <div class="act-cell">
@@ -103,6 +104,7 @@ export function render(el, ctx) {
               </div>` },
         ],
         rows: servicios,
+        rowAttr: s => `class="row-click" data-vaca="${esc(s.chapeta)}"`,
         emptyMsg: 'No hay servicios registrados.',
       })}</div>
     </div>

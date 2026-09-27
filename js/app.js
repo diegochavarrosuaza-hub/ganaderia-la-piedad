@@ -3,6 +3,7 @@ import * as db from './db.js';
 import { initDB, loadState } from './db.js';
 import { toast } from './ui.js';
 import * as sync from './sync.js';
+import * as logic from './logic.js';
 import * as dashboard from './views/dashboard.js';
 import * as vacas from './views/vacas.js';
 import * as toros from './views/toros.js';
@@ -20,10 +21,14 @@ const ctx = {
   vistaActual: 'inicio',
   nav: irA,
   refresh,
+  sincronizar: opciones => sincronizar(opciones),
 };
 
 async function refresh() {
   ctx.state = await loadState();
+  // El nombre de la finca se puede cambiar en Ajustes.
+  const h1 = document.querySelector('.topbar h1');
+  if (h1) h1.textContent = '🐄 ' + logic.ajustes(ctx.state).finca;
   renderVista();
 }
 
@@ -50,8 +55,7 @@ async function main() {
     // que hay nube, y no siembra datos viejos encima de los buenos.
     const porEnlace = sync.configDesdeEnlace();
     await initDB();
-    ctx.state = await loadState();
-    renderVista();
+    await refresh();
     if (db.datosActualizados) {
       toast('✅ Datos del hato actualizados a la última versión.', 'info');
     }
@@ -77,6 +81,7 @@ async function main() {
   });
 
   window.addEventListener('online', () => sincronizar({ silencioso: true }));
+  window.addEventListener('offline', () => pintarEstadoSync());
   setInterval(() => sincronizar({ silencioso: true }), 5 * 60 * 1000);
 
   // La barra de pestañas se pega justo debajo del encabezado, mida lo que mida
@@ -119,10 +124,10 @@ async function main() {
 }
 
 // Sincroniza y refresca la pantalla si llegaron datos nuevos de otro aparato.
-let sincronizando = false;
+// (El candado contra dos corridas a la vez vive en sync.js.)
 export async function sincronizar({ silencioso = false } = {}) {
-  if (sincronizando || !sync.haySync()) return null;
-  sincronizando = true;
+  if (!sync.haySync()) { pintarEstadoSync(); return null; }
+  pintarEstadoSync('trabajando');
   try {
     const r = await sync.sincronizar();
     if (r && r.ok) {
@@ -130,19 +135,42 @@ export async function sincronizar({ silencioso = false } = {}) {
         await refresh();
         toast(`🔄 Llegaron ${r.bajados} cambio(s) de otro dispositivo.`, 'info');
       } else if (!silencioso) {
-        toast('🔄 Todo está al día.', 'info');
+        toast(r.errorSubida ? 'Se bajó lo nuevo, pero no se pudo subir lo de aquí: ' + r.errorSubida
+          : '🔄 Todo está al día.', r.errorSubida ? 'error' : 'info');
       }
     } else if (!silencioso && r) {
       toast(r.motivo === 'sin-internet'
         ? 'Sin internet: se sincronizará cuando vuelva la señal.'
         : 'La sincronización no está configurada.', 'info');
     }
+    pintarEstadoSync();
     return r;
   } catch (err) {
     if (!silencioso) toast('No se pudo sincronizar: ' + err.message, 'error');
+    pintarEstadoSync('error');
     return null;
-  } finally {
-    sincronizando = false;
+  }
+}
+
+// Pastilla en la cabecera: que se vea de un vistazo si los aparatos están al
+// día. Un problema silencioso de semanas es peor que un aviso feo.
+async function pintarEstadoSync(modo) {
+  const pill = document.getElementById('sync-pill');
+  if (!pill) return;
+  if (!sync.haySync()) { pill.hidden = true; return; }
+  pill.hidden = false;
+  pill.className = 'sync-pill';
+  if (modo === 'trabajando') { pill.textContent = '🔄 sincronizando…'; return; }
+  if (!navigator.onLine) { pill.textContent = '📴 sin señal'; pill.classList.add('off'); return; }
+  const [ok, err, pend] = await Promise.all([sync.ultimaSync(), sync.ultimoError(), sync.pendientesDeSubir()]);
+  const horas = ok ? (Date.now() - Date.parse(ok)) / 36e5 : Infinity;
+  if (modo === 'error' || err || horas > 24) {
+    pill.classList.add('mal');
+    pill.textContent = ok ? `⚠️ sin sincronizar desde ${new Date(ok).toLocaleDateString('es-CO')}` : '⚠️ no sincroniza';
+    pill.title = err ? err.error : 'Revisa el internet o la configuración en Respaldo';
+  } else {
+    pill.textContent = pend ? `☁️ ${pend} por subir` : '☁️ al día';
+    pill.title = 'Última sincronización: ' + new Date(ok).toLocaleString('es-CO');
   }
 }
 

@@ -13,6 +13,7 @@ export function render(el, ctx) {
   if (filtro.estado === 'vivos') filas = filas.filter(t => t.activo);
   else if (filtro.estado === 'vendidos') filas = filas.filter(t => t.tipoSalida === 'VENDIDO');
   else if (filtro.estado === 'fallecidos') filas = filas.filter(t => t.tipoSalida === 'FALLECIDO');
+  else if (filtro.estado === 'novillas') filas = filas.filter(t => t.tipoSalida === 'NOVILLA');
   if (filtro.q) {
     const q = filtro.q.toLowerCase();
     filas = filas.filter(t => [t.nombre, t.codigoMadre, t.observaciones]
@@ -29,6 +30,7 @@ export function render(el, ctx) {
         <option value="vivos" ${filtro.estado === 'vivos' ? 'selected' : ''}>Vivos</option>
         <option value="vendidos" ${filtro.estado === 'vendidos' ? 'selected' : ''}>Vendidos</option>
         <option value="fallecidos" ${filtro.estado === 'fallecidos' ? 'selected' : ''}>Fallecidos</option>
+        <option value="novillas" ${filtro.estado === 'novillas' ? 'selected' : ''}>🐄 Pasaron a vacas</option>
         <option value="" ${filtro.estado === '' ? 'selected' : ''}>Todos</option>
       </select>
       <span class="muted" style="font-size:13px;">${filas.length} terneros</span>

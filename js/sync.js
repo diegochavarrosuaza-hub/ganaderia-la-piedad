@@ -1,16 +1,22 @@
 // sync.js — sincronización entre dispositivos (tablet, celular) vía Supabase.
 //
 // Cómo funciona, en corto:
-//  · La app sigue trabajando SIEMPRE contra los datos del propio aparato, así
-//    que en el potrero sin señal no cambia nada.
-//  · Cuando hay internet, se suben los cambios propios y se bajan los ajenos.
-//  · Si el mismo registro se tocó en dos aparatos, gana el más reciente
-//    (se compara updatedAt).
+//  · La app trabaja SIEMPRE contra los datos del propio aparato, así que en el
+//    potrero sin señal no cambia nada.
+//  · Con internet: primero se BAJA lo que cambió en los otros aparatos y se
+//    fusiona (gana el más nuevo por updatedAt); después se SUBE lo que este
+//    aparato tiene marcado como pendiente.
+//  · La "marca de agua" para bajar es una hora que pone el SERVIDOR
+//    (synced_at), nunca el reloj del aparato: así lo que otro aparato registró
+//    sin señal y subió tarde también llega.
+//  · La nube tiene un guardián: una versión vieja nunca pisa una más nueva
+//    (trigger en SQL_TABLA). Es la misma regla que aquí, pero aplicada allá.
 import * as db from './db.js';
 
 const URL_KEY = 'la-piedad-sync-url';
 const API_KEY = 'la-piedad-sync-key';
 const TABLA = 'registros';
+const PAGINA = 500; // filas por petición al bajar
 
 export const getConfig = () => ({
   url: (localStorage.getItem(URL_KEY) || '').replace(/\/+$/, ''),
@@ -48,8 +54,6 @@ export function crearEnlaceConfig() {
 /*
  * Si la app se abrió con un enlace de esos, lo aplica y limpia la dirección
  * para que la clave no quede a la vista ni en el historial.
- * Se llama ANTES de abrir la base de datos: así el aparato ya sabe que hay
- * nube desde el primer momento.
  */
 export function configDesdeEnlace() {
   const m = (location.hash || '').match(/[#&]sync=([^&]+)/);
@@ -67,18 +71,22 @@ export function configDesdeEnlace() {
   }
 }
 
-function cabeceras(extra = {}) {
-  const { key } = getConfig();
+function cabeceras(key, extra = {}) {
   return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...extra };
 }
 
-// Prueba que la conexión y la tabla existan. Devuelve mensaje entendible.
-export async function probarConexion() {
-  const { url } = getConfig();
-  if (!haySync()) throw new Error('Falta configurar el enlace y la clave.');
+// Prueba una configuración (la que se va a guardar, no la guardada).
+// Devuelve mensaje entendible si algo falla.
+export async function probarConexion(url, key) {
+  url = (url || '').trim().replace(/\/+$/, '');
+  key = (key || '').trim();
+  if (!url || !key) throw new Error('Falta configurar el enlace y la clave.');
+  if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) {
+    throw new Error('El enlace no parece de Supabase (debe ser https://xxxx.supabase.co).');
+  }
   let r;
   try {
-    r = await fetch(`${url}/rest/v1/${TABLA}?select=uid&limit=1`, { headers: cabeceras() });
+    r = await fetch(`${url}/rest/v1/${TABLA}?select=uid&limit=1`, { headers: cabeceras(key) });
   } catch {
     throw new Error('No se pudo conectar. Revisa el internet y que el enlace esté bien escrito.');
   }
@@ -88,110 +96,134 @@ export async function probarConexion() {
   return true;
 }
 
-/*
- * Momento en milisegundos. NO se pueden comparar las marcas de tiempo como
- * texto: Postgres devuelve '2026-09-27T18:00:00+00:00' y el navegador escribe
- * '2026-09-27T18:00:00.000Z'. Es el mismo instante con distinta forma, y
- * comparado como texto da el resultado equivocado (comprobado contra el
- * proyecto real). Se comparan siempre como fechas.
- */
-const instante = t => {
-  const n = Date.parse(t || '');
-  return Number.isNaN(n) ? 0 : n;
-};
-
 // Registro local → fila para la nube
 const aFila = (store, r) => ({
   uid: r.uid,
   store,
-  datos: (({ id, uid, updatedAt, deletedAt, ...resto }) => resto)(r),
+  datos: (({ id, uid, updatedAt, deletedAt, pendienteSubir, ...resto }) => resto)(r),
   updated_at: r.updatedAt,
   deleted: !!r.deletedAt,
   deleted_at: r.deletedAt || null,
 });
 
+// Un solo candado para toda la app: si ya hay una sincronización en curso, las
+// demás llamadas se cuelgan de esa misma en vez de arrancar otra a la vez.
+let enCurso = null;
+export function sincronizar() {
+  if (enCurso) return enCurso;
+  enCurso = _sincronizar().finally(() => { enCurso = null; });
+  return enCurso;
+}
+
 /*
  * Sincroniza en los dos sentidos. Devuelve un resumen:
- *   { subidos, bajados, sinCambios }
+ *   { ok, subidos, bajados, errorSubida }
  * Si no hay internet o no está configurado, no rompe nada: informa y ya.
  */
-export async function sincronizar() {
+async function _sincronizar() {
   if (!haySync()) return { ok: false, motivo: 'sin-configurar' };
   if (!navigator.onLine) return { ok: false, motivo: 'sin-internet' };
+  const { url, key } = getConfig();
 
-  const { url } = getConfig();
-  const desde = (await db.metaGet('ultimaSync')) || '1970-01-01T00:00:00.000Z';
-  const inicio = db.ahora();
+  // ── 1. BAJAR primero: conocer la nube antes de escribirle ──
+  // Se pide por páginas, ordenadas por la hora del servidor, y la marca de
+  // agua solo avanza cuando TODO llegó y se fusionó.
+  let cursor = (await db.metaGet('cursorSync')) || '1970-01-01T00:00:00+00:00';
+  let bajados = 0;
+  for (;;) {
+    const q = `${url}/rest/v1/${TABLA}?select=*&synced_at=gt.${encodeURIComponent(cursor)}`
+      + `&order=synced_at.asc,uid.asc&limit=${PAGINA}`;
+    const resp = await fetch(q, { headers: cabeceras(key) });
+    if (!resp.ok) throw new Error(`No se pudieron bajar los datos (${resp.status}).`);
+    const pagina = await resp.json();
+    if (!Array.isArray(pagina)) throw new Error('La nube respondió algo raro al bajar.');
 
-  // ── 1. SUBIR lo que cambió en este aparato desde la última vez ──
+    for (const fila of pagina) {
+      if (db.STORES.includes(fila.store)) bajados += await fusionar(fila) ? 1 : 0;
+      if (fila.synced_at && fila.synced_at > cursor) cursor = fila.synced_at;
+    }
+    if (pagina.length < PAGINA) break;
+  }
+  await db.metaSet('cursorSync', cursor);
+
+  // ── 2. SUBIR lo pendiente de este aparato ──
+  // Se sube lo marcado, no "lo de después de tal hora": así no depende del
+  // reloj. Si falla, lo pendiente sigue pendiente y se reintenta después.
   const porSubir = [];
   for (const store of db.STORES) {
     for (const r of await db.allRaw(store)) {
-      if (instante(r.updatedAt) > instante(desde)) porSubir.push(aFila(store, r));
+      if (r.pendienteSubir && r.uid) porSubir.push({ store, r, fila: aFila(store, r) });
     }
   }
+  // Nunca dos veces el mismo uid en una tanda (PostgREST lo rechaza entero).
+  const unicos = new Map();
+  for (const p of porSubir) {
+    const prev = unicos.get(p.fila.uid);
+    if (!prev || db.instante(p.r.updatedAt) > db.instante(prev.r.updatedAt)) unicos.set(p.fila.uid, p);
+  }
+  const tandas = [...unicos.values()];
 
-  if (porSubir.length) {
-    // De a tandas, por si son muchos registros
-    for (let i = 0; i < porSubir.length; i += 400) {
-      const tanda = porSubir.slice(i, i + 400);
+  let subidos = 0, errorSubida = null;
+  for (let i = 0; i < tandas.length; i += 400) {
+    const tanda = tandas.slice(i, i + 400);
+    try {
       const r = await fetch(`${url}/rest/v1/${TABLA}?on_conflict=uid`, {
         method: 'POST',
-        headers: cabeceras({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
-        body: JSON.stringify(tanda),
+        headers: cabeceras(key, { Prefer: 'resolution=merge-duplicates,return=minimal' }),
+        body: JSON.stringify(tanda.map(t => t.fila)),
       });
-      if (!r.ok) throw new Error(`No se pudieron subir los datos (${r.status}). ${await r.text()}`);
+      if (!r.ok) throw new Error(`la nube respondió ${r.status}: ${(await r.text()).slice(0, 200)}`);
+      for (const t of tanda) await db.marcarSubido(t.store, t.r.uid, t.r.pendienteSubir);
+      subidos += tanda.length;
+    } catch (err) {
+      // Una tanda que falla no detiene las demás ni deja de reintentarse.
+      errorSubida = err.message || String(err);
     }
   }
 
-  // ── 2. BAJAR lo que cambió en los otros aparatos ──
-  const resp = await fetch(
-    `${url}/rest/v1/${TABLA}?select=*&updated_at=gt.${encodeURIComponent(desde)}&order=updated_at.asc`,
-    { headers: cabeceras() });
-  if (!resp.ok) throw new Error(`No se pudieron bajar los datos (${resp.status}).`);
-  const remotos = await resp.json();
+  const fin = db.ahora();
+  await db.metaSet('ultimaSyncOk', fin);
+  if (errorSubida) await db.metaSet('ultimoErrorSync', { fecha: fin, error: errorSubida });
+  else await db.metaDel('ultimoErrorSync');
+  return { ok: true, subidos, bajados, pendientes: tandas.length - subidos, errorSubida };
+}
 
-  // ── 3. FUSIONAR: gana el más reciente ──
-  let bajados = 0;
-  const locales = {};
-  for (const store of db.STORES) {
-    locales[store] = new Map((await db.allRaw(store)).map(r => [r.uid, r]));
-  }
-
-  for (const fila of remotos) {
-    const store = fila.store;
-    if (!db.STORES.includes(store)) continue;
-    const local = locales[store].get(fila.uid);
-    // El propio cambio recién subido vuelve en el pull: no es novedad.
-    if (local && instante(local.updatedAt) >= instante(fila.updated_at)) continue;
-
-    const registro = {
-      ...(fila.datos || {}),
-      uid: fila.uid,
-      updatedAt: fila.updated_at,
-      ...(fila.deleted ? { deletedAt: fila.deleted_at || fila.updated_at } : {}),
-    };
-    if (local) registro.id = local.id; // conservar la llave local
-    await db.putCrudo(store, registro);
-    bajados++;
-  }
-
-  await db.metaSet('ultimaSync', inicio);
-  await db.metaSet('ultimaSyncOk', db.ahora());
-  return { ok: true, subidos: porSubir.length, bajados };
+// Una fila de la nube contra la local: gana la más nueva. Devuelve true si
+// se escribió algo. Se lee el local justo antes de escribir (no de una foto
+// vieja) para no pisar lo que la usuaria guardó mientras se bajaba.
+async function fusionar(fila) {
+  const local = await db.getPorUid(fila.store, fila.uid);
+  if (local && db.instante(local.updatedAt) >= db.instante(fila.updated_at)) return false;
+  const registro = {
+    ...(fila.datos || {}),
+    uid: fila.uid,
+    updatedAt: fila.updated_at,
+    ...(fila.deleted ? { deletedAt: fila.deleted_at || fila.updated_at } : {}),
+  };
+  if (local) registro.id = local.id; // conservar la llave local
+  await db.putCrudo(fila.store, registro);
+  return true;
 }
 
 export const ultimaSync = () => db.metaGet('ultimaSyncOk');
+export const ultimoError = () => db.metaGet('ultimoErrorSync');
+export async function pendientesDeSubir() {
+  let n = 0;
+  for (const s of db.STORES) n += (await db.allRaw(s)).filter(r => r.pendienteSubir).length;
+  return n;
+}
 
 /*
  * SQL que hay que correr UNA vez en Supabase para crear la tabla.
  * Se puede volver a correr sin romper nada.
  *
- * Ojo con los permisos: se dan lectura, inserción y actualización, pero NO
- * borrado físico. La app nunca borra de verdad (marca deletedAt y el registro
- * se queda), así que no lo necesita; y así, aunque alguien consiga la clave,
- * no puede vaciar la tabla. Probado: un DELETE con la clave responde "listo"
- * pero no borra una sola fila.
+ * · synced_at: la hora del SERVIDOR en que llegó cada versión. Es la marca de
+ *   agua para bajar cambios; el reloj de los aparatos no cuenta para eso.
+ * · Guardián: una versión con updated_at igual o más viejo que la guardada se
+ *   descarta. Un aparato que estuvo días sin señal no puede pisar lo nuevo.
+ * · Permisos: lectura, inserción y actualización, pero NO borrado físico.
+ *   La app nunca borra de verdad (marca deletedAt), así que no lo necesita; y
+ *   aunque alguien consiga la clave, no puede vaciar la tabla.
  */
 export const SQL_TABLA = `create table if not exists registros (
   uid        text primary key,
@@ -199,10 +231,25 @@ export const SQL_TABLA = `create table if not exists registros (
   datos      jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null,
   deleted    boolean not null default false,
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  synced_at  timestamptz not null default now()
 );
-create index if not exists registros_updated_at_idx on registros (updated_at);
+alter table registros add column if not exists synced_at timestamptz not null default now();
+create index if not exists registros_synced_at_idx on registros (synced_at, uid);
 alter table registros enable row level security;
+
+create or replace function registros_guardia() returns trigger language plpgsql as $$
+begin
+  -- Solo gana lo más nuevo: una versión vieja no puede pisar una nueva.
+  if tg_op = 'UPDATE' and new.updated_at <= old.updated_at then
+    return null;
+  end if;
+  new.synced_at := now();
+  return new;
+end $$;
+drop trigger if exists registros_guardia_t on registros;
+create trigger registros_guardia_t before insert or update on registros
+  for each row execute function registros_guardia();
 
 drop policy if exists "acceso con clave" on registros;
 drop policy if exists "leer con clave" on registros;

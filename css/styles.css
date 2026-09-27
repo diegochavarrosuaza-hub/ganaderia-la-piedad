@@ -50,7 +50,19 @@ button { font-family: inherit; }
           position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
 .topbar h1 { font-size: 18px; font-weight: 700; }
 .topbar .subtitle { font-size: 12px; opacity: .82; margin-top: 2px; }
-.topbar-right { display: flex; gap: 8px; }
+.topbar-right { display: flex; gap: 8px; align-items: center; }
+.sync-pill { font-size: 11.5px; padding: 4px 9px; border-radius: 12px; white-space: nowrap;
+             background: rgba(255,255,255,.14); color: #e8f5e9; border: 1px solid rgba(255,255,255,.28); }
+.sync-pill.off { opacity: .8; }
+.sync-pill.mal { background: #FFEBEE; color: var(--red); border-color: #ef9a9a; }
+@media (max-width: 520px) { .sync-pill { font-size: 10.5px; padding: 3px 7px; } }
+.alert-item[data-vaca] { cursor: pointer; }
+.alert-item[data-vaca]:hover { filter: brightness(.97); }
+.fab-principal { padding-bottom: 8px; border-bottom: 1px dashed #dfe6df; }
+.sync-estado { font-size: 13px; padding: 9px 12px; border-radius: 9px; background: var(--green-pale);
+               color: var(--green-dark); margin-bottom: 12px; line-height: 1.5; }
+.sync-estado.mal { background: var(--red-pale); color: var(--red); }
+.sync-estado:empty { display: none; }
 
 .main { flex: 1; padding: 16px 18px 90px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
@@ -158,6 +170,26 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
 .muted { color: var(--ink-muted); }
 .act-cell { display: flex; gap: 5px; flex-wrap: nowrap; }
 
+/* En pantallas angostas cada fila se vuelve una tarjeta: se lee de arriba
+   abajo en vez de desplazar la tabla de lado con el dedo. */
+@media (max-width: 640px) {
+  table.t-cards, table.t-cards tbody, table.t-cards tr { display: block; width: 100%; }
+  table.t-cards thead { display: none; }
+  table.t-cards tr { padding: 10px 14px 8px; border-bottom: 1px solid #e3e3e3; }
+  table.t-cards tr:nth-child(even) { background: #fff; }
+  table.t-cards td { display: flex; gap: 10px; align-items: baseline; padding: 3px 0;
+                     white-space: normal; font-size: 14px; border: none; }
+  table.t-cards td::before { content: attr(data-label); flex: 0 0 96px; font-size: 10.5px;
+                             color: var(--ink-muted); text-transform: uppercase; letter-spacing: .4px;
+                             font-weight: 700; padding-top: 3px; }
+  table.t-cards td[data-vacio] { display: none; }
+  table.t-cards td:first-child { font-size: 17px; padding-bottom: 5px; }
+  table.t-cards td:first-child::before, table.t-cards td[data-label=""]::before { display: none; }
+  table.t-cards td.num { text-align: left; }
+  table.t-cards td[data-label=""] { padding-top: 8px; }
+  table.t-cards .act-cell { flex-wrap: wrap; }
+}
+
 .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
 .badge-activa, .badge-viva, .badge-vivo, .badge-cancelado, .badge-parida-ok, .badge-reaplicado
   { background: var(--green-pale); color: var(--green-dark); }
@@ -168,6 +200,10 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
 .badge-prenada, .badge-preñada { background: var(--pink-pale); color: var(--pink); }
 .badge-parida, .badge-ia, .badge-te { background: var(--blue-pale); color: var(--blue); }
 .badge-mn { background: #FFF3E0; color: #e65100; }
+.badge-cerrado { background: var(--gray-light); color: var(--gray-dark); }
+.badge-perdida { background: var(--red-pale); color: var(--red); }
+.badge-novilla { background: var(--green-pale); color: var(--green-dark); }
+.badge-vacia, .badge-vacía { background: var(--gray-light); color: var(--gray-dark); }
 /* Semáforo de días sin servicio: verde ≤100, amarillo 101-150, rojo >150 */
 .badge-sinservicio-verde    { background: var(--green-pale);  color: var(--green-dark); }
 .badge-sinservicio-amarillo { background: var(--yellow-pale); color: #b26a00; }
@@ -211,6 +247,14 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
   { border-color: var(--green-light); box-shadow: 0 0 0 2px rgba(76,175,80,.18); }
 .f-row .f-help { font-size: 12px; color: var(--ink-muted); margin-top: 4px; }
 .f-row input[readonly] { background: var(--gray-light); color: var(--gray-dark); }
+/* Casillas grandes para elegir varios (toros, por ejemplo) */
+.f-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.f-check  { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px;
+            border: 1.5px solid #ccc; border-radius: 22px; cursor: pointer; font-size: 14.5px;
+            background: #fff; user-select: none; }
+.f-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--green-mid); }
+.f-check:has(input:checked) { background: var(--green-pale); border-color: var(--green-mid);
+                              color: var(--green-dark); font-weight: 600; }
 
 /* ═══════ TOASTS ═══════ */
 #toast-root { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
@@ -320,11 +364,25 @@ tbody td { padding: 10px 13px; font-size: 14px; white-space: nowrap; }
   .print-lista li { margin-bottom: 3px; }
   .print-chart { max-width: 620px; margin-bottom: 10px; break-inside: avoid; }
 
+  .print-sub { font-size: 11px; color: #555; margin-top: 2px; }
+  .print-table thead { display: table-header-group; }   /* el encabezado se repite en cada página */
+  .print-table tbody tr:nth-child(even) td { background: #f5f7f5; }
+  .print-casilla { display: inline-block; width: 64px; height: 16px; border: 1px solid #999; border-radius: 3px; }
+  .print-chart svg text { fill: #333 !important; }
+
   /* La ficha reutiliza su HTML de pantalla: se ocultan botones y se aplanan colores */
   .print-ficha .fab-row, .print-ficha .btn,
   .print-ficha .hist-lapiz, .print-ficha .hint { display: none !important; }
-  .print-ficha .badge { border: 1px solid #888; background: none !important; color: #111 !important; }
-  .print-ficha .hist-item { background: none; border-bottom: 1px solid #e2e2e2; border-radius: 0; }
-  .print-ficha .ficha-id { color: #111; }
-  .print-ficha .ficha-sec h3 { color: #1B5E20; }
+  .print-ficha .ficha-head { border-bottom: 1px solid #ccc; padding-bottom: 6px; }
+  .print-ficha .ficha-datos { grid-template-columns: repeat(4, 1fr); gap: 6px 14px; margin: 8px 0 4px; }
+  .print-ficha .ficha-datos .fd { font-size: 11.5px; }
+  .print-ficha .ficha-datos .fd b { font-size: 9px; }
+  .print-ficha .ficha-sec { margin-top: 10px; break-inside: avoid; }
+  .print-ficha .ficha-sec h3 { color: #1B5E20; font-size: 12px; border-bottom: 1px solid #ddd; padding-bottom: 2px; }
+  .print-ficha .hist-list { gap: 0; }
+  .print-ficha .badge { border: 1px solid #888; background: none !important; color: #111 !important; padding: 1px 6px; font-size: 9.5px; }
+  .print-ficha .hist-item { background: none; border-bottom: 1px solid #ececec; border-radius: 0; padding: 4px 2px; font-size: 11.5px; break-inside: avoid; }
+  .print-ficha .hist-item .hist-fecha { font-size: 10.5px; min-width: 72px; }
+  .print-ficha .ficha-id { color: #111; font-size: 20px; }
+  .print-ficha .sparkline-wrap svg { max-width: 300px; }
 }

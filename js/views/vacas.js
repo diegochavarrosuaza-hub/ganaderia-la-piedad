@@ -1,9 +1,10 @@
 // Vista Vacas — listado con acceso a la hoja de vida
 import { fmtFecha, esc, edadTexto } from '../util.js';
 import { tablaHTML, badge } from '../ui.js';
-import { prenezActivaDe, estadoReproductivo, semaforoDiasVacia, ESPERA_POSPARTO } from '../logic.js';
+import { prenezActivaDe, estadoReproductivo, semaforoDiasVacia, ajustes } from '../logic.js';
 import { formNuevaVaca } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
+import { imprimir, construirListaVacas } from '../print.js';
 
 let filtro = { q: '', estado: 'ACTIVA' };
 
@@ -52,8 +53,9 @@ export function render(el, ctx) {
         <option value="">Todas</option>
       </select>
       <span class="muted" style="font-size:13px;">${filas.length} vacas</span>
+      <button class="btn btn-ghost btn-sm" id="btn-lista-vacas" title="Imprimir esta lista">🖨️ PDF</button>
       ${filtro.estado === 'SIN_SERVICIO' ? `<span class="muted" style="font-size:12.5px;">
-        (parieron hace más de ${ESPERA_POSPARTO} días y no tienen monta ni inseminación registrada)</span>` : ''}
+        (parieron hace más de ${ajustes(state).esperaPosparto} días y no tienen monta ni inseminación registrada)</span>` : ''}
     </div>
 
     <div class="table-wrap">${tablaHTML({
@@ -88,6 +90,11 @@ export function render(el, ctx) {
   `;
 
   el.querySelector('#btn-nueva').onclick = () => formNuevaVaca(ctx);
+  el.querySelector('#btn-lista-vacas').onclick = () => {
+    const nombreFiltro = el.querySelector('#v-estado').selectedOptions[0]?.textContent.trim() || '';
+    imprimir('vacas-' + (filtro.estado || 'todas').toLowerCase(), 'Lista de vacas', construirListaVacas(state, filas, repro),
+      { subtitulo: `${filas.length} vacas · ${nombreFiltro}${filtro.q ? ' · búsqueda: ' + filtro.q : ''}` });
+  };
   el.querySelector('#v-q').oninput = e => {
     filtro.q = e.target.value; render(el, ctx);
     const q = el.querySelector('#v-q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length);

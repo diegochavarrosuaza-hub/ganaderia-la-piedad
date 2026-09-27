@@ -2,7 +2,7 @@
 import * as db from '../db.js';
 import { fmtFecha, esc, edadTexto, hoyISO } from '../util.js';
 import { tablaHTML, badge, toast, formModal, confirmar } from '../ui.js';
-import { registrarEvento, serviciosDe } from '../logic.js';
+import { registrarEvento, montasDeToro } from '../logic.js';
 import { abrirFichaVaca } from '../fichas.js';
 
 export function render(el, ctx) {
@@ -10,9 +10,7 @@ export function render(el, ctx) {
   const toros = state.vacas.filter(v => v.tipo === 'toro')
     .sort((a, b) => a.chapeta.localeCompare(b.chapeta, 'es'));
 
-  // Montas de cada toro (servicios de tipo MN donde aparece su nombre)
-  const montasDe = nombre => state.servicios.filter(s =>
-    s.tipo === 'MN' && (s.raza || '').toLowerCase().includes(nombre.toLowerCase()));
+  const montasDe = nombre => montasDeToro(state, nombre);
 
   el.innerHTML = `
     <div class="hint">🐂 <span>Los toros de la finca. Sus montas se registran en

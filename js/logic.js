@@ -11,6 +11,31 @@ export const ORIGEN_PRENEZ = { MN: 'Monta con toro', IA: 'Inseminación', TE: 'T
 // Días antes del parto en que la vaca entra a preparto (dieta y manejo especial).
 export const DIAS_PREPARTO = 45;
 
+// ── Ajustes de la finca (personalizables desde Respaldo → Ajustes) ──
+// Los valores de aquí son los de partida; lo que se guarde en el store
+// 'ajustes' manda y viaja entre dispositivos con la sincronización.
+export const AJUSTES_DEFECTO = {
+  finca: 'Ganadería La Piedad',
+  esperaPosparto: 90,   // días de descanso tras parir antes de contar "sin servicio"
+  diasPalpar: 45,       // días después del servicio para poder confirmar la preñez
+  diasPreparto: 45,     // días antes del parto para avisar que toca preparto
+  diasAvisoParto: 60,   // con cuántos días de anticipación avisar los partos
+};
+export function ajustes(state) {
+  const guardado = state && state.ajustes && state.ajustes[0];
+  const a = { ...AJUSTES_DEFECTO };
+  for (const k of Object.keys(AJUSTES_DEFECTO)) {
+    if (!guardado || guardado[k] === '' || guardado[k] == null) continue;
+    a[k] = typeof AJUSTES_DEFECTO[k] === 'number' ? (Number(guardado[k]) || AJUSTES_DEFECTO[k]) : guardado[k];
+  }
+  return a;
+}
+export async function guardarAjustes(state, cambios) {
+  const actual = state.ajustes && state.ajustes[0];
+  if (actual) { Object.assign(actual, cambios); return db.put('ajustes', actual); }
+  return db.add('ajustes', { ...cambios });
+}
+
 // Las preñeces registradas antes de esta versión no tienen 'origen' guardado:
 // se deduce del texto que se escribió en observaciones.
 export function origenDe(p) {
@@ -42,7 +67,7 @@ export function prenezActivaDe(state, chapeta) {
 }
 
 export async function crearPrenez({ chapeta, fechaPrenez, origen = 'MN', dias, observaciones = '',
-                                   fechaPreparto = '', fechaProbParto = '' }) {
+                                   fechaPreparto = '', fechaProbParto = '', servicioUid = '' }) {
   chapeta = String(chapeta).trim();
   if (!chapeta) throw new Error('Falta la chapeta de la vaca.');
   const prenez = await db.all('prenez');
@@ -55,7 +80,7 @@ export async function crearPrenez({ chapeta, fechaPrenez, origen = 'MN', dias, o
   const fpp = fechaProbParto || addDias(fp, gest);
   await db.add('prenez', {
     chapeta, fechaPrenez: fp, fechaProbParto: fpp, origen,
-    fechaPreparto, observaciones, estado: 'PREÑADA',
+    fechaPreparto, observaciones, estado: 'PREÑADA', servicioUid,
   });
   await refrescarPrenezEnVaca(chapeta);
   await registrarEvento('VACA', chapeta, 'PREÑEZ',
@@ -151,20 +176,59 @@ export async function recalcularUltimoPeso(nombre) {
   await db.put('terneros', t);
 }
 
-// ── Servicios (inseminación / transferencia) ──────────────────────
-export async function confirmarServicio(servicio, resultado) {
+// ── Servicios (monta / inseminación / transferencia) ──────────────
+/*
+ * Cierra los servicios PENDIENTES de una vaca que ya no tienen sentido: se
+ * confirmó otra preñez, parió, o perdió la cría. Quedan como CERRADO, que no
+ * cuenta en las tasas de éxito (no se sabe si funcionaron o no).
+ * Sin esto, cada monta registrada aparte de la preñez se quedaba "pendiente"
+ * para siempre y el tablero se llenaba de avisos falsos.
+ */
+export async function cerrarServiciosPendientes(chapeta, { exceptoId = null, motivo = '' } = {}) {
+  let n = 0;
+  for (const s of await db.all('servicios')) {
+    if (s.chapeta !== String(chapeta) || s.resultado !== 'PENDIENTE' || s.id === exceptoId) continue;
+    s.resultado = 'CERRADO';
+    s.fechaConfirmacion = hoyISO();
+    s.cierre = motivo;
+    await db.put('servicios', s);
+    n++;
+  }
+  return n;
+}
+
+// Palpación negativa: la vaca está vacía, así que TODOS sus servicios
+// pendientes fallaron (no solo uno).
+export async function palpacionNegativa(chapeta, { fecha, causa = '' } = {}) {
+  let n = 0;
+  for (const s of await db.all('servicios')) {
+    if (s.chapeta !== String(chapeta) || s.resultado !== 'PENDIENTE') continue;
+    s.resultado = 'VACÍA';
+    s.fechaConfirmacion = fecha || hoyISO();
+    await db.put('servicios', s);
+    n++;
+  }
+  await registrarEvento('VACA', chapeta, 'RESULTADO_VACÍA', { fecha: fecha || hoyISO(), causa: causa || 'Palpación: vacía' });
+  return n;
+}
+
+export async function confirmarServicio(servicio, resultado, extraPrenez = {}) {
   const etiqueta = TIPO_SERVICIO[servicio.tipo] || 'servicio';
   let extra = {};
   // Si resulta preñada, creamos la preñez PRIMERO: si la vaca ya tenía una
   // preñez activa, crearPrenez lanza y no se persiste nada (el servicio queda
   // PENDIENTE, recuperable) en vez de dejar un servicio "preñada" sin preñez.
   if (resultado === 'PREÑADA') {
+    const detalle = [etiqueta, servicio.raza].filter(Boolean).join(' — ');
     const fechaProbParto = await crearPrenez({
       chapeta: servicio.chapeta,
-      fechaPrenez: servicio.fecha,
+      fechaPrenez: extraPrenez.fechaPrenez || servicio.fecha,
       origen: servicio.tipo,
       dias: DIAS_GESTACION[servicio.tipo] || 280,
-      observaciones: 'Por ' + etiqueta,
+      observaciones: extraPrenez.observaciones || ('Por ' + detalle),
+      fechaPreparto: extraPrenez.fechaPreparto || '',
+      fechaProbParto: extraPrenez.fechaProbParto || '',
+      servicioUid: servicio.uid || '',
     });
     extra = { fechaProbParto };
   }
@@ -173,18 +237,106 @@ export async function confirmarServicio(servicio, resultado) {
   await db.put('servicios', servicio);
   await registrarEvento('VACA', servicio.chapeta, 'RESULTADO_' + resultado,
     { fecha: servicio.fecha, causa: etiqueta });
+  // Las demás montas pendientes de la misma vaca ya no se van a confirmar.
+  if (resultado === 'PREÑADA') {
+    extra.cerrados = await cerrarServiciosPendientes(servicio.chapeta,
+      { exceptoId: servicio.id, motivo: 'La preñez se atribuyó al servicio del ' + servicio.fecha });
+  }
   return extra;
 }
 
+// ── Pérdida de la preñez (aborto) ─────────────────────────────────
+export async function perderPrenez(chapeta, { fecha, causa = '' } = {}) {
+  chapeta = String(chapeta).trim();
+  const activa = (await db.all('prenez')).find(p => p.chapeta === chapeta && p.estado === 'PREÑADA');
+  if (!activa) throw new Error(`No hay preñez activa para la vaca ${chapeta}.`);
+  const f = fecha || hoyISO();
+  activa.estado = 'PERDIDA';
+  activa.fechaPerdida = f;
+  activa.observaciones = [activa.observaciones, 'Perdió la cría el ' + f + (causa ? ': ' + causa : '')]
+    .filter(Boolean).join(' | ');
+  await db.put('prenez', activa);
+  await refrescarPrenezEnVaca(chapeta);
+  await cerrarServiciosPendientes(chapeta, { motivo: 'Pérdida de la preñez' });
+  await registrarEvento('VACA', chapeta, 'PÉRDIDA', { fecha: f, causa });
+}
+
+// ── Preparto ──────────────────────────────────────────────────────
+export async function marcarPreparto(chapeta, fecha) {
+  chapeta = String(chapeta).trim();
+  const activa = (await db.all('prenez')).find(p => p.chapeta === chapeta && p.estado === 'PREÑADA');
+  if (!activa) throw new Error(`No hay preñez activa para la vaca ${chapeta}.`);
+  activa.fechaPreparto = fecha || hoyISO();
+  await db.put('prenez', activa);
+  await registrarEvento('VACA', chapeta, 'PREPARTO', { fecha: activa.fechaPreparto, causa: 'Inicio del preparto' });
+}
+
+// ── Ternera que crece y pasa a ser vaca (novilla) ─────────────────
+export async function pasarANovilla(ternero, { chapeta, fecha, codigo = '', genetica = '' }) {
+  chapeta = String(chapeta || '').trim();
+  if (!chapeta) throw new Error('Falta la chapeta que va a llevar.');
+  if ((await db.all('vacas')).some(v => v.chapeta === chapeta)) {
+    throw new Error(`Ya existe un animal con la chapeta ${chapeta}.`);
+  }
+  const f = fecha || hoyISO();
+  await db.add('vacas', {
+    chapeta, codigo, genetica: genetica || ternero.genetica || '', fechaNac: ternero.fechaNac,
+    sexo: 'Hembra', ultimoParto: '', criaActual: '', fechaPrenez: '', fechaProbParto: '',
+    estado: 'ACTIVA', fechaSalida: '', tipo: 'vaca', nombre: ternero.nombre,
+    notas: `Criada en la finca: antes ternera "${ternero.nombre}"`
+      + (ternero.codigoMadre ? `, hija de la vaca ${ternero.codigoMadre}` : '') + '.',
+  });
+  ternero.activo = false;
+  ternero.tipoSalida = 'NOVILLA';
+  ternero.fechaSalida = f;
+  ternero.observaciones = [ternero.observaciones, `Pasó a vaca con la chapeta ${chapeta}`].filter(Boolean).join(' | ');
+  await db.put('terneros', ternero);
+  await registrarEvento('TERNERO', ternero.nombre, 'NOVILLA', { fecha: f, causa: 'Pasó a vaca con la chapeta ' + chapeta });
+  await registrarEvento('VACA', chapeta, 'ALTA_VACA', { fecha: f, causa: `Novilla criada en la finca (antes ${ternero.nombre})` });
+}
+
+// Un ternero registrado a mano con madre también debe reflejarse en ella.
+export async function vincularCriaConMadre(chapeta, nombre, fechaNac) {
+  const vaca = (await db.all('vacas')).find(v => v.chapeta === String(chapeta));
+  if (!vaca) return;
+  if (!vaca.ultimoParto || (fechaNac || '') >= vaca.ultimoParto) {
+    vaca.ultimoParto = fechaNac || vaca.ultimoParto;
+    vaca.criaActual = nombre;
+    await db.put('vacas', vaca);
+  }
+}
+
+// Montas de un toro. Los servicios nuevos llevan la lista 'toros'; los viejos
+// solo el texto libre en 'raza'.
+export function montasDeToro(state, nombre) {
+  const n = String(nombre || '').trim().toLowerCase();
+  if (!n) return [];
+  return state.servicios.filter(s => s.tipo === 'MN' && (Array.isArray(s.toros)
+    ? s.toros.some(t => String(t).trim().toLowerCase() === n)
+    : String(s.raza || '').toLowerCase().includes(n)));
+}
+
 // ── Parto ─────────────────────────────────────────────────────────
-export async function registrarParto({ chapeta, fechaParto, criaNombre, sexoCria, brucelosis, complicaciones }) {
+/*
+ * criaEstado: 'viva' (lo normal), 'muerta' (nació muerta o murió al nacer) o
+ * 'vendida' (se vendió de una). En los tres casos queda un ternero registrado,
+ * porque el parto ocurrió y cuenta para la historia de la vaca.
+ */
+export async function registrarParto({ chapeta, fechaParto, criaNombre, sexoCria, brucelosis,
+                                       complicaciones, criaEstado = 'viva', observaciones = '' }) {
   chapeta = String(chapeta).trim();
   const prenez = await db.all('prenez');
   const activa = prenez.find(p => p.chapeta === chapeta && p.estado === 'PREÑADA');
   if (!activa) throw new Error(`No hay preñez activa para la vaca ${chapeta}.`);
 
+  const viva = criaEstado === 'viva';
+  const nombre = (criaNombre || '').trim()
+    || (criaEstado === 'muerta' ? `Cría ${chapeta} (murió)` : (criaEstado === 'vendida' ? `Cría ${chapeta} (vendida)` : ''));
+
   activa.estado = 'PARIDA';
-  activa.observaciones = ('Parto ' + fechaParto + (criaNombre ? ' — Cría: ' + criaNombre : '')
+  activa.fechaParto = fechaParto;
+  activa.observaciones = ('Parto ' + fechaParto + (nombre ? ' — Cría: ' + nombre : '')
+    + (criaEstado === 'muerta' ? ' (cría fallecida)' : '') + (criaEstado === 'vendida' ? ' (cría vendida)' : '')
     + (complicaciones ? ' (complicaciones)' : '')).trim();
   await db.put('prenez', activa);
 
@@ -192,24 +344,30 @@ export async function registrarParto({ chapeta, fechaParto, criaNombre, sexoCria
   const vaca = vacas.find(v => v.chapeta === chapeta);
   if (vaca) {
     vaca.ultimoParto = fechaParto;
-    if (criaNombre) vaca.criaActual = criaNombre;
+    vaca.criaActual = viva ? (nombre || vaca.criaActual) : (criaEstado === 'muerta' ? 'Cría fallecida' : 'Cría vendida');
     vaca.fechaPrenez = '';
     vaca.fechaProbParto = '';
     await db.put('vacas', vaca);
   }
 
-  if (criaNombre) {
+  if (nombre) {
     await db.add('terneros', {
-      nombre: criaNombre, sexo: sexoCria || '', fechaNac: fechaParto,
-      codigoMadre: chapeta, activo: true, fechaSalida: '', tipoSalida: '',
+      nombre, sexo: sexoCria || '', fechaNac: fechaParto,
+      codigoMadre: chapeta, activo: viva, fechaSalida: viva ? '' : fechaParto,
+      tipoSalida: viva ? '' : (criaEstado === 'muerta' ? 'FALLECIDO' : 'VENDIDO'),
       brucelosis: brucelosis || 'No',
-      observaciones: 'Nacido del parto de vaca ' + chapeta,
+      observaciones: observaciones || (viva ? 'Nacido del parto de vaca ' + chapeta
+        : (criaEstado === 'muerta' ? 'Nació muerta o murió al nacer' : 'Vendida al nacer')),
       ultimoPeso: null, fechaUltimoPesaje: '',
     });
-    await registrarEvento('TERNERO', criaNombre, 'NACIMIENTO',
-      { fecha: fechaParto, causa: 'Madre: vaca ' + chapeta });
+    await registrarEvento('TERNERO', nombre, 'NACIMIENTO', { fecha: fechaParto, causa: 'Madre: vaca ' + chapeta });
+    if (criaEstado === 'muerta') await registrarEvento('TERNERO', nombre, 'FALLECIDO', { fecha: fechaParto, causa: 'Al nacer' });
+    if (criaEstado === 'vendida') await registrarEvento('TERNERO', nombre, 'VENDIDO', { fecha: fechaParto, causa: 'Vendida al nacer' });
   }
-  await registrarEvento('VACA', chapeta, 'PARTO', { fecha: fechaParto, causa: criaNombre });
+  await registrarEvento('VACA', chapeta, 'PARTO', { fecha: fechaParto,
+    causa: nombre + (criaEstado === 'muerta' ? ' (cría fallecida)' : (criaEstado === 'vendida' ? ' (cría vendida)' : '')) });
+  // Con el parto, cualquier servicio que quedara pendiente ya no aplica.
+  await cerrarServiciosPendientes(chapeta, { motivo: 'Parto del ' + fechaParto });
 }
 
 // ── Estados de vaca / ternero ─────────────────────────────────────
@@ -291,8 +449,8 @@ export const soloVacas = arr => arr.filter(x => !esToro(x));
 // ── Estado reproductivo de una vaca ───────────────────────────────
 // Días de espera tras el parto antes de considerar que una vaca está atrasada.
 // En trópico / doble propósito se usa un margen más amplio que en lechería.
-export const ESPERA_POSPARTO = 90;   // días de descanso normal tras parir
-export const DIAS_DIAGNOSTICO = 30;  // antes de esto un servicio aún no se puede evaluar
+export const ESPERA_POSPARTO = AJUSTES_DEFECTO.esperaPosparto; // (valor de partida; manda ajustes(state))
+export const DIAS_PALPAR = AJUSTES_DEFECTO.diasPalpar;         // antes de esto un servicio aún no se puede confirmar
 
 /*
  * Devuelve cómo va cada vaca en su ciclo reproductivo:
@@ -317,16 +475,17 @@ export function estadoReproductivo(state, vaca) {
     .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))[0];
 
   const diasVacia = vaca.ultimoParto ? diasEntre(vaca.ultimoParto, hoy) : null;
+  const aj = ajustes(state);
 
   if (pendiente) {
     const d = diasEntre(pendiente.fecha, hoy);
     return { estado: 'ESPERANDO', diasVacia, servicios: servicios.length,
-      diasServicio: d, listoParaPalpar: d != null && d >= DIAS_DIAGNOSTICO };
+      diasServicio: d, listoParaPalpar: d != null && d >= aj.diasPalpar };
   }
 
   if (!vaca.ultimoParto) return { estado: 'NOVILLA', servicios: servicios.length };
 
-  if (diasVacia != null && diasVacia <= ESPERA_POSPARTO) {
+  if (diasVacia != null && diasVacia <= aj.esperaPosparto) {
     return { estado: 'DESCANSO', diasVacia, servicios: servicios.length };
   }
 
@@ -391,14 +550,16 @@ export function geneticasHato(state) {
 }
 
 export function kpisReproduccion(state) {
-  const conf = state.servicios.filter(s => s.resultado && s.resultado !== 'PENDIENTE');
+  // Solo cuentan los servicios con resultado conocido; los CERRADO no se sabe.
+  const conf = state.servicios.filter(s => s.resultado === 'PREÑADA' || s.resultado === 'VACÍA');
   const tasa = arr => {
     const c = arr.filter(s => s.resultado === 'PREÑADA').length;
-    return arr.length ? Math.round((c / arr.length) * 100) : null;
+    return arr.length ? { pct: Math.round((c / arr.length) * 100), n: arr.length } : null;
   };
   return {
     prenadas: state.prenez.filter(p => p.estado === 'PREÑADA').length,
     pendientes: state.servicios.filter(s => s.resultado === 'PENDIENTE').length,
+    tasaMN: tasa(conf.filter(s => s.tipo === 'MN')),
     tasaIA: tasa(conf.filter(s => s.tipo === 'IA')),
     tasaTE: tasa(conf.filter(s => s.tipo === 'TE')),
   };
@@ -407,6 +568,7 @@ export function kpisReproduccion(state) {
 // ── Alertas para el tablero ───────────────────────────────────────
 export function alertas(state) {
   const hoy = hoyISO();
+  const aj = ajustes(state);
   const out = { partosProximos: [], partosVencidos: [], serviciosPorConfirmar: [],
                 reaplicaciones: [], preparto: [] };
 
@@ -422,7 +584,7 @@ export function alertas(state) {
     const dias = diasEntre(hoy, p.fechaProbParto);
     if (dias == null) continue;
     if (dias < 0) out.partosVencidos.push({ ...p, dias });
-    else if (dias <= 60) out.partosProximos.push({ ...p, dias });
+    else if (dias <= aj.diasAvisoParto) out.partosProximos.push({ ...p, dias });
   }
   out.partosProximos.sort((a, b) => a.dias - b.dias);
   out.partosVencidos.sort((a, b) => a.dias - b.dias);
@@ -431,16 +593,26 @@ export function alertas(state) {
   for (const p of state.prenez) {
     if (p.estado !== 'PREÑADA' || !p.fechaProbParto || p.fechaPreparto) continue;
     const dias = diasEntre(hoy, p.fechaProbParto);
-    if (dias != null && dias >= 0 && dias <= DIAS_PREPARTO) out.preparto.push({ ...p, dias });
+    if (dias != null && dias >= 0 && dias <= aj.diasPreparto) out.preparto.push({ ...p, dias });
   }
   out.preparto.sort((a, b) => a.dias - b.dias);
 
+  // Servicios por confirmar: uno por vaca (el más reciente), y solo si de
+  // verdad hay algo que confirmar: la vaca sigue activa, no está ya preñada y
+  // el servicio es posterior a su último parto.
+  const prenadas = new Set(state.prenez.filter(p => p.estado === 'PREÑADA').map(p => p.chapeta));
+  const porVaca = new Map();
   for (const s of state.servicios) {
     if (s.resultado !== 'PENDIENTE' || !s.fecha) continue;
+    const v = state.vacas.find(x => x.chapeta === s.chapeta);
+    if (!v || v.estado !== 'ACTIVA' || prenadas.has(s.chapeta)) continue;
+    if (v.ultimoParto && s.fecha <= v.ultimoParto) continue;
     const dias = diasEntre(s.fecha, hoy);
-    if (dias != null && dias >= 45) out.serviciosPorConfirmar.push({ ...s, dias });
+    if (dias == null || dias < aj.diasPalpar) continue;
+    const previo = porVaca.get(s.chapeta);
+    if (!previo || s.fecha > previo.fecha) porVaca.set(s.chapeta, { ...s, dias });
   }
-  out.serviciosPorConfirmar.sort((a, b) => b.dias - a.dias);
+  out.serviciosPorConfirmar = [...porVaca.values()].sort((a, b) => b.dias - a.dias);
 
   return out;
 }

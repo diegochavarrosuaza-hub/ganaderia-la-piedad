@@ -75,6 +75,15 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
         return `<option value="${esc(v)}"${sel}>${esc(l)}</option>`;
       }).join('');
       input = `<select ${common}>${opts}</select>`;
+    } else if (f.type === 'checks') {
+      // Varias casillas grandes: en el celular es mucho mejor que un
+      // <select multiple>, que nadie sabe usar.
+      const marcados = new Set(Array.isArray(f.value) ? f.value.map(String) : []);
+      input = `<div class="f-checks">${(f.options || []).map(o => {
+        const v = typeof o === 'object' ? o.value : o;
+        const l = typeof o === 'object' ? o.label : o;
+        return `<label class="f-check"><input type="checkbox" name="${esc(f.name)}" value="${esc(v)}"${marcados.has(String(v)) ? ' checked' : ''}><span>${esc(l)}</span></label>`;
+      }).join('')}</div>`;
     } else if (f.type === 'textarea') {
       input = `<textarea ${common} rows="2" placeholder="${esc(f.placeholder || '')}">${esc(f.value ?? '')}</textarea>`;
     } else {
@@ -129,6 +138,10 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
     e.preventDefault();
     const values = {};
     for (const f of fields) {
+      if (f.type === 'checks') {
+        values[f.name] = [...form.querySelectorAll(`input[name="${f.name}"]:checked`)].map(e => e.value);
+        continue;
+      }
       const el = form.querySelector(`[name="${f.name}"]`);
       values[f.name] = el ? el.value.trim() : '';
     }
@@ -150,17 +163,21 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
 
 // Tabla HTML a partir de columnas y filas.
 // columns: [{ key, label, num, render(fila) }] · rowAttr(fila) para atributos del <tr>
-export function tablaHTML({ columns, rows, rowAttr, emptyMsg = 'No hay registros.' }) {
+// En el celular la tabla se vuelve tarjetas (una por fila): cada celda lleva
+// su etiqueta en data-label y el CSS hace el resto. Las celdas vacías se
+// ocultan para no llenar la tarjeta de rayas.
+export function tablaHTML({ columns, rows, rowAttr, emptyMsg = 'No hay registros.', cards = true }) {
   if (!rows.length) return `<div class="empty-note" style="padding:18px;">${esc(emptyMsg)}</div>`;
   const head = columns.map(c => `<th${c.num ? ' class="num"' : ''}>${esc(c.label)}</th>`).join('');
   const body = rows.map(r => {
     const tds = columns.map(c => {
       const v = c.render ? c.render(r) : esc(r[c.key] ?? '');
-      return `<td${c.num ? ' class="num"' : ''}>${v === '' || v == null ? '<span class="muted">—</span>' : v}</td>`;
+      const vacio = v === '' || v == null;
+      return `<td${c.num ? ' class="num"' : ''}${vacio ? ' data-vacio' : ''} data-label="${esc(c.label)}">${vacio ? '<span class="muted">—</span>' : v}</td>`;
     }).join('');
     return `<tr ${rowAttr ? rowAttr(r) : ''}>${tds}</tr>`;
   }).join('');
-  return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  return `<table${cards ? ' class="t-cards"' : ''}><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
 
 export function badge(texto) {
