@@ -28,6 +28,45 @@ export function setConfig(url, key) {
   }
 }
 
+/*
+ * Enlace para dejar otro aparato configurado de un toque.
+ *
+ * Teclear una clave de 50 caracteres en la tablet no va a pasar: se genera un
+ * enlace que ya la lleva dentro y basta con abrirlo una vez en el aparato.
+ * OJO: el enlace ES la llave de los datos. Se manda solo a quien debe tenerlo.
+ */
+export function crearEnlaceConfig() {
+  const { url, key } = getConfig();
+  if (!url || !key) throw new Error('Primero configura la sincronización en este dispositivo.');
+  const bytes = new TextEncoder().encode(JSON.stringify({ url, key }));
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  const b64 = btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return `${location.origin}${location.pathname}#sync=${b64}`;
+}
+
+/*
+ * Si la app se abrió con un enlace de esos, lo aplica y limpia la dirección
+ * para que la clave no quede a la vista ni en el historial.
+ * Se llama ANTES de abrir la base de datos: así el aparato ya sabe que hay
+ * nube desde el primer momento.
+ */
+export function configDesdeEnlace() {
+  const m = (location.hash || '').match(/[#&]sync=([^&]+)/);
+  if (!m) return null;
+  history.replaceState(null, '', location.pathname + location.search);
+  try {
+    const b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const { url, key } = JSON.parse(new TextDecoder().decode(bytes));
+    if (!url || !key) return null;
+    setConfig(url, key);
+    return url;
+  } catch {
+    return null;
+  }
+}
+
 function cabeceras(extra = {}) {
   const { key } = getConfig();
   return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...extra };
@@ -48,6 +87,18 @@ export async function probarConexion() {
   if (!r.ok) throw new Error(`Supabase respondió ${r.status}.`);
   return true;
 }
+
+/*
+ * Momento en milisegundos. NO se pueden comparar las marcas de tiempo como
+ * texto: Postgres devuelve '2026-09-27T18:00:00+00:00' y el navegador escribe
+ * '2026-09-27T18:00:00.000Z'. Es el mismo instante con distinta forma, y
+ * comparado como texto da el resultado equivocado (comprobado contra el
+ * proyecto real). Se comparan siempre como fechas.
+ */
+const instante = t => {
+  const n = Date.parse(t || '');
+  return Number.isNaN(n) ? 0 : n;
+};
 
 // Registro local → fila para la nube
 const aFila = (store, r) => ({
@@ -76,7 +127,7 @@ export async function sincronizar() {
   const porSubir = [];
   for (const store of db.STORES) {
     for (const r of await db.allRaw(store)) {
-      if ((r.updatedAt || '') > desde) porSubir.push(aFila(store, r));
+      if (instante(r.updatedAt) > instante(desde)) porSubir.push(aFila(store, r));
     }
   }
 
@@ -112,7 +163,7 @@ export async function sincronizar() {
     if (!db.STORES.includes(store)) continue;
     const local = locales[store].get(fila.uid);
     // El propio cambio recién subido vuelve en el pull: no es novedad.
-    if (local && (local.updatedAt || '') >= fila.updated_at) continue;
+    if (local && instante(local.updatedAt) >= instante(fila.updated_at)) continue;
 
     const registro = {
       ...(fila.datos || {}),
@@ -132,7 +183,16 @@ export async function sincronizar() {
 
 export const ultimaSync = () => db.metaGet('ultimaSyncOk');
 
-// SQL que hay que correr UNA vez en Supabase para crear la tabla.
+/*
+ * SQL que hay que correr UNA vez en Supabase para crear la tabla.
+ * Se puede volver a correr sin romper nada.
+ *
+ * Ojo con los permisos: se dan lectura, inserción y actualización, pero NO
+ * borrado físico. La app nunca borra de verdad (marca deletedAt y el registro
+ * se queda), así que no lo necesita; y así, aunque alguien consiga la clave,
+ * no puede vaciar la tabla. Probado: un DELETE con la clave responde "listo"
+ * pero no borra una sola fila.
+ */
 export const SQL_TABLA = `create table if not exists registros (
   uid        text primary key,
   store      text not null,
@@ -142,7 +202,12 @@ export const SQL_TABLA = `create table if not exists registros (
   deleted_at timestamptz
 );
 create index if not exists registros_updated_at_idx on registros (updated_at);
-
 alter table registros enable row level security;
-create policy "acceso con clave" on registros
-  for all using (true) with check (true);`;
+
+drop policy if exists "acceso con clave" on registros;
+drop policy if exists "leer con clave" on registros;
+drop policy if exists "insertar con clave" on registros;
+drop policy if exists "actualizar con clave" on registros;
+create policy "leer con clave"       on registros for select using (true);
+create policy "insertar con clave"   on registros for insert with check (true);
+create policy "actualizar con clave" on registros for update using (true) with check (true);`;

@@ -46,11 +46,17 @@ function irA(nombre, opciones) {
 
 async function main() {
   try {
+    // Antes de initDB: si llegó por enlace, el aparato ya arranca sabiendo
+    // que hay nube, y no siembra datos viejos encima de los buenos.
+    const porEnlace = sync.configDesdeEnlace();
     await initDB();
     ctx.state = await loadState();
     renderVista();
     if (db.datosActualizados) {
       toast('✅ Datos del hato actualizados a la última versión.', 'info');
+    }
+    if (porEnlace) {
+      toast('🔗 Este dispositivo quedó conectado. Sincronizando…', 'info');
     }
     sincronizar({ silencioso: true });
   } catch (err) {
@@ -63,6 +69,13 @@ async function main() {
   // ── Sincronización entre dispositivos ──────────────────────────
   // Al volver el internet y cada 5 minutos, para que la tablet y el celular
   // se mantengan al día solos.
+  // Si la app YA estaba abierta, tocar el enlace de configuración solo cambia
+  // el # y el navegador no recarga: sin esto no pasaría nada y la clave se
+  // quedaría a la vista en la dirección.
+  window.addEventListener('hashchange', () => {
+    if (sync.configDesdeEnlace()) location.reload();
+  });
+
   window.addEventListener('online', () => sincronizar({ silencioso: true }));
   setInterval(() => sincronizar({ silencioso: true }), 5 * 60 * 1000);
 

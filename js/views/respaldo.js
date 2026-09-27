@@ -1,6 +1,6 @@
 // Vista Respaldo — exportar/importar los datos y ayuda
 import { exportarTodo, importarTodo, respaldoPrevio } from '../db.js';
-import { download, hoyISO, fmtNum } from '../util.js';
+import { download, hoyISO, fmtNum, esc } from '../util.js';
 import { toast, confirmar } from '../ui.js';
 import * as sync from '../sync.js';
 
@@ -45,8 +45,10 @@ export function render(el, ctx) {
       <div class="fab-row">
         <button class="btn btn-primary btn-sm" id="sync-guardar">Guardar y probar</button>
         ${activa ? '<button class="btn btn-blue btn-sm" id="sync-ahora">🔄 Sincronizar ahora</button>' : ''}
+        ${activa ? '<button class="btn btn-ghost btn-sm" id="sync-enlace">🔗 Conectar otro dispositivo</button>' : ''}
         ${activa ? '<button class="btn btn-danger btn-sm" id="sync-quitar">Desconectar</button>' : ''}
       </div>
+      <div id="sync-enlace-box"></div>
       <div id="sync-estado" class="muted" style="font-size:13px; margin-top:8px;"></div>
     </div>
 
@@ -143,6 +145,36 @@ export function render(el, ctx) {
     }
     btnAhora.disabled = false;
     btnAhora.textContent = txt;
+  };
+
+  // Enlace para no tener que teclear la clave en la tablet ni en el celular.
+  const btnEnlace = el.querySelector('#sync-enlace');
+  if (btnEnlace) btnEnlace.onclick = async () => {
+    const caja = el.querySelector('#sync-enlace-box');
+    let enlace;
+    try {
+      enlace = sync.crearEnlaceConfig();
+    } catch (err) {
+      return toast(err.message, 'error');
+    }
+    let copiado = false;
+    try {
+      await navigator.clipboard.writeText(enlace);
+      copiado = true;
+    } catch { /* sin permiso de portapapeles: queda a la vista para copiarlo a mano */ }
+
+    caja.innerHTML = `
+      <div class="hint" style="margin-top:12px; flex-direction:column; align-items:stretch;">
+        <div><b>Abre este enlace UNA vez en el otro dispositivo</b> (tablet o celular)
+          y queda conectado solo. Mándalo por WhatsApp.</div>
+        <input type="text" id="sync-enlace-txt" readonly value="${esc(enlace)}"
+               style="margin-top:8px; width:100%; font-size:12px;">
+        <div style="margin-top:8px;">⚠️ Este enlace <b>es la llave de los datos de la finca</b>.
+          Mándalo solo a quien deba entrar; no lo publiques en grupos.</div>
+      </div>`;
+    const campo = caja.querySelector('#sync-enlace-txt');
+    campo.onclick = () => campo.select();
+    toast(copiado ? 'Enlace copiado ✅ Pégalo en WhatsApp.' : 'Enlace listo: tócalo y cópialo.', 'info');
   };
 
   const btnQuitar = el.querySelector('#sync-quitar');
