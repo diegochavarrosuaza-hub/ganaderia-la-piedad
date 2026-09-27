@@ -1,6 +1,6 @@
 // Vista Vacas — listado con acceso a la hoja de vida
 import { fmtFecha, esc, edadTexto } from '../util.js';
-import { tablaHTML, badge } from '../ui.js';
+import { tablaHTML, badge, redibujarSoloTabla } from '../ui.js';
 import { prenezActivaDe, estadoReproductivo, semaforoDiasVacia, ajustes } from '../logic.js';
 import { formNuevaVaca } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
@@ -95,10 +95,7 @@ export function render(el, ctx) {
     imprimir('vacas-' + (filtro.estado || 'todas').toLowerCase(), 'Lista de vacas', construirListaVacas(state, filas, repro),
       { subtitulo: `${filas.length} vacas · ${nombreFiltro}${filtro.q ? ' · búsqueda: ' + filtro.q : ''}` });
   };
-  el.querySelector('#v-q').oninput = e => {
-    filtro.q = e.target.value; render(el, ctx);
-    const q = el.querySelector('#v-q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length);
-  };
+  el.querySelector('#v-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
   el.querySelector('#v-estado').onchange = e => { filtro.estado = e.target.value; render(el, ctx); };
   el.querySelectorAll('tr[data-chapeta]').forEach(tr =>
     tr.addEventListener('click', () => abrirFichaVaca(tr.dataset.chapeta, ctx)));

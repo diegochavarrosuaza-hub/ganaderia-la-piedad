@@ -1,6 +1,6 @@
 // Vista Terneros — listado con peso y crecimiento
 import { fmtFecha, fmtNum, esc, edadTexto } from '../util.js';
-import { tablaHTML, badge } from '../ui.js';
+import { tablaHTML, badge, redibujarSoloTabla } from '../ui.js';
 import { gdpDe } from '../logic.js';
 import { formNuevoTernero, formPesaje } from '../forms.js';
 import { abrirFichaTernero } from '../fichas.js';
@@ -58,10 +58,7 @@ export function render(el, ctx) {
 
   el.querySelector('#btn-nuevo').onclick = () => formNuevoTernero(ctx);
   el.querySelector('#btn-pesar').onclick = () => formPesaje(ctx);
-  el.querySelector('#t-q').oninput = e => {
-    filtro.q = e.target.value; render(el, ctx);
-    const q = el.querySelector('#t-q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length);
-  };
+  el.querySelector('#t-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
   el.querySelector('#t-estado').onchange = e => { filtro.estado = e.target.value; render(el, ctx); };
   el.querySelectorAll('tr[data-nombre]').forEach(tr =>
     tr.addEventListener('click', () => abrirFichaTernero(tr.dataset.nombre, ctx)));

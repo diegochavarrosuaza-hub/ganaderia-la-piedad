@@ -1,6 +1,6 @@
 // Vista Eventos — bitácora de todo lo que pasa en la finca; cada línea se corrige
 import { fmtFecha, fmtMoney, esc } from '../util.js';
-import { tablaHTML, badge } from '../ui.js';
+import { tablaHTML, badge, redibujarSoloTabla } from '../ui.js';
 import { formEditarEvento } from '../forms.js';
 
 let filtro = { q: '' };
@@ -41,8 +41,5 @@ export function render(el, ctx) {
     if (ev) formEditarEvento(ev, ctx);
   }));
 
-  el.querySelector('#e-q').oninput = e => {
-    filtro.q = e.target.value; render(el, ctx);
-    const q = el.querySelector('#e-q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length);
-  };
+  el.querySelector('#e-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
 }

@@ -180,6 +180,18 @@ export function tablaHTML({ columns, rows, rowAttr, emptyMsg = 'No hay registros
   return `<table${cards ? ' class="t-cards"' : ''}><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
 
+// Al escribir en un buscador NO se puede redibujar la vista entera: en el
+// celular eso reemplaza el campo y cierra el teclado a cada letra. Se dibuja
+// la vista en un contenedor aparte y se cambia solo la tabla (y el contador).
+export function redibujarSoloTabla(el, render) {
+  const tmp = document.createElement('div');
+  render(tmp);
+  const nueva = tmp.querySelector('.table-wrap'), vieja = el.querySelector('.table-wrap');
+  if (nueva && vieja) vieja.replaceWith(nueva);
+  const cNuevo = tmp.querySelector('.toolbar .muted'), cViejo = el.querySelector('.toolbar .muted');
+  if (cNuevo && cViejo) cViejo.textContent = cNuevo.textContent;
+}
+
 export function badge(texto) {
   const t = String(texto || '').trim();
   if (!t) return '<span class="muted">—</span>';
