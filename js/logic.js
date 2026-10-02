@@ -39,7 +39,9 @@ export async function guardarAjustes(state, cambios) {
 // Las preñeces registradas antes de esta versión no tienen 'origen' guardado:
 // se deduce del texto que se escribió en observaciones.
 export function origenDe(p) {
-  if (p.origen) return p.origen;
+  // Si alguien eligió "todavía no se sabe" (origen vacío), se respeta: adivinar
+  // por el texto diría mal, porque esa nota suele nombrar las dos opciones.
+  if (p.origen != null) return p.origen;
   const o = String(p.observaciones || '').toLowerCase();
   if (o.includes('transferencia') || o.includes('embri')) return 'TE';
   if (o.includes('inseminaci')) return 'IA';
@@ -246,7 +248,7 @@ export async function confirmarServicio(servicio, resultado, extraPrenez = {}) {
 }
 
 // ── Pérdida de la preñez (aborto) ─────────────────────────────────
-export async function perderPrenez(chapeta, { fecha, causa = '' } = {}) {
+export async function perderPrenez(chapeta, { fecha, causa = '', exceptoId = null } = {}) {
   chapeta = String(chapeta).trim();
   const activa = (await db.all('prenez')).find(p => p.chapeta === chapeta && p.estado === 'PREÑADA');
   if (!activa) throw new Error(`No hay preñez activa para la vaca ${chapeta}.`);
@@ -257,7 +259,7 @@ export async function perderPrenez(chapeta, { fecha, causa = '' } = {}) {
     .filter(Boolean).join(' | ');
   await db.put('prenez', activa);
   await refrescarPrenezEnVaca(chapeta);
-  await cerrarServiciosPendientes(chapeta, { motivo: 'Pérdida de la preñez' });
+  await cerrarServiciosPendientes(chapeta, { exceptoId, motivo: 'Pérdida de la preñez' });
   await registrarEvento('VACA', chapeta, 'PÉRDIDA', { fecha: f, causa });
 }
 
@@ -288,11 +290,11 @@ export async function pasarANovilla(ternero, { chapeta, fecha, codigo = '', gene
   });
   // La foto de la ternera la acompaña en su vida de vaca.
   const nueva = (await db.all('vacas')).find(v => v.chapeta === chapeta);
-  for (const s of ['fotos', 'fotosGrandes']) {
-    const f = await db.getPorUid(s, 'foto:' + ternero.uid);
+  for (const [s, pre] of [['fotos', 'foto:'], ['fotosGrandes', 'fotoG:']]) {
+    const f = await db.getPorUid(s, pre + ternero.uid);
     if (nueva && f && !f.deletedAt) {
       const { id, uid, updatedAt, pendienteSubir, ...resto } = f;
-      await db.upsertPorUid(s, 'foto:' + nueva.uid, { ...resto, animal: nueva.uid });
+      await db.upsertPorUid(s, pre + nueva.uid, { ...resto, animal: nueva.uid });
     }
   }
   ternero.activo = false;
@@ -648,6 +650,208 @@ export async function reaplicarTratamiento(trat, fecha) {
     fecha, producto: trat.producto, aplicadoA: trat.aplicadoA,
     diasReaplicar: trat.diasReaplicar, notas: trat.notas,
   });
+}
+
+// ═══════ CRÍAS REPETIDAS Y NOMBRES ═══════
+// Una vaca no vuelve a parir antes de ~9 meses: dos crías de la misma madre
+// con menos de esto entre una y otra son gemelos o un registro repetido.
+export const DIAS_ENTRE_PARTOS = 240;
+
+const sinTildes = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+// "Hércules" y "Hercules" son el mismo nombre (así se coló un ternero repetido).
+export const mismoNombre = (a, b) => sinTildes(a) === sinTildes(b);
+
+// El parto más cercano a 'fecha' que ya tenga registrado la vaca (por sus
+// crías o por su "último parto"), si está a menos de DIAS_ENTRE_PARTOS.
+export function partoReciente(state, chapeta, fecha) {
+  const f = fecha || hoyISO();
+  const crias = state.terneros
+    .filter(t => t.codigoMadre === String(chapeta) && t.fechaNac)
+    .map(t => ({ cria: t, fecha: t.fechaNac, dias: diasEntre(t.fechaNac, f) }))
+    .filter(x => x.dias != null && Math.abs(x.dias) < DIAS_ENTRE_PARTOS)
+    .map(x => ({ ...x, dias: Math.abs(x.dias) }))
+    .sort((a, b) => a.dias - b.dias);
+  if (crias.length) return crias[0];
+  const v = vacaDe(state, chapeta);
+  const d = v && v.ultimoParto ? diasEntre(v.ultimoParto, f) : null;
+  if (d != null && Math.abs(d) < DIAS_ENTRE_PARTOS) return { cria: null, fecha: v.ultimoParto, dias: Math.abs(d) };
+  return null;
+}
+
+// Nombre que se puede usar para un ternero. Los nombres genéricos de los que
+// se van a vender ("NN", "Ternero NN") se repiten mucho: a esos se les agrega
+// la madre para que no choquen. Cualquier otro nombre repetido es un error.
+const ES_NN = /^(terner[oa]\s+|cr[ií]a\s+)?n\.?\s?n\.?$/i;
+export function nombreDisponible(state, nombre, { madre = '', excepto = null, automatico = false } = {}) {
+  const limpio = String(nombre || '').trim();
+  const ocupado = n => state.terneros.find(t => t !== excepto && t.id !== (excepto && excepto.id) && mismoNombre(t.nombre, n));
+  const choque = ocupado(limpio);
+  if (!choque) return limpio;
+  if (automatico || ES_NN.test(limpio)) {
+    const base = madre && !limpio.includes(`(${madre})`) ? `${limpio} (${madre})` : limpio;
+    let cand = base, n = 2;
+    while (ocupado(cand)) cand = `${base} ${n++}`;
+    return cand;
+  }
+  throw new Error(`Ya existe un ternero llamado "${choque.nombre}". Ponle otro nombre.`);
+}
+
+// "Es el mismo ternero": la preñez se cierra con la cría que ya existe, sin
+// crear otra.
+export async function cerrarPrenezConCria(chapeta, cria) {
+  chapeta = String(chapeta);
+  const activa = (await db.all('prenez')).find(p => p.chapeta === chapeta && p.estado === 'PREÑADA');
+  if (activa) {
+    activa.estado = 'PARIDA';
+    activa.fechaParto = cria.fechaNac;
+    activa.observaciones = 'Parto ' + cria.fechaNac + ' — Cría: ' + cria.nombre;
+    await db.put('prenez', activa);
+  }
+  const vaca = (await db.all('vacas')).find(v => v.chapeta === chapeta);
+  if (vaca) {
+    if (!vaca.ultimoParto || cria.fechaNac >= vaca.ultimoParto) {
+      vaca.ultimoParto = cria.fechaNac;
+      vaca.criaActual = cria.nombre;
+    }
+    vaca.fechaPrenez = '';
+    vaca.fechaProbParto = '';
+    await db.put('vacas', vaca);
+  }
+  await cerrarServiciosPendientes(chapeta, { motivo: 'Parto del ' + cria.fechaNac });
+  await registrarEvento('VACA', chapeta, 'CORRECCIÓN',
+    { fecha: cria.fechaNac, causa: `Preñez cerrada con la cría que ya estaba registrada: ${cria.nombre}` });
+}
+
+// Cambiar el nombre de un ternero (por ejemplo a "NN" porque se va a vender).
+// Sus pesajes, su bitácora y lo que dice su madre van con el nombre, así que
+// se actualizan todos.
+export async function renombrarTernero(state, ternero, nuevo) {
+  const viejo = ternero.nombre;
+  const nombre = nombreDisponible(state, nuevo, { madre: ternero.codigoMadre, excepto: ternero });
+  if (!nombre) throw new Error('Falta el nombre.');
+  if (nombre === viejo) return viejo;
+  const clave = viejo.trim().toLowerCase();
+  for (const p of await db.all('pesajes')) {
+    if (String(p.nombre || '').trim().toLowerCase() === clave) { p.nombre = nombre; await db.put('pesajes', p); }
+  }
+  for (const e of await db.all('eventos')) {
+    if (e.categoria === 'TERNERO' && e.refId === viejo) { e.refId = nombre; await db.put('eventos', e); }
+    else if (e.categoria === 'VACA' && e.tipo === 'PARTO' && e.refId === ternero.codigoMadre && e.causa === viejo) {
+      e.causa = nombre; await db.put('eventos', e);
+    }
+  }
+  if (ternero.codigoMadre) {
+    const madre = (await db.all('vacas')).find(v => v.chapeta === ternero.codigoMadre);
+    if (madre && madre.criaActual === viejo) { madre.criaActual = nombre; await db.put('vacas', madre); }
+    for (const p of await db.all('prenez')) {
+      if (p.chapeta === ternero.codigoMadre && (p.observaciones || '').includes('Cría: ' + viejo)) {
+        p.observaciones = p.observaciones.replace('Cría: ' + viejo, 'Cría: ' + nombre);
+        await db.put('prenez', p);
+      }
+    }
+  }
+  ternero.nombre = nombre;
+  await db.put('terneros', ternero);
+  await registrarEvento('TERNERO', nombre, 'CORRECCIÓN', { fecha: hoyISO(), causa: `Antes se llamaba ${viejo}` });
+  return nombre;
+}
+
+/*
+ * Eliminar un ternero registrado por error (repetido o mal hecho). No es lo
+ * mismo que venderlo o que se muera: eso queda en su historia; esto lo quita.
+ * Se van con él sus pesajes, su foto y su bitácora, y la madre deja de
+ * nombrarlo como su cría.
+ */
+export async function eliminarTernero(ternero) {
+  const nombre = ternero.nombre;
+  const clave = nombre.trim().toLowerCase();
+  const terneros = await db.all('terneros');
+  // Si (por error) hay otro con el mismo nombre, no se tocan pesajes ni bitácora
+  // por nombre: serían también del otro.
+  const homonimo = terneros.some(x => x.id !== ternero.id && x.nombre.trim().toLowerCase() === clave);
+  await db.del('terneros', ternero.id);
+  let pesajes = 0;
+  if (!homonimo) {
+    for (const p of await db.all('pesajes')) {
+      if (String(p.nombre || '').trim().toLowerCase() === clave) { await db.del('pesajes', p.id); pesajes++; }
+    }
+    for (const e of await db.all('eventos')) {
+      if (e.categoria === 'TERNERO' && e.refId === nombre) await db.del('eventos', e.id);
+    }
+  }
+  await db.borrarPorUid('fotos', 'foto:' + ternero.uid);
+  await db.borrarPorUid('fotosGrandes', 'fotoG:' + ternero.uid);
+
+  const madre = ternero.codigoMadre && (await db.all('vacas')).find(v => v.chapeta === ternero.codigoMadre);
+  if (madre) {
+    const cerca = x => { const d = diasEntre(x.fechaNac, ternero.fechaNac); return d != null && Math.abs(d) <= 3; };
+    const gemelo = terneros.find(x => x.id !== ternero.id && x.codigoMadre === madre.chapeta && cerca(x));
+    // Si el parto quedó anotado dos veces (una con cada cría), se quita el que
+    // nombra a la cría eliminada; el parto de verdad queda con la otra.
+    const partos = (await db.all('eventos')).filter(e => e.refId === madre.chapeta && e.tipo === 'PARTO' && cerca({ fechaNac: e.fecha }));
+    if (partos.length > 1) {
+      for (const e of partos) if (String(e.causa || '').startsWith(nombre)) await db.del('eventos', e.id);
+    }
+    if (madre.criaActual === nombre) {
+      madre.criaActual = gemelo ? gemelo.nombre : '';
+      await db.put('vacas', madre);
+    }
+    for (const p of await db.all('prenez')) {
+      if (p.chapeta === madre.chapeta && (p.observaciones || '').includes('Cría: ' + nombre)) {
+        p.observaciones = p.observaciones.replace('Cría: ' + nombre, gemelo ? 'Cría: ' + gemelo.nombre : 'Cría eliminada');
+        await db.put('prenez', p);
+      }
+    }
+    await registrarEvento('VACA', madre.chapeta, 'CORRECCIÓN',
+      { fecha: hoyISO(), causa: `Se eliminó el ternero ${nombre} (registro repetido o mal hecho)` });
+  }
+  return { pesajes };
+}
+
+// ═══════ PREÑEZ: CUANDO EL MÉTODO NO CUADRA ═══════
+// "La preñez es de este servicio, la otra se registró mal": se corrige la
+// preñez que ya existe (no se crea otra) con el método, la fecha y el parto
+// probable de este servicio.
+export async function reatribuirPrenez(prenez, servicio) {
+  const metodo = TIPO_SERVICIO[servicio.tipo] || 'servicio';
+  const antes = `${(ORIGEN_PRENEZ[origenDe(prenez)] || 'método sin definir').toLowerCase()} del ${prenez.fechaPrenez}`;
+  const motivo = `La preñez se atribuyó a la ${metodo} del ${servicio.fecha}`;
+  if (prenez.servicioUid && prenez.servicioUid !== servicio.uid) {
+    const previo = (await db.all('servicios')).find(x => x.uid === prenez.servicioUid);
+    if (previo && previo.resultado === 'PREÑADA') {
+      previo.resultado = 'CERRADO';
+      previo.cierre = motivo;
+      await db.put('servicios', previo);
+    }
+  }
+  prenez.origen = servicio.tipo;
+  prenez.fechaPrenez = servicio.fecha;
+  prenez.fechaProbParto = addDias(servicio.fecha, DIAS_GESTACION[servicio.tipo] || 280);
+  prenez.servicioUid = servicio.uid || '';
+  prenez.observaciones = [prenez.observaciones, `Corregido: antes figuraba ${antes}`].filter(Boolean).join(' | ');
+  await db.put('prenez', prenez);
+  servicio.resultado = 'PREÑADA';
+  servicio.fechaConfirmacion = hoyISO();
+  await db.put('servicios', servicio);
+  await refrescarPrenezEnVaca(prenez.chapeta);
+  await cerrarServiciosPendientes(prenez.chapeta, { exceptoId: servicio.id, motivo });
+  await registrarEvento('VACA', prenez.chapeta, 'CORRECCIÓN',
+    { fecha: servicio.fecha, causa: `${motivo} (antes: ${antes})` });
+  return prenez.fechaProbParto;
+}
+
+// "No estaba preñada: esa preñez se registró mal". Se quita la preñez, y el
+// servicio del que venía (si se sabe) queda como no exitoso.
+export async function prenezMalRegistrada(prenez) {
+  if (prenez.servicioUid) {
+    const s = (await db.all('servicios')).find(x => x.uid === prenez.servicioUid);
+    if (s && s.resultado === 'PREÑADA') {
+      s.resultado = 'VACÍA';
+      s.fechaConfirmacion = hoyISO();
+      await db.put('servicios', s);
+    }
+  }
+  await eliminarPrenez(prenez);
 }
 
 // La vaca puede estar en el estado dado según los datos actuales

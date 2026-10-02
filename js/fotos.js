@@ -20,6 +20,9 @@ const CALIDAD = 0.72;
 const ICONO = { vaca: '🐄', toro: '🐂', ternero: '🐮' };
 
 export const fotoUid = animal => 'foto:' + animal.uid;
+// La foto grande lleva OTRO uid: en la nube el uid es único para toda la
+// tabla, y si compartiera el de la miniatura una de las dos se perdería.
+export const fotoGrandeUid = animal => 'fotoG:' + animal.uid;
 export const tipoAnimal = a => (a.chapeta != null ? (logic.esToro(a) ? 'toro' : 'vaca') : 'ternero');
 
 export function etiqueta(a) {
@@ -120,21 +123,20 @@ export async function procesarFoto(file) {
 // ── Guardar / quitar / leer ───────────────────────────────────────
 export async function guardarFoto(animal, file) {
   const { mini, imagen } = await procesarFoto(file);
-  const uid = fotoUid(animal), fecha = hoyISO();
+  const fecha = hoyISO();
   // Primero la grande: si algo falla a mitad, no queda una miniatura sin foto.
-  await db.upsertPorUid('fotosGrandes', uid, { animal: animal.uid, imagen, fecha });
-  await db.upsertPorUid('fotos', uid, { animal: animal.uid, mini, fecha });
+  await db.upsertPorUid('fotosGrandes', fotoGrandeUid(animal), { animal: animal.uid, imagen, fecha });
+  await db.upsertPorUid('fotos', fotoUid(animal), { animal: animal.uid, mini, fecha });
   return mini;
 }
 
 export async function quitarFoto(animal) {
-  const uid = fotoUid(animal);
-  await db.borrarPorUid('fotos', uid);
-  await db.borrarPorUid('fotosGrandes', uid);
+  await db.borrarPorUid('fotos', fotoUid(animal));
+  await db.borrarPorUid('fotosGrandes', fotoGrandeUid(animal));
 }
 
 export async function fotoGrande(animal) {
-  const r = await db.getPorUid('fotosGrandes', fotoUid(animal));
+  const r = await db.getPorUid('fotosGrandes', fotoGrandeUid(animal));
   return r && !r.deletedAt ? r.imagen : null;
 }
 

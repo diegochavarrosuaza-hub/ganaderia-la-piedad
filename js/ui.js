@@ -54,6 +54,33 @@ export function confirmar(msg, { peligro = false, okLabel = 'Sí, continuar' } =
 }
 
 /*
+ * Pregunta con varias salidas, para cuando "sí / no" no alcanza ("¿qué pasó?").
+ * opciones: [{ valor, texto, detalle, peligro }]. Devuelve el valor elegido,
+ * o null si se cancela o se cierra la ventana.
+ */
+export function preguntar({ titulo = '¿Qué pasó?', mensaje = '', opciones = [] }) {
+  return new Promise(res => {
+    let listo = false;
+    const fin = v => { if (listo) return; listo = true; closeModal(); res(v); };
+    const modal = openModal({
+      title: titulo,
+      bodyHTML: `
+        <div class="pregunta-msg">${mensaje}</div>
+        <div class="pregunta-opciones">${opciones.map((o, i) => `
+          <button type="button" class="btn ${o.peligro ? 'btn-danger' : (i === 0 ? 'btn-primary' : 'btn-ghost')} pregunta-op" data-i="${i}">
+            <span>${esc(o.texto)}</span>${o.detalle ? `<small>${esc(o.detalle)}</small>` : ''}
+          </button>`).join('')}
+        </div>
+        <div class="modal-actions"><button type="button" class="btn btn-ghost" data-r="no">Cancelar</button></div>`,
+    });
+    modal.querySelectorAll('[data-i]').forEach(b => { b.onclick = () => fin(opciones[Number(b.dataset.i)].valor); });
+    modal.querySelector('[data-r="no"]').onclick = () => fin(null);
+    modal.querySelector('.modal-close').addEventListener('click', () => fin(null));
+    modal.parentElement.addEventListener('click', e => { if (e.target === modal.parentElement) fin(null); });
+  });
+}
+
+/*
  * Formulario declarativo.
  * fields: [{ name, label, type: 'text'|'number'|'date'|'select'|'textarea',
  *            options: ['A','B'] | [{value,label}], value, required, help,

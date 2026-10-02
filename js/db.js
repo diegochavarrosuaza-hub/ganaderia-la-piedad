@@ -90,6 +90,7 @@ export async function initDB() {
     req.onerror = () => rej(req.error);
   });
   await completarUids();
+  await migrarFotosGrandes();
   await aplicarSeed();
   return _db;
 }
@@ -249,9 +250,27 @@ export function claveEstable(store, r) {
     case 'tratamientos': return `trat:${r.fecha || ''}:${norm(r.producto)}:${norm(r.aplicadoA)}`;
     case 'eventos':      return `evt:${r.timestamp || ''}:${norm(r.refId)}:${norm(r.tipo)}:${r.fecha || ''}`;
     case 'ajustes':      return 'ajustes:finca'; // un solo registro para toda la finca
-    case 'fotos':
-    case 'fotosGrandes': return `foto:${r.animal || ''}`;
+    case 'fotos':        return `foto:${r.animal || ''}`;
+    case 'fotosGrandes': return `fotoG:${r.animal || ''}`; // distinto de la miniatura: en la nube el uid es único
     default:             return `${store}:?`;
+  }
+}
+
+/*
+ * Hasta la v27 la foto grande usaba el mismo uid que la miniatura ('foto:…').
+ * En el aparato no chocaban (van en stores distintos), pero en la nube el uid
+ * es único: la miniatura se quedaba con el lugar y la grande se descartaba sin
+ * dar error. Se les cambia el uid a 'fotoG:…' y se marcan para subir.
+ */
+async function migrarFotosGrandes() {
+  for (const r of await allRaw('fotosGrandes')) {
+    if (!String(r.uid || '').startsWith('foto:')) continue;
+    const uid = 'fotoG:' + r.uid.slice('foto:'.length);
+    if (await getPorUid('fotosGrandes', uid)) {
+      await req2p(tx('fotosGrandes', 'readwrite').delete(r.id));
+      continue;
+    }
+    await putCrudo('fotosGrandes', { ...r, uid, pendienteSubir: r.updatedAt || ahora() });
   }
 }
 

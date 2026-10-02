@@ -1,7 +1,7 @@
 // forms.js — formularios del negocio, compartidos por varias vistas
 import * as db from './db.js';
 import { hoyISO, addDias, fmtFecha, esc, edadMeses } from './util.js';
-import { formModal, toast } from './ui.js';
+import { formModal, toast, preguntar } from './ui.js';
 import * as logic from './logic.js';
 
 const GENETICAS = ['F1', 'Plus', 'Plus x Plus', 'Convencional', 'Otra'];
@@ -27,6 +27,39 @@ const pendientesDe = (ctx, chapeta) => ctx.state.servicios
   .filter(x => x.chapeta === String(chapeta) && x.resultado === 'PENDIENTE')
   .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
 const textoServicio = x => `${fmtFecha(x.fecha)} · ${ETIQUETA_TIPO[x.tipo] || x.tipo}${x.raza ? ' · ' + x.raza : ''}`;
+// "por transferencia" · "sin saber todavía de qué servicio"
+const metodoDe = p => {
+  const o = logic.origenDe(p);
+  return o ? 'por ' + logic.ORIGEN_PRENEZ[o].toLowerCase() : 'sin saber todavía de qué servicio';
+};
+// Abrir otra ventana justo después de que la actual se cierre sola.
+const despues = fn => setTimeout(fn, 0);
+const abrirTernero = (nombre, ctx) => import('./fichas.js').then(m => m.abrirFichaTernero(nombre, ctx));
+
+/*
+ * La vaca ya tiene un parto registrado hace muy poco: antes de crear otra
+ * cría se pregunta qué pasó. Devuelve 'misma' | 'otra' | 'registrar' | null.
+ */
+function preguntarCriaRepetida(chapeta, reciente) {
+  const { cria, dias } = reciente;
+  const quien = cria
+    ? `a <b>${esc(cria.nombre)}</b>${cria.sexo ? ' (' + esc(cria.sexo.toLowerCase()) + ')' : ''}, nacido el ${fmtFecha(cria.fechaNac)}`
+    : `un parto el ${fmtFecha(reciente.fecha)}`;
+  const gemelos = dias <= 3;
+  return preguntar({
+    titulo: `⚠️ La vaca ${esc(chapeta)} ya parió hace poco`,
+    mensaje: `Ya tiene registrado ${quien}${dias === 0 ? ', el mismo día' : ` (${dias} día${dias === 1 ? '' : 's'} de diferencia)`}.`
+      + '<br><br>Una vaca no vuelve a parir tan pronto. <b>¿Qué pasó?</b>',
+    opciones: [
+      ...(cria ? [{ valor: 'misma', texto: '📝 Es el mismo ternero: ya estaba registrado',
+        detalle: `No se crea nada nuevo. Te abro la ficha de ${cria.nombre} por si hay que corregirla.` }] : []),
+      { valor: 'otra', texto: '↩️ Me equivoqué de vaca', detalle: 'No se registra nada; vuelve y elige la madre correcta.' },
+      gemelos
+        ? { valor: 'registrar', texto: '👯 Son gemelos: es una segunda cría', detalle: 'Queda como segunda cría del mismo parto.' }
+        : { valor: 'registrar', texto: '➕ Registrarla de todas formas', detalle: 'Solo si estás segura: la cría anterior sigue registrada.' },
+    ],
+  });
+}
 
 /*
  * Mantiene "parto probable" al día mientras se elige la fecha y el origen.
@@ -311,6 +344,32 @@ export function formEditarPrenez(p, ctx) {
     ],
     afterRender: autoFechaParto,
     async onSubmit(v) {
+      const antes = logic.origenDe(p);
+      const O = logic.ORIGEN_PRENEZ;
+      if (p.estado === 'PREÑADA' && v.estado === 'PREÑADA' && antes && v.origen && v.origen !== antes) {
+        const r = await preguntar({
+          titulo: '¿Qué pasó con la preñez anterior?',
+          mensaje: `Esta preñez estaba registrada por <b>${esc(O[antes].toLowerCase())}</b> (${fmtFecha(p.fechaPrenez)})`
+            + ` y la estás cambiando a <b>${esc(O[v.origen].toLowerCase())}</b>.`,
+          opciones: [
+            { valor: 'error', texto: `✏️ Se registró mal: en realidad fue ${O[v.origen].toLowerCase()}`,
+              detalle: 'Se corrige esta misma preñez con los datos que pusiste.' },
+            { valor: 'perdio', texto: `💔 Perdió la de ${O[antes].toLowerCase()} y quedó preñada por ${O[v.origen].toLowerCase()}`,
+              detalle: 'La anterior queda como perdida y se crea una preñez nueva.' },
+          ],
+        });
+        if (!r) return;
+        if (r === 'perdio') {
+          await logic.perderPrenez(p.chapeta, { fecha: v.fechaPrenez, causa: 'Quedó preñada de nuevo por ' + O[v.origen].toLowerCase() });
+          const fpp = await logic.crearPrenez({
+            chapeta: p.chapeta, fechaPrenez: v.fechaPrenez, origen: v.origen, fechaProbParto: v.fechaProbParto,
+            fechaPreparto: v.fechaPreparto, observaciones: v.observaciones !== p.observaciones ? v.observaciones : '',
+          });
+          toast(`Registrado: perdió la anterior y hay una preñez nueva. Parto esperado: ${fmtFecha(fpp)}.`, 'info');
+          return ctx.refresh();
+        }
+        v.observaciones = [v.observaciones, `Corregido: antes figuraba ${O[antes].toLowerCase()}`].filter(Boolean).join(' | ');
+      }
       await logic.actualizarPrenez(p, v);
       toast(`Preñez de la vaca ${p.chapeta} corregida.`);
       ctx.refresh();
@@ -327,35 +386,49 @@ export function formEditarPrenez(p, ctx) {
   });
 }
 
-export function formParto(chapeta, ctx) {
+export function formParto(chapeta, ctx, previo = {}) {
   formModal({
     title: `🍼 Registrar parto — vaca ${esc(chapeta)}`,
     submitLabel: 'Registrar parto',
     fields: [
-      { name: 'fechaParto', label: 'Fecha del parto', type: 'date', required: true, value: hoyISO(), half: true },
-      { name: 'criaNombre', label: 'Nombre de la cría', half: true, placeholder: 'Se crea como ternero',
-        help: 'Si lo dejas vacío, solo se cierra la preñez.' },
-      { name: 'sexoCria', label: 'Sexo de la cría', type: 'select', options: ['Macho', 'Hembra'], half: true },
-      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', options: ['No', 'Sí'], half: true },
-      { name: 'criaEstado', label: '¿Cómo salió la cría?', type: 'select', options: [
+      { name: 'fechaParto', label: 'Fecha del parto', type: 'date', required: true, value: previo.fechaParto || hoyISO(), half: true },
+      { name: 'criaNombre', label: 'Nombre de la cría', half: true, value: previo.criaNombre, placeholder: 'Se crea como ternero',
+        help: 'Si se va a vender, puedes poner NN.' },
+      { name: 'sexoCria', label: 'Sexo de la cría', type: 'select', value: previo.sexoCria, options: ['Macho', 'Hembra'], half: true },
+      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: previo.brucelosis, options: ['No', 'Sí'], half: true },
+      { name: 'criaEstado', label: '¿Cómo salió la cría?', type: 'select', value: previo.criaEstado, options: [
         { value: 'viva', label: '🐮 Viva' },
         { value: 'muerta', label: '🕊️ Nació muerta o murió al nacer' },
         { value: 'vendida', label: '💰 Se vendió al nacer' },
       ], half: true },
-      { name: 'complicaciones', label: '¿Y la vaca?', type: 'select', half: true,
+      { name: 'complicaciones', label: '¿Y la vaca?', type: 'select', half: true, value: previo.complicaciones,
         options: [{ value: '', label: 'Todo bien' }, { value: 'si', label: 'Hubo complicaciones' }] },
     ],
     async onSubmit(v) {
-      if (v.criaEstado === 'viva' && v.criaNombre
-          && ctx.state.terneros.some(t => t.nombre.trim().toLowerCase() === v.criaNombre.trim().toLowerCase())) {
-        throw new Error(`Ya existe un ternero llamado "${v.criaNombre}". Ponle otro nombre.`);
+      // ¿Ya tiene una cría de hace muy poco? Puede ser el mismo ternero metido
+      // dos veces (así quedó la 041 con Hércules y Ternero NN).
+      const reciente = logic.partoReciente(ctx.state, chapeta, v.fechaParto);
+      if (reciente) {
+        const r = await preguntarCriaRepetida(chapeta, reciente);
+        if (r === 'misma') {
+          await logic.cerrarPrenezConCria(chapeta, reciente.cria);
+          toast(`Listo: la preñez quedó cerrada con ${reciente.cria.nombre}, sin crear otra cría.`, 'info');
+          await ctx.refresh();
+          return despues(() => abrirTernero(reciente.cria.nombre, ctx));
+        }
+        if (r !== 'registrar') return;
       }
+      const escrito = (v.criaNombre || '').trim();
+      const auto = v.criaEstado === 'muerta' ? `Cría ${chapeta} (murió)` : (v.criaEstado === 'vendida' ? `Cría ${chapeta} (vendida)` : '');
+      const nombre = (escrito || auto)
+        ? logic.nombreDisponible(ctx.state, escrito || auto, { madre: chapeta, automatico: !escrito })
+        : '';
       await logic.registrarParto({
-        chapeta, fechaParto: v.fechaParto, criaNombre: v.criaNombre, criaEstado: v.criaEstado,
+        chapeta, fechaParto: v.fechaParto, criaNombre: nombre, criaEstado: v.criaEstado,
         sexoCria: v.sexoCria, brucelosis: v.brucelosis, complicaciones: !!v.complicaciones,
       });
       toast(v.criaEstado === 'viva'
-        ? (v.criaNombre ? `Parto registrado. Ternero "${v.criaNombre}" creado automáticamente. 🎉` : 'Parto registrado.')
+        ? (nombre ? `Parto registrado. Ternero "${nombre}" creado automáticamente. 🎉` : 'Parto registrado.')
         : 'Parto registrado. Lo sentimos por la cría.', v.criaEstado === 'viva' ? 'success' : 'info');
       ctx.refresh();
     },
@@ -363,63 +436,94 @@ export function formParto(chapeta, ctx) {
 }
 
 // ── TERNEROS ──────────────────────────────────────────────────────
-export function formNuevoTernero(ctx) {
-  const madres = ctx.state.vacas.filter(v => v.estado === 'ACTIVA').map(v => v.chapeta);
+export function formNuevoTernero(ctx, previo = {}) {
+  const madres = ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).map(v => v.chapeta);
   formModal({
     title: '🐮 Registrar nuevo ternero',
     fields: [
-      { name: 'nombre', label: 'Nombre', required: true, half: true },
-      { name: 'sexo', label: 'Sexo', type: 'select', options: ['Macho', 'Hembra'], half: true },
-      { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', required: true, value: hoyISO(), half: true },
-      { name: 'codigoMadre', label: 'Madre (chapeta)', type: 'select',
+      { name: 'nombre', label: 'Nombre', required: true, half: true, value: previo.nombre,
+        help: 'Si se va a vender, puedes poner NN.' },
+      { name: 'sexo', label: 'Sexo', type: 'select', value: previo.sexo, options: ['Macho', 'Hembra'], half: true },
+      { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', required: true, value: previo.fechaNac || hoyISO(), half: true },
+      { name: 'codigoMadre', label: 'Madre (chapeta)', type: 'select', value: previo.codigoMadre,
         options: ['', ...madres], half: true },
-      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', options: ['No', 'Sí'], half: true },
-      { name: 'observaciones', label: 'Observaciones', half: true },
+      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: previo.brucelosis, options: ['No', 'Sí'], half: true },
+      { name: 'observaciones', label: 'Observaciones', half: true, value: previo.observaciones },
     ],
     async onSubmit(v) {
-      if (ctx.state.terneros.some(t => t.nombre.trim().toLowerCase() === v.nombre.trim().toLowerCase())) {
-        throw new Error(`Ya existe un ternero llamado "${v.nombre}".`);
+      const nombre = logic.nombreDisponible(ctx.state, v.nombre, { madre: v.codigoMadre });
+      // ¿La madre ya parió hace muy poco? Puede ser el mismo ternero otra vez.
+      if (v.codigoMadre) {
+        const reciente = logic.partoReciente(ctx.state, v.codigoMadre, v.fechaNac);
+        if (reciente) {
+          const r = await preguntarCriaRepetida(v.codigoMadre, reciente);
+          if (r === 'misma') {
+            if (logic.prenezActivaDe(ctx.state, v.codigoMadre)) await logic.cerrarPrenezConCria(v.codigoMadre, reciente.cria);
+            toast('No se creó ningún ternero nuevo.', 'info');
+            await ctx.refresh();
+            return despues(() => abrirTernero(reciente.cria.nombre, ctx));
+          }
+          if (r === 'otra') return despues(() => formNuevoTernero(ctx, { ...v, codigoMadre: '' }));
+          if (r !== 'registrar') return;
+        }
       }
       // Si la madre figura preñada, este ternero ES su parto: se registra como
       // tal (cierra la preñez y actualiza la vaca) en vez de duplicar caminos.
       if (v.codigoMadre && logic.prenezActivaDe(ctx.state, v.codigoMadre)) {
         await logic.registrarParto({
-          chapeta: v.codigoMadre, fechaParto: v.fechaNac, criaNombre: v.nombre,
+          chapeta: v.codigoMadre, fechaParto: v.fechaNac, criaNombre: nombre,
           sexoCria: v.sexo, brucelosis: v.brucelosis, observaciones: v.observaciones,
         });
         toast(`Como la vaca ${v.codigoMadre} estaba preñada, quedó registrado como su parto. 🎉`);
         return ctx.refresh();
       }
       await db.add('terneros', {
-        nombre: v.nombre, sexo: v.sexo, fechaNac: v.fechaNac, codigoMadre: v.codigoMadre,
+        nombre, sexo: v.sexo, fechaNac: v.fechaNac, codigoMadre: v.codigoMadre,
         activo: true, fechaSalida: '', tipoSalida: '', brucelosis: v.brucelosis,
         observaciones: v.observaciones, ultimoPeso: null, fechaUltimoPesaje: '',
       });
-      if (v.codigoMadre) await logic.vincularCriaConMadre(v.codigoMadre, v.nombre, v.fechaNac);
-      await logic.registrarEvento('TERNERO', v.nombre, 'ALTA_TERNERO',
+      if (v.codigoMadre) await logic.vincularCriaConMadre(v.codigoMadre, nombre, v.fechaNac);
+      await logic.registrarEvento('TERNERO', nombre, 'ALTA_TERNERO',
         { fecha: v.fechaNac, causa: v.codigoMadre ? 'Madre: ' + v.codigoMadre : '' });
-      toast(`Ternero ${v.nombre} registrado.`);
+      toast(`Ternero ${nombre} registrado.`);
       ctx.refresh();
     },
   });
 }
 
 export function formEditarTernero(t, ctx) {
+  const nPesajes = logic.pesajesDe(ctx.state, t.nombre).length;
   formModal({
     title: '✏️ Editar ternero ' + esc(t.nombre),
     submitLabel: 'Guardar cambios',
     fields: [
+      { name: 'nombre', label: 'Nombre', required: true, value: t.nombre, half: true,
+        help: 'Si se va a vender, puedes ponerle NN.' },
       { name: 'sexo', label: 'Sexo', type: 'select', value: t.sexo, options: ['Macho', 'Hembra'], half: true },
       { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', value: t.fechaNac, half: true },
       { name: 'codigoMadre', label: 'Madre (chapeta)', value: t.codigoMadre, half: true },
-      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: t.brucelosis, options: ['No', 'Sí'], half: true },
+      { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: t.brucelosis, options: ['No', 'Sí'] },
       { name: 'observaciones', label: 'Observaciones', type: 'textarea', value: t.observaciones },
     ],
     async onSubmit(v) {
-      Object.assign(t, v);
+      const { nombre, ...resto } = v;
+      if (nombre.trim() !== t.nombre) await logic.renombrarTernero(ctx.state, t, nombre);
+      Object.assign(t, resto);
       await db.put('terneros', t);
       toast(`Ternero ${t.nombre} actualizado.`);
       ctx.refresh();
+    },
+    onDelete: {
+      mensaje: `¿Eliminar a <b>${esc(t.nombre)}</b>${t.codigoMadre ? ` (cría de la vaca ${esc(t.codigoMadre)})` : ''}?`
+        + (nPesajes ? `<br><br>También se borran sus <b>${nPesajes} pesaje${nPesajes === 1 ? '' : 's'}</b>.` : '')
+        + '<br><br>Úsalo solo si es un registro <b>repetido o mal hecho</b>. Si se vendió o murió, usa '
+        + '💰 Vender o 🕊️ Falleció: así queda en su historia.',
+      label: 'Sí, eliminar',
+      async run() {
+        await logic.eliminarTernero(t);
+        toast(`${t.nombre} eliminado.`, 'info');
+        ctx.refresh();
+      },
     },
   });
 }
@@ -474,6 +578,28 @@ export function formServicio(tipo, ctx, chapeta = '') {
     async onSubmit(v) {
       const elegidos = Array.isArray(v.toros) ? v.toros : [];
       if (esMN && toros.length && !elegidos.length) throw new Error('Elige al menos un toro.');
+      // Una vaca preñada por un método no debería recibir otro servicio sin
+      // aclarar qué pasó con esa preñez.
+      const activa = logic.prenezActivaDe(ctx.state, v.chapeta);
+      if (activa) {
+        const nombreServ = esMN ? 'monta' : (esIA ? 'inseminación' : 'transferencia');
+        const r = await preguntar({
+          titulo: `⚠️ La vaca ${esc(v.chapeta)} figura preñada`,
+          mensaje: `Está registrada preñada <b>${esc(metodoDe(activa))}</b> desde el ${fmtFecha(activa.fechaPrenez)}`
+            + ` (parto probable ${fmtFecha(activa.fechaProbParto)}).<br><br>Antes de anotar esta ${nombreServ}, `
+            + '<b>¿qué pasó con esa preñez?</b>',
+          opciones: [
+            { valor: 'perdio', texto: '💔 Perdió la cría', detalle: 'Esa preñez queda como perdida y se anota el servicio nuevo.' },
+            { valor: 'mal', texto: '❌ No estaba preñada: esa preñez se registró mal',
+              detalle: 'Se quita esa preñez y se anota el servicio nuevo.' },
+            { valor: 'sigue', texto: '🤰 Sigue preñada: anotar el servicio igual',
+              detalle: 'Por ejemplo, si el toro la montó sin querer. La preñez no cambia.' },
+          ],
+        });
+        if (!r) return;
+        if (r === 'perdio') await logic.perderPrenez(v.chapeta, { fecha: v.fecha, causa: 'Se supo al anotar un servicio nuevo' });
+        if (r === 'mal') await logic.prenezMalRegistrada(activa);
+      }
       const raza = esMN ? (elegidos.length ? elegidos.join(' y ') : (v.raza || '')) : (v.raza || '');
       await db.add('servicios', {
         tipo, chapeta: v.chapeta, cria: v.cria || '', material: v.material || '',

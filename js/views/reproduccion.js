@@ -1,8 +1,8 @@
 // Vista Reproducción — servicios (IA/TE), confirmaciones y preñeces activas
 import { fmtFecha, esc, diasEntre, hoyISO } from '../util.js';
-import { tablaHTML, badge, toast, confirmar } from '../ui.js';
+import { tablaHTML, badge, toast, confirmar, preguntar } from '../ui.js';
 import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO,
-         origenDe, ORIGEN_PRENEZ, ajustes } from '../logic.js';
+         origenDe, ORIGEN_PRENEZ, ajustes, prenezActivaDe, reatribuirPrenez, perderPrenez } from '../logic.js';
 import { formServicio, formPrenez, formParto,
          formEditarPrenez, formEditarServicio } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
@@ -138,6 +138,40 @@ export function render(el, ctx) {
     if (!s) return;
     const resultado = b.dataset.conf;
     const etiqueta = TIPO_SERVICIO[s.tipo] || 'servicio';
+
+    // Ya figura preñada por otro lado: no se crea una segunda preñez, se
+    // pregunta qué pasó (así pasó con la 035: transferencia y toro a la vez).
+    const activa = resultado === 'PREÑADA' && prenezActivaDe(ctx.state, s.chapeta);
+    if (activa) {
+      const o = origenDe(activa);
+      const metodo = o ? ORIGEN_PRENEZ[o].toLowerCase() : '';
+      const r = await preguntar({
+        titulo: `⚠️ La vaca ${esc(s.chapeta)} ya figura preñada`,
+        mensaje: `Está registrada preñada <b>${metodo ? 'por ' + esc(metodo) : 'sin saber todavía de qué servicio'}</b> desde el ${fmtFecha(activa.fechaPrenez)}, y ahora `
+          + `confirmas la <b>${etiqueta} del ${fmtFecha(s.fecha)}</b>.<br><br><b>¿Qué pasó?</b>`,
+        opciones: [
+          { valor: 'esta', texto: `🔁 La preñez es de esta ${etiqueta}`,
+            detalle: (metodo ? `La de ${metodo} se registró mal: ` : '') + 'se corrige la preñez que ya existe (la fecha y el parto probable se recalculan).' },
+          ...((s.fecha || '') > (activa.fechaPrenez || '') ? [{ valor: 'perdio',
+            texto: '💔 Perdió la anterior y quedó preñada de nuevo',
+            detalle: 'La preñez anterior queda como perdida y se crea la nueva.' }] : []),
+        ],
+      });
+      if (!r) return;
+      try {
+        if (r === 'esta') {
+          const fpp = await reatribuirPrenez(activa, s);
+          toast(`Corregido: la vaca ${s.chapeta} quedó preñada por la ${etiqueta}. Parto esperado: ${fmtFecha(fpp)}.`);
+        } else {
+          await perderPrenez(s.chapeta, { fecha: s.fecha, causa: 'Quedó preñada de nuevo', exceptoId: s.id });
+          const x = await confirmarServicio(s, 'PREÑADA');
+          toast(`Vaca ${s.chapeta} preñada de nuevo 🎉 Parto esperado: ${fmtFecha(x.fechaProbParto)}.`);
+        }
+      } catch (err) {
+        toast(err.message, 'error');
+      }
+      return ctx.refresh();
+    }
     const msg = resultado === 'PREÑADA'
       ? `¿Confirmar que la vaca <b>${esc(s.chapeta)}</b> quedó <b>preñada</b> por la ${etiqueta} del ${fmtFecha(s.fecha)}? Se creará la preñez y se calculará la fecha de parto.`
       : `¿Marcar la ${etiqueta} de la vaca <b>${esc(s.chapeta)}</b> como <b>vacía</b> (no funcionó)?`;

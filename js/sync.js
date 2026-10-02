@@ -146,6 +146,9 @@ async function _sincronizar() {
   }
   await db.metaSet('cursorSync', cursor);
 
+  // ── 1b. Una sola vez por aparato: cuadrar todo con la nube ──
+  if (!(await db.metaGet('reconciliado1'))) bajados += await reconciliar(url, key);
+
   // ── 2. SUBIR lo pendiente de este aparato ──
   // Se sube lo marcado, no "lo de después de tal hora": así no depende del
   // reloj. Si falla, lo pendiente sigue pendiente y se reintenta después.
@@ -200,12 +203,59 @@ async function _sincronizar() {
   return { ok: true, subidos, bajados, pendientes: tandas.length - subidos, errorSubida };
 }
 
+/*
+ * Una sola vez por aparato (v28): compara TODO lo del aparato con la nube.
+ *  · Lo que el aparato tiene y la nube no → se marca para subir. Son registros
+ *    hechos con las versiones del 27-sep, anteriores a la marca "pendiente de
+ *    subir": se quedaban guardados solo en ese aparato y nunca subían.
+ *  · Lo que está en los dos y en el aparato figura "más nuevo" sin estar
+ *    pendiente → esa fecha la puso automáticamente una de esas versiones al
+ *    actualizarse, no es un cambio real: manda la nube y se baja su versión.
+ * Devuelve cuántos registros se corrigieron en el aparato.
+ */
+async function reconciliar(url, key) {
+  const nube = new Map();
+  for (let desde = 0; ; desde += 1000) {
+    const r = await fetch(`${url}/rest/v1/${TABLA}?select=uid,store,updated_at&order=uid.asc&limit=1000&offset=${desde}`,
+      { headers: cabeceras(key) });
+    if (!r.ok) throw new Error(`No se pudo revisar la nube (${r.status}).`);
+    const pagina = await r.json();
+    for (const f of pagina) nube.set(f.uid, f);
+    if (pagina.length < 1000) break;
+  }
+  const traer = [];
+  let marcados = 0;
+  for (const store of db.STORES) {
+    for (const r of await db.allRaw(store)) {
+      if (!r.uid) continue;
+      const f = nube.get(r.uid);
+      if (!f) {
+        if (!r.pendienteSubir) { r.pendienteSubir = r.updatedAt || db.ahora(); await db.putCrudo(store, r); marcados++; }
+        continue;
+      }
+      if (f.store !== store) continue;
+      if (!r.pendienteSubir && db.instante(r.updatedAt) > db.instante(f.updated_at)) traer.push(r.uid);
+    }
+  }
+  let corregidos = 0;
+  for (let i = 0; i < traer.length; i += 50) {
+    const lista = traer.slice(i, i + 50).map(u => `"${u.replace(/"/g, '\\"')}"`).join(',');
+    const r = await fetch(`${url}/rest/v1/${TABLA}?select=*&uid=in.(${encodeURIComponent(lista)})`, { headers: cabeceras(key) });
+    if (!r.ok) throw new Error(`No se pudo revisar la nube (${r.status}).`);
+    for (const fila of await r.json()) {
+      if (db.STORES.includes(fila.store) && await fusionar(fila, { forzar: true })) corregidos++;
+    }
+  }
+  await db.metaSet('reconciliado1', { fecha: db.ahora(), marcados, corregidos });
+  return corregidos;
+}
+
 // Una fila de la nube contra la local: gana la más nueva. Devuelve true si
 // se escribió algo. Se lee el local justo antes de escribir (no de una foto
 // vieja) para no pisar lo que la usuaria guardó mientras se bajaba.
-async function fusionar(fila) {
+async function fusionar(fila, { forzar = false } = {}) {
   const local = await db.getPorUid(fila.store, fila.uid);
-  if (local && db.instante(local.updatedAt) >= db.instante(fila.updated_at)) return false;
+  if (!forzar && local && db.instante(local.updatedAt) >= db.instante(fila.updated_at)) return false;
   const registro = {
     ...(fila.datos || {}),
     uid: fila.uid,
