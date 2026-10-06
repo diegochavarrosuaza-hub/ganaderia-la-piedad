@@ -33,7 +33,31 @@ async function refresh() {
   renderVista();
 }
 
-function renderVista() {
+// ¿Está la persona escribiendo en un campo de la pantalla (un buscador)?
+const escribiendoEnVista = () => {
+  const f = document.activeElement;
+  if (!f || !f.closest || !f.closest('#view')) return false;
+  return f.tagName === 'TEXTAREA' || (f.tagName === 'INPUT' && !['checkbox', 'radio', 'button', 'submit'].includes(f.type));
+};
+let redibujoPendiente = false;
+
+/*
+ * Dibuja la pestaña actual. Si alguien está escribiendo en un buscador de la
+ * pantalla, NO se redibuja en ese momento (salvo que se pida con forzar):
+ * redibujar reemplaza el campo y en el celular eso cierra el teclado. Se
+ * redibuja un momento después de que deje de escribir.
+ */
+function renderVista({ forzar = false } = {}) {
+  if (!forzar && escribiendoEnVista()) {
+    if (!redibujoPendiente) {
+      redibujoPendiente = true;
+      document.activeElement.addEventListener('blur', () => setTimeout(() => {
+        redibujoPendiente = false;
+        if (!escribiendoEnVista()) renderVista();
+      }, 400), { once: true });
+    }
+    return;
+  }
   const el = document.getElementById('view');
   const vista = VISTAS[ctx.vistaActual] || dashboard;
   el.innerHTML = '';
@@ -47,7 +71,7 @@ function irA(nombre, opciones) {
   ctx.opciones = opciones || null; // p. ej. { filtro: 'SIN_SERVICIO' }
   document.querySelectorAll('.tabs .tab').forEach(t =>
     t.classList.toggle('active', t.dataset.nav === nombre));
-  renderVista();
+  renderVista({ forzar: true });
 }
 
 async function main() {
@@ -93,10 +117,20 @@ async function main() {
   ajustarTopbar();
   window.addEventListener('resize', ajustarTopbar);
 
-  // Al rotar el celular o cambiar el tamaño, re-dibujar la vista para que las
-  // gráficas recalculen su geometría al nuevo ancho (con un pequeño respiro).
+  // Al rotar el celular, re-dibujar la vista para que las gráficas se acomoden
+  // al nuevo ANCHO. Solo si cambió el ancho: en Android, abrir el teclado
+  // achica el ALTO de la ventana y dispara 'resize'; redibujar ahí reemplazaba
+  // el buscador y cerraba el teclado apenas se abría (el error de Terneros).
   let reflowT;
-  const reflow = () => { clearTimeout(reflowT); reflowT = setTimeout(renderVista, 180); };
+  let anchoPrevio = window.innerWidth;
+  const reflow = () => {
+    clearTimeout(reflowT);
+    reflowT = setTimeout(() => {
+      if (window.innerWidth === anchoPrevio) return;
+      anchoPrevio = window.innerWidth;
+      renderVista();
+    }, 180);
+  };
   window.addEventListener('resize', reflow);
   window.addEventListener('orientationchange', reflow);
 
