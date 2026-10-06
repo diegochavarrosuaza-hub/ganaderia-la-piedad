@@ -15,6 +15,13 @@ export function toDate(iso) {
 
 export function fmtFecha(iso) {
   if (!iso) return '—';
+  // Una marca de hora completa ('2026-10-04T00:16:35Z') se muestra con la fecha
+  // de aquí, no la universal: a las 7 p. m. del 3 de octubre en Colombia ya es
+  // 4 de octubre en hora universal.
+  if (String(iso).length > 10 && String(iso).includes('T')) {
+    const d = new Date(iso);
+    if (!Number.isNaN(d.getTime())) return isoOf(d).split('-').reverse().join('/');
+  }
   const s = String(iso).slice(0, 10);
   const [y, m, d] = s.split('-');
   return (d && m && y) ? `${d}/${m}/${y}` : s;

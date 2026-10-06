@@ -102,6 +102,20 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
         return `<option value="${esc(v)}"${sel}>${esc(l)}</option>`;
       }).join('');
       input = `<select ${common}>${opts}</select>`;
+    } else if (f.type === 'checks' && f.grupos) {
+      // Selector de animales por grupos (vacas, toros, terneros), con filtro y
+      // "Todos / Ninguno" por grupo. Para marcar a quiénes se aplicó algo.
+      const marcados = new Set((Array.isArray(f.value) ? f.value : []).map(String));
+      const chip = o => `<label class="f-check" data-texto="${esc(sinTildesUI(o.label))}"><input type="checkbox" name="${esc(f.name)}" value="${esc(o.value)}"${marcados.has(String(o.value)) ? ' checked' : ''}><span>${esc(o.label)}</span></label>`;
+      input = `<div class="sel-animales">
+        <input type="search" class="search sel-filtro" placeholder="🔍 Filtrar por número o nombre…" autocomplete="off">
+        ${f.grupos.filter(g => g.opciones.length).map(g => `<div class="sel-grupo">
+          <div class="sel-grupo-head"><b>${esc(g.titulo)}</b><span class="sel-cuenta muted"></span>
+            <button type="button" class="btn btn-ghost btn-sm" data-todos>Todos</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-ninguno>Ninguno</button></div>
+          <div class="f-checks">${g.opciones.map(chip).join('')}</div>
+        </div>`).join('')}
+      </div>`;
     } else if (f.type === 'checks') {
       // Varias casillas grandes: en el celular es mucho mejor que un
       // <select multiple>, que nadie sabe usar.
@@ -118,7 +132,7 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
                placeholder="${esc(f.placeholder || '')}" ${f.step ? `step="${f.step}"` : ''}
                ${f.type === 'number' ? 'inputmode="decimal"' : ''}>`;
     }
-    return `<div class="f-row" ${f.half ? 'data-half' : ''}>
+    return `<div class="f-row" ${f.half ? 'data-half' : ''} ${f.grupo ? `data-grupo="${esc(f.grupo)}"` : ''}>
       <label for="ff-${esc(f.name)}">${esc(f.label)}${req}</label>
       ${input}
       ${f.help ? `<div class="f-help">${esc(f.help)}</div>` : ''}
@@ -182,6 +196,7 @@ export function formModal({ title, fields, submitLabel = 'Guardar', onSubmit, af
       btn.disabled = false;
     }
   });
+  modal.querySelectorAll('.sel-animales').forEach(conectarSelector);
   if (afterRender) afterRender(form);
   const first = form.querySelector('input:not([readonly]), select, textarea');
   if (first) first.focus();
@@ -213,10 +228,43 @@ export function tablaHTML({ columns, rows, rowAttr, emptyMsg = 'No hay registros
 export function redibujarSoloTabla(el, render) {
   const tmp = document.createElement('div');
   render(tmp);
-  const nueva = tmp.querySelector('.table-wrap'), vieja = el.querySelector('.table-wrap');
-  if (nueva && vieja) vieja.replaceWith(nueva);
+  const nuevas = tmp.querySelectorAll('.table-wrap'), viejas = el.querySelectorAll('.table-wrap');
+  viejas.forEach((v, i) => { if (nuevas[i]) v.replaceWith(nuevas[i]); });
   const cNuevo = tmp.querySelector('.toolbar .muted'), cViejo = el.querySelector('.toolbar .muted');
   if (cNuevo && cViejo) cViejo.textContent = cNuevo.textContent;
+  const kNuevos = tmp.querySelectorAll('[data-cuenta]'), kViejos = el.querySelectorAll('[data-cuenta]');
+  kViejos.forEach((k, i) => { if (kNuevos[i]) k.textContent = kNuevos[i].textContent; });
+}
+
+const sinTildesUI = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+
+// Comportamiento del selector de animales: contar, filtrar, todos/ninguno.
+function conectarSelector(sel) {
+  const contar = () => sel.querySelectorAll('.sel-grupo').forEach(g => {
+    const cajas = [...g.querySelectorAll('input[type=checkbox]')];
+    g.querySelector('.sel-cuenta').textContent = `${cajas.filter(c => c.checked).length} de ${cajas.length}`;
+  });
+  sel.addEventListener('change', contar);
+  sel.querySelectorAll('[data-todos],[data-ninguno]').forEach(b => {
+    b.onclick = () => {
+      const marcar = b.hasAttribute('data-todos');
+      b.closest('.sel-grupo').querySelectorAll('.f-check').forEach(ch => {
+        if (!ch.hidden) ch.querySelector('input').checked = marcar;
+      });
+      contar();
+    };
+  });
+  const filtro = sel.querySelector('.sel-filtro');
+  filtro.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); });
+  filtro.addEventListener('input', () => {
+    const t = sinTildesUI(filtro.value);
+    const num = /^\d+$/.test(t) ? t.replace(/^0+(?=\d)/, '') : null;
+    sel.querySelectorAll('.f-check').forEach(ch => {
+      const txt = ch.dataset.texto;
+      ch.hidden = !!t && !txt.includes(t) && !(num && txt.replace(/^0+(?=\d)/, '').startsWith(num));
+    });
+  });
+  contar();
 }
 
 export function badge(texto) {

@@ -34,12 +34,15 @@ export function abrirFichaVaca(chapeta, ctx) {
       principales.push(pendientes.length
         ? `<button class="btn btn-pink btn-sm" data-f="palpar">🩺 Palpación</button>`
         : `<button class="btn btn-pink btn-sm" data-f="prenez">🤰 Ya está preñada</button>`);
+      // Aunque no figure preñada, si parió se registra: la app pregunta de qué preñez venía.
+      principales.push(`<button class="btn btn-pink btn-sm" data-f="parto">🍼 Parió</button>`);
       principales.push(`<button class="btn btn-warn btn-sm" data-f="mn">🐂 Monta con toro</button>`);
       principales.push(`<button class="btn btn-blue btn-sm" data-f="ia">💉 Inseminar</button>`);
       principales.push(`<button class="btn btn-blue btn-sm" data-f="te">🔬 Transferencia</button>`);
     }
   }
   const secundarias = [
+    activa ? `<button class="btn btn-ghost btn-sm" data-f="vacuna">💉 Vacuna / tratamiento</button>` : '',
     `<button class="btn btn-ghost btn-sm" data-f="editar">✏️ Editar</button>`,
     `<button class="btn btn-ghost btn-sm" data-f="pdf">🖨️ PDF</button>`,
     activa ? `<button class="btn btn-ghost btn-sm" data-f="vender">💰 Vender</button>` : '',
@@ -53,6 +56,7 @@ export function abrirFichaVaca(chapeta, ctx) {
       <!--foto-->${fotos.avatarHTML(state, vaca, { editable: true })}<!--/foto-->
       <div class="ficha-head">
         <span class="ficha-id">${logic.esToro(vaca) ? '🐂 ' : 'Chapeta '}${esc(vaca.chapeta)}</span>
+        ${vaca.nombre ? `<span class="ficha-nombre">${esc(vaca.nombre)}</span>` : ''}
         ${badge(vaca.estado)}
         ${vaca.genetica ? `<span class="muted">Genética: ${esc(vaca.genetica)}</span>` : ''}
       </div>
@@ -94,12 +98,15 @@ export function abrirFichaVaca(chapeta, ctx) {
           ${p.observaciones ? '· <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>`)),
         'Sin preñeces registradas.')}
 
+      ${seccion('🩺 Vacunas y tratamientos', logic.tratamientosDe(state, vaca).map(filaTratamiento),
+        'Sin vacunas ni tratamientos registrados.')}
+
       ${seccion('📋 Últimos eventos', eventos.map(filaEvento), 'Sin eventos.')}
     `;
 
   const modal = openModal({
     lg: true,
-    title: `🐄 Hoja de vida — Vaca ${esc(vaca.chapeta)}`,
+    title: `🐄 Hoja de vida — Vaca ${esc(vaca.chapeta)}${vaca.nombre ? ' · ' + esc(vaca.nombre) : ''}`,
     bodyHTML: cuerpo,
   });
 
@@ -115,6 +122,7 @@ export function abrirFichaVaca(chapeta, ctx) {
     vender: () => forms.formEstadoVaca(vaca, 'VENDIDA', ctx),
     fallecer: () => forms.formEstadoVaca(vaca, 'FALLECIDA', ctx),
     editar: () => forms.formEditarVaca(vaca, ctx),
+    vacuna: () => forms.formAplicacion(ctx, { soloAnimal: vaca }),
   };
   modal.querySelectorAll('[data-f]').forEach(b =>
     b.addEventListener('click', () => {
@@ -148,6 +156,7 @@ export function abrirFichaTernero(nombre, ctx) {
     (t.activo && t.sexo === 'Hembra') ? `<button class="btn btn-pink btn-sm" data-f="novilla">🐄 Pasar a vaca</button>` : '',
     t.activo ? `<button class="btn btn-warn btn-sm" data-f="vender">💰 Vender</button>` : '',
     t.activo ? `<button class="btn btn-danger btn-sm" data-f="fallecer">🕊️ Falleció</button>` : '',
+    t.activo ? `<button class="btn btn-ghost btn-sm" data-f="vacuna">💉 Vacuna / tratamiento</button>` : '',
     `<button class="btn btn-ghost btn-sm" data-f="editar">✏️ Editar</button>`,
     `<button class="btn btn-ghost btn-sm" data-f="pdf">🖨️ PDF</button>`,
   ].filter(Boolean).join('');
@@ -163,7 +172,9 @@ export function abrirFichaTernero(nombre, ctx) {
       </div>
       <div class="ficha-datos">
         <div class="fd"><b>Nacimiento</b>${fmtFecha(t.fechaNac)} (${edadTexto(t.fechaNac)})</div>
-        <div class="fd"><b>Madre</b>${madre ? '🐄 Vaca ' + esc(madre.chapeta) : (esc(t.codigoMadre) || '—')}</div>
+        ${t.origen === 'COMPRADO'
+          ? `<div class="fd"><b>Llegó</b>🚚 ${fmtFecha(t.fechaIngreso)}${t.procedencia ? ' de ' + esc(t.procedencia) : ''}</div>`
+          : `<div class="fd"><b>Madre</b>${madre ? '🐄 Vaca ' + esc(madre.chapeta) + (madre.nombre ? ' · ' + esc(madre.nombre) : '') : (esc(t.codigoMadre) || '—')}</div>`}
         <div class="fd"><b>Último peso</b>${t.ultimoPeso ? fmtNum(t.ultimoPeso, 1) + ' kg (' + fmtFecha(t.fechaUltimoPesaje) + ')' : '—'}</div>
         <div class="fd"><b>Ganancia diaria</b>${gdp != null ? fmtNum(gdp * 1000, 0) + ' g/día' : '— (necesita 2+ pesajes)'}</div>
         ${t.genetica ? `<div class="fd"><b>Raza / genética</b>${esc(t.genetica)}</div>` : ''}
@@ -185,6 +196,9 @@ export function abrirFichaTernero(nombre, ctx) {
           <span><b>${fmtNum(p.peso, 1)} kg</b>${p.observaciones ? ' · <span class="muted">' + esc(p.observaciones) + '</span>' : ''}</span>`)),
         'Sin pesajes todavía.')}
 
+      ${seccion('🩺 Vacunas y tratamientos', logic.tratamientosDe(state, t).map(filaTratamiento),
+        'Sin vacunas ni tratamientos registrados.')}
+
       ${seccion('📋 Últimos eventos', eventos.map(e => fila('evento', `data-id="${e.id}"`, `
           <span class="hist-fecha">${fmtFecha(e.fecha) !== '—' ? fmtFecha(e.fecha) : (e.timestamp || '').slice(0, 10)}</span>
           <span>${esc(e.tipo)}${e.precio ? ' · ' + fmtNum(e.precio) : ''}${e.causa ? ' · ' + esc(e.causa) : ''}</span>`)),
@@ -203,6 +217,7 @@ export function abrirFichaTernero(nombre, ctx) {
     vender: () => forms.formSalidaTernero(t, 'VENDIDO', ctx),
     fallecer: () => forms.formSalidaTernero(t, 'FALLECIDO', ctx),
     editar: () => forms.formEditarTernero(t, ctx),
+    vacuna: () => forms.formAplicacion(ctx, { soloAnimal: t }),
   };
   modal.querySelectorAll('[data-f]').forEach(b =>
     b.addEventListener('click', () => {
@@ -227,6 +242,14 @@ function conectarFoto(modal, animal, ctx, volver) {
 async function conFotoParaPDF(animal, html) {
   const g = await fotos.fotoGrande(animal);
   return g ? html.replace(/<!--foto-->[\s\S]*?<!--\/foto-->/, `<img class="print-foto" src="${g}" alt="">`) : html;
+}
+
+// Una vacuna o tratamiento en la hoja de vida.
+function filaTratamiento(t) {
+  const pendiente = t.fechaReaplicar && t.estado !== 'HECHO';
+  return fila('tratamiento', `data-id="${t.id}"`, `
+          <span class="hist-fecha">${fmtFecha(t.fecha)}</span>
+          <span><b>${esc(t.producto)}</b>${pendiente ? ` · refuerzo ${fmtFecha(t.fechaReaplicar)}` : ''}${t.notas ? ' · <span class="muted">' + esc(t.notas) + '</span>' : ''}</span>`);
 }
 
 // Una línea de la bitácora en el historial (pantalla y PDF).
@@ -263,7 +286,7 @@ function conectarEdicion(modal, ctx) {
     if (tipo === 'cria') { closeModal(); return abrirFichaTernero(linea.dataset.nombre, ctx); }
 
     const id = Number(linea.dataset.id);
-    const store = { servicio: 'servicios', prenez: 'prenez', evento: 'eventos', pesaje: 'pesajes' }[tipo];
+    const store = { servicio: 'servicios', prenez: 'prenez', evento: 'eventos', pesaje: 'pesajes', tratamiento: 'tratamientos' }[tipo];
     const registro = store && ctx.state[store].find(x => x.id === id);
     if (!registro) return;
 
@@ -272,6 +295,7 @@ function conectarEdicion(modal, ctx) {
       prenez: forms.formEditarPrenez,
       evento: forms.formEditarEvento,
       pesaje: forms.formEditarPesaje,
+      tratamiento: forms.formEditarAplicacion,
     }[tipo];
     closeModal();
     abrir(registro, ctx);

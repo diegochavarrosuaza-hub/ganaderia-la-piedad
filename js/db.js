@@ -16,11 +16,12 @@ import { SEED, SEED_VERSION } from './seed-data.js';
 export let datosActualizados = false;
 
 const DB_NAME = 'ganaderia-la-piedad';
-const DB_VERSION = 5; // v3: 'tratamientos' · v4: 'ajustes' + índice por uid · v5: fotos
+const DB_VERSION = 6; // v3: 'tratamientos' · v4: 'ajustes' + índice por uid · v5: fotos · v6: productos
 // Las facturas se manejan fuera de la app (Google Sheets + Claude); aquí solo el hato.
 // 'ajustes' guarda un solo registro con los parámetros de la finca; al estar en
 // la lista, viaja entre dispositivos con la sincronización igual que lo demás.
-export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'tratamientos', 'eventos', 'ajustes',
+// 'productos' es el catálogo de vacunas y tratamientos de la sanidad.
+export const STORES = ['vacas', 'terneros', 'servicios', 'prenez', 'pesajes', 'tratamientos', 'eventos', 'ajustes', 'productos',
   'fotos', 'fotosGrandes'];
 // Las fotos grandes NO se cargan en memoria con lo demás (pesan): se leen una
 // por una cuando se van a ver o imprimir.
@@ -121,7 +122,9 @@ export async function getPorUid(store, uid) {
 export async function add(store, obj) {
   const r = { ...obj };
   // Identidad: legible (qué es) + única por aparato (quién y cuándo la creó).
-  if (!r.uid) r.uid = store === 'ajustes' ? claveEstable(store, r) : claveEstable(store, r) + sufijoUnico();
+  // Ajustes y productos son únicos por nombre: si dos aparatos crean "Aftosa",
+  // es el mismo producto (mismo uid), no dos.
+  if (!r.uid) r.uid = (store === 'ajustes' || store === 'productos') ? claveEstable(store, r) : claveEstable(store, r) + sufijoUnico();
   r.updatedAt = ahora();
   r.pendienteSubir = r.updatedAt;
   delete r.deletedAt;
@@ -173,6 +176,18 @@ export async function del(store, id) {
 // sincronización al bajar: lo que viene de la nube ya está en la nube).
 export function putCrudo(store, obj) {
   return req2p(tx(store, 'readwrite').put(obj));
+}
+
+// Devuelve a la vida un registro borrado (por ejemplo una preñez que se
+// eliminó por error), con los cambios dados. Se sube como lo más nuevo.
+export async function revivir(store, id, cambios = {}) {
+  const r = await get(store, id);
+  if (!r) return;
+  delete r.deletedAt;
+  Object.assign(r, cambios);
+  r.updatedAt = ahora();
+  r.pendienteSubir = r.updatedAt;
+  return putCrudo(store, r);
 }
 
 // Crea o reemplaza el registro con ese uid (uno por animal, como las fotos).
@@ -250,6 +265,7 @@ export function claveEstable(store, r) {
     case 'tratamientos': return `trat:${r.fecha || ''}:${norm(r.producto)}:${norm(r.aplicadoA)}`;
     case 'eventos':      return `evt:${r.timestamp || ''}:${norm(r.refId)}:${norm(r.tipo)}:${r.fecha || ''}`;
     case 'ajustes':      return 'ajustes:finca'; // un solo registro para toda la finca
+    case 'productos':    return `prod:${norm(r.nombre)}`;
     case 'fotos':        return `foto:${r.animal || ''}`;
     case 'fotosGrandes': return `fotoG:${r.animal || ''}`; // distinto de la miniatura: en la nube el uid es único
     default:             return `${store}:?`;

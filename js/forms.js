@@ -1,7 +1,8 @@
 // forms.js — formularios del negocio, compartidos por varias vistas
 import * as db from './db.js';
-import { hoyISO, addDias, fmtFecha, esc, edadMeses } from './util.js';
+import { hoyISO, addDias, diasEntre, fmtFecha, esc, edadMeses } from './util.js';
 import { formModal, toast, preguntar } from './ui.js';
+import { etiqueta as etiquetaAnimal } from './fotos.js';
 import * as logic from './logic.js';
 
 const GENETICAS = ['F1', 'Plus', 'Plus x Plus', 'Convencional', 'Otra'];
@@ -21,7 +22,26 @@ const RESULTADOS = [
   { value: 'CERRADO', label: '➖ Cerrado (la preñez vino de otro servicio, o ya parió)' },
 ];
 const ETIQUETA_TIPO = { MN: 'Monta con toro', IA: 'Inseminación', TE: 'Transferencia' };
-const activasDe = ctx => ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).map(v => v.chapeta);
+// Vacas activas para un <select>: "043 · Mariposa". Con preñadasPrimero, las
+// preñadas van arriba con su fecha de parto (para registrar partos).
+const nombreVaca = v => v.chapeta + (v.nombre ? ' · ' + v.nombre : '');
+function opcionesVaca(ctx, { preñadasPrimero = false } = {}) {
+  const { state } = ctx;
+  const porChapeta = (a, b) => String(a.chapeta).localeCompare(String(b.chapeta), 'es', { numeric: true });
+  const vacas = state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).sort(porChapeta);
+  if (!preñadasPrimero) return vacas.map(v => ({ value: v.chapeta, label: nombreVaca(v) }));
+  const p = v => logic.prenezActivaDe(state, v.chapeta);
+  const preñadas = vacas.filter(p).sort((a, b) => (p(a).fechaProbParto || '').localeCompare(p(b).fechaProbParto || ''));
+  return [
+    ...preñadas.map(v => ({ value: v.chapeta, label: `${nombreVaca(v)} — 🤰 parto ${fmtFecha(p(v).fechaProbParto)}` })),
+    ...vacas.filter(v => !p(v)).map(v => ({ value: v.chapeta, label: nombreVaca(v) })),
+  ];
+}
+const activasDe = ctx => opcionesVaca(ctx);
+// Muestra solo las filas del formulario del grupo elegido (data-grupo).
+const mostrarGrupo = (form, grupos, activo) => form.querySelectorAll('[data-grupo]').forEach(r => {
+  if (grupos.includes(r.dataset.grupo)) r.hidden = r.dataset.grupo !== activo;
+});
 const torosDe = ctx => ctx.state.vacas.filter(v => logic.esToro(v) && v.estado === 'ACTIVA').map(v => v.chapeta);
 const pendientesDe = (ctx, chapeta) => ctx.state.servicios
   .filter(x => x.chapeta === String(chapeta) && x.resultado === 'PENDIENTE')
@@ -35,6 +55,81 @@ const metodoDe = p => {
 // Abrir otra ventana justo después de que la actual se cierre sola.
 const despues = fn => setTimeout(fn, 0);
 const abrirTernero = (nombre, ctx) => import('./fichas.js').then(m => m.abrirFichaTernero(nombre, ctx));
+
+/*
+ * La vaca parió pero no figura preñada (la preñez se borró, quedó como
+ * perdida, o nunca se registró). Antes del parto se aclara de qué preñez
+ * venía. Devuelve false si se cancela.
+ */
+async function asegurarPrenez(ctx, chapeta, fecha) {
+  if (logic.prenezActivaDe(ctx.state, chapeta)) return true;
+  const cand = await logic.prenezCandidata(chapeta, fecha);
+  const servs = pendientesDe(ctx, chapeta).filter(s => {
+    const d = diasEntre(s.fecha, fecha);
+    return d != null && d >= 230 && d <= 330;
+  });
+  const opciones = [];
+  if (cand) {
+    opciones.push({ valor: 'revivir', texto: `🔁 Sí, parió de esa preñez del ${fmtFecha(cand.fechaPrenez)}`,
+      detalle: cand.deletedAt ? 'Se borró por error: se recupera y queda como parida.' : 'No se había perdido: se corrige y queda como parida.' });
+  }
+  for (const s of servs) {
+    opciones.push({ valor: 's' + s.id, texto: `💉 Viene de la ${logic.TIPO_SERVICIO[s.tipo] || 'servicio'} del ${fmtFecha(s.fecha)}`,
+      detalle: 'Ese servicio queda como exitoso.' });
+  }
+  opciones.push({ valor: 'nueva', texto: '🤷 No sé / la preñez no quedó registrada',
+    detalle: 'Se anota una preñez con fecha estimada (9 meses antes del parto).' });
+  const mensaje = cand
+    ? `Tenía una preñez del <b>${fmtFecha(cand.fechaPrenez)}</b> (${esc(metodoDe(cand))}) con parto probable el `
+      + `${fmtFecha(cand.fechaProbParto)}, pero ${cand.deletedAt ? `se <b>borró</b> el ${fmtFecha(cand.deletedAt)}` : 'quedó como <b>perdida</b>'}.`
+      + '<br><br><b>¿Parió de esa preñez?</b>'
+    : 'Para registrar el parto, <b>¿de qué preñez venía la cría?</b>';
+  const r = await preguntar({ titulo: `🍼 La vaca ${esc(chapeta)} no figura preñada`, mensaje, opciones });
+  if (!r) return false;
+  if (r === 'revivir') await logic.reactivarPrenez(cand);
+  else if (r === 'nueva') {
+    await logic.crearPrenez({ chapeta, fechaPrenez: addDias(fecha, -280), origen: '',
+      observaciones: 'No quedó registrada: se supo por el parto' });
+  } else {
+    const s = ctx.state.servicios.find(x => 's' + x.id === r);
+    await logic.confirmarServicio(s, 'PREÑADA');
+  }
+  return true;
+}
+
+/*
+ * Registrar que una vaca parió, venga de donde venga el registro (el botón
+ * de parto, Reproducción o "Nuevo ternero"). Pregunta lo que haga falta:
+ * cría repetida, preñez que no figura. Devuelve { nombre }, 'otra' (se
+ * equivocó de vaca) o null (canceló).
+ */
+async function registrarNacimiento(ctx, d) {
+  const escrito = (d.nombre || '').trim();
+  const auto = d.criaEstado === 'muerta' ? `Cría ${d.chapeta} (murió)` : (d.criaEstado === 'vendida' ? `Cría ${d.chapeta} (vendida)` : '');
+  // El nombre se valida antes de preguntar nada (un nombre repetido se corrige primero).
+  const nombre = (escrito || auto)
+    ? logic.nombreDisponible(ctx.state, escrito || auto, { madre: d.chapeta, automatico: !escrito })
+    : '';
+  const reciente = logic.partoReciente(ctx.state, d.chapeta, d.fecha);
+  if (reciente) {
+    const r = await preguntarCriaRepetida(d.chapeta, reciente);
+    if (r === 'misma') {
+      if (logic.prenezActivaDe(ctx.state, d.chapeta)) await logic.cerrarPrenezConCria(d.chapeta, reciente.cria);
+      toast('No se creó ninguna cría nueva.', 'info');
+      await ctx.refresh();
+      despues(() => abrirTernero(reciente.cria.nombre, ctx));
+      return null;
+    }
+    if (r === 'otra') return 'otra';
+    if (r !== 'registrar') return null;
+  }
+  if (!(await asegurarPrenez(ctx, d.chapeta, d.fecha))) return null;
+  await logic.registrarParto({
+    chapeta: d.chapeta, fechaParto: d.fecha, criaNombre: nombre, criaEstado: d.criaEstado || 'viva',
+    sexoCria: d.sexo, brucelosis: d.brucelosis, complicaciones: !!d.complicaciones, observaciones: d.observaciones || '',
+  });
+  return { nombre };
+}
 
 /*
  * La vaca ya tiene un parto registrado hace muy poco: antes de crear otra
@@ -88,6 +183,7 @@ export function formNuevaVaca(ctx) {
     title: '🐄 Registrar nueva vaca',
     fields: [
       { name: 'chapeta', label: 'Chapeta', required: true, half: true, placeholder: '072' },
+      { name: 'nombre', label: 'Nombre (opcional)', half: true, placeholder: 'Mariposa' },
       { name: 'codigo', label: 'Código de registro', half: true, placeholder: '367-20' },
       { name: 'genetica', label: 'Genética', type: 'select', options: GENETICAS, half: true },
       { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', half: true },
@@ -100,7 +196,7 @@ export function formNuevaVaca(ctx) {
         throw new Error(`Ya existe una vaca con la chapeta ${v.chapeta}.`);
       }
       await db.add('vacas', {
-        chapeta: v.chapeta, codigo: v.codigo, genetica: v.genetica,
+        chapeta: v.chapeta, nombre: v.nombre || '', codigo: v.codigo, genetica: v.genetica,
         fechaNac: v.fechaNac, sexo: 'Hembra', ultimoParto: v.ultimoParto,
         criaActual: v.criaActual, fechaPrenez: '', fechaProbParto: '',
         estado: 'ACTIVA', fechaSalida: '', notas: v.notas,
@@ -117,6 +213,7 @@ export function formEditarVaca(vaca, ctx) {
     title: '✏️ Editar vaca ' + esc(vaca.chapeta),
     submitLabel: 'Guardar cambios',
     fields: [
+      { name: 'nombre', label: 'Nombre', value: vaca.nombre || '', half: true, placeholder: 'Mariposa' },
       { name: 'codigo', label: 'Código de registro', value: vaca.codigo, half: true },
       { name: 'genetica', label: 'Genética', type: 'select', value: vaca.genetica,
         options: [...new Set([...(vaca.genetica ? [vaca.genetica] : []), ...GENETICAS])], half: true },
@@ -388,13 +485,16 @@ export function formEditarPrenez(p, ctx) {
 
 export function formParto(chapeta, ctx, previo = {}) {
   formModal({
-    title: `🍼 Registrar parto — vaca ${esc(chapeta)}`,
+    title: chapeta ? `🍼 Registrar parto — vaca ${esc(chapeta)}` : '🍼 Registrar parto',
     submitLabel: 'Registrar parto',
     fields: [
+      ...(chapeta ? [] : [{ name: 'chapeta', label: '¿Cuál vaca parió?', type: 'select', required: true,
+        value: previo.chapeta, options: [{ value: '', label: '— Elige la vaca —' }, ...opcionesVaca(ctx, { preñadasPrimero: true })],
+        help: 'Arriba están las preñadas, por fecha de parto. Si no figura preñada, igual se puede.' }]),
       { name: 'fechaParto', label: 'Fecha del parto', type: 'date', required: true, value: previo.fechaParto || hoyISO(), half: true },
       { name: 'criaNombre', label: 'Nombre de la cría', half: true, value: previo.criaNombre, placeholder: 'Se crea como ternero',
         help: 'Si se va a vender, puedes poner NN.' },
-      { name: 'sexoCria', label: 'Sexo de la cría', type: 'select', value: previo.sexoCria, options: ['Macho', 'Hembra'], half: true },
+      { name: 'sexoCria', label: 'Sexo de la cría', type: 'select', value: previo.sexoCria, options: ['Hembra', 'Macho'], half: true },
       { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: previo.brucelosis, options: ['No', 'Sí'], half: true },
       { name: 'criaEstado', label: '¿Cómo salió la cría?', type: 'select', value: previo.criaEstado, options: [
         { value: 'viva', label: '🐮 Viva' },
@@ -405,30 +505,15 @@ export function formParto(chapeta, ctx, previo = {}) {
         options: [{ value: '', label: 'Todo bien' }, { value: 'si', label: 'Hubo complicaciones' }] },
     ],
     async onSubmit(v) {
-      // ¿Ya tiene una cría de hace muy poco? Puede ser el mismo ternero metido
-      // dos veces (así quedó la 041 con Hércules y Ternero NN).
-      const reciente = logic.partoReciente(ctx.state, chapeta, v.fechaParto);
-      if (reciente) {
-        const r = await preguntarCriaRepetida(chapeta, reciente);
-        if (r === 'misma') {
-          await logic.cerrarPrenezConCria(chapeta, reciente.cria);
-          toast(`Listo: la preñez quedó cerrada con ${reciente.cria.nombre}, sin crear otra cría.`, 'info');
-          await ctx.refresh();
-          return despues(() => abrirTernero(reciente.cria.nombre, ctx));
-        }
-        if (r !== 'registrar') return;
-      }
-      const escrito = (v.criaNombre || '').trim();
-      const auto = v.criaEstado === 'muerta' ? `Cría ${chapeta} (murió)` : (v.criaEstado === 'vendida' ? `Cría ${chapeta} (vendida)` : '');
-      const nombre = (escrito || auto)
-        ? logic.nombreDisponible(ctx.state, escrito || auto, { madre: chapeta, automatico: !escrito })
-        : '';
-      await logic.registrarParto({
-        chapeta, fechaParto: v.fechaParto, criaNombre: nombre, criaEstado: v.criaEstado,
-        sexoCria: v.sexoCria, brucelosis: v.brucelosis, complicaciones: !!v.complicaciones,
+      const c = chapeta || v.chapeta;
+      if (!c) throw new Error('Elige cuál vaca parió.');
+      const r = await registrarNacimiento(ctx, {
+        chapeta: c, fecha: v.fechaParto, nombre: v.criaNombre, sexo: v.sexoCria, brucelosis: v.brucelosis,
+        criaEstado: v.criaEstado, complicaciones: !!v.complicaciones,
       });
+      if (!r || r === 'otra') return;
       toast(v.criaEstado === 'viva'
-        ? (nombre ? `Parto registrado. Ternero "${nombre}" creado automáticamente. 🎉` : 'Parto registrado.')
+        ? (r.nombre ? `Parto registrado: ${r.nombre} es cría de la ${c}. 🎉` : 'Parto registrado.')
         : 'Parto registrado. Lo sentimos por la cría.', v.criaEstado === 'viva' ? 'success' : 'info');
       ctx.refresh();
     },
@@ -437,55 +522,53 @@ export function formParto(chapeta, ctx, previo = {}) {
 
 // ── TERNEROS ──────────────────────────────────────────────────────
 export function formNuevoTernero(ctx, previo = {}) {
-  const madres = ctx.state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).map(v => v.chapeta);
   formModal({
     title: '🐮 Registrar nuevo ternero',
     fields: [
+      { name: 'origen', label: '¿De dónde viene?', type: 'select', value: previo.origen || 'finca', options: [
+        { value: 'finca', label: '🐄 Nació aquí, de una de nuestras vacas' },
+        { value: 'afuera', label: '🚚 Llegó de afuera (comprado o traído)' },
+      ] },
+      { name: 'codigoMadre', label: '¿Cuál es la madre?', type: 'select', grupo: 'finca', value: previo.codigoMadre,
+        options: [{ value: '', label: '— Elige la madre —' }, ...opcionesVaca(ctx, { preñadasPrimero: true })],
+        help: 'Queda registrado como su parto. Si la vaca no figura preñada, la app pregunta de qué preñez venía.' },
       { name: 'nombre', label: 'Nombre', required: true, half: true, value: previo.nombre,
         help: 'Si se va a vender, puedes poner NN.' },
-      { name: 'sexo', label: 'Sexo', type: 'select', value: previo.sexo, options: ['Macho', 'Hembra'], half: true },
-      { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', required: true, value: previo.fechaNac || hoyISO(), half: true },
-      { name: 'codigoMadre', label: 'Madre (chapeta)', type: 'select', value: previo.codigoMadre,
-        options: ['', ...madres], half: true },
+      { name: 'sexo', label: 'Sexo', type: 'select', value: previo.sexo, options: ['Hembra', 'Macho'], half: true },
+      { name: 'fechaNac', label: 'Fecha de nacimiento', type: 'date', value: previo.fechaNac || hoyISO(), half: true },
       { name: 'brucelosis', label: 'Vacuna brucelosis', type: 'select', value: previo.brucelosis, options: ['No', 'Sí'], half: true },
-      { name: 'observaciones', label: 'Observaciones', half: true, value: previo.observaciones },
+      { name: 'fechaIngreso', label: 'Llegó el', type: 'date', grupo: 'afuera', value: previo.fechaIngreso || hoyISO(), half: true },
+      { name: 'procedencia', label: '¿De dónde vino?', grupo: 'afuera', value: previo.procedencia, placeholder: 'Finca o vendedor', half: true },
+      { name: 'precio', label: 'Precio de compra ($)', type: 'number', grupo: 'afuera', value: previo.precio, half: true },
+      { name: 'genetica', label: 'Raza / genética', grupo: 'afuera', value: previo.genetica, half: true },
+      { name: 'observaciones', label: 'Observaciones', value: previo.observaciones },
     ],
+    afterRender(form) {
+      const sel = form.querySelector('[name="origen"]');
+      const fn = form.querySelector('label[for="ff-fechaNac"]');
+      const mostrar = () => {
+        mostrarGrupo(form, ['finca', 'afuera'], sel.value);
+        fn.textContent = sel.value === 'afuera' ? 'Fecha de nacimiento (aproximada)' : 'Fecha de nacimiento';
+      };
+      sel.addEventListener('change', mostrar);
+      mostrar();
+    },
     async onSubmit(v) {
-      const nombre = logic.nombreDisponible(ctx.state, v.nombre, { madre: v.codigoMadre });
-      // ¿La madre ya parió hace muy poco? Puede ser el mismo ternero otra vez.
-      if (v.codigoMadre) {
-        const reciente = logic.partoReciente(ctx.state, v.codigoMadre, v.fechaNac);
-        if (reciente) {
-          const r = await preguntarCriaRepetida(v.codigoMadre, reciente);
-          if (r === 'misma') {
-            if (logic.prenezActivaDe(ctx.state, v.codigoMadre)) await logic.cerrarPrenezConCria(v.codigoMadre, reciente.cria);
-            toast('No se creó ningún ternero nuevo.', 'info');
-            await ctx.refresh();
-            return despues(() => abrirTernero(reciente.cria.nombre, ctx));
-          }
-          if (r === 'otra') return despues(() => formNuevoTernero(ctx, { ...v, codigoMadre: '' }));
-          if (r !== 'registrar') return;
-        }
-      }
-      // Si la madre figura preñada, este ternero ES su parto: se registra como
-      // tal (cierra la preñez y actualiza la vaca) en vez de duplicar caminos.
-      if (v.codigoMadre && logic.prenezActivaDe(ctx.state, v.codigoMadre)) {
-        await logic.registrarParto({
-          chapeta: v.codigoMadre, fechaParto: v.fechaNac, criaNombre: nombre,
-          sexoCria: v.sexo, brucelosis: v.brucelosis, observaciones: v.observaciones,
-        });
-        toast(`Como la vaca ${v.codigoMadre} estaba preñada, quedó registrado como su parto. 🎉`);
+      if (v.origen === 'afuera') {
+        const nombre = logic.nombreDisponible(ctx.state, v.nombre);
+        await logic.registrarTerneroComprado({ ...v, nombre });
+        toast(`${nombre} registrado como llegado de afuera.`);
         return ctx.refresh();
       }
-      await db.add('terneros', {
-        nombre, sexo: v.sexo, fechaNac: v.fechaNac, codigoMadre: v.codigoMadre,
-        activo: true, fechaSalida: '', tipoSalida: '', brucelosis: v.brucelosis,
-        observaciones: v.observaciones, ultimoPeso: null, fechaUltimoPesaje: '',
+      if (!v.codigoMadre) throw new Error('Elige la madre (o marca que llegó de afuera).');
+      if (!v.fechaNac) throw new Error('Falta la fecha de nacimiento.');
+      const r = await registrarNacimiento(ctx, {
+        chapeta: v.codigoMadre, fecha: v.fechaNac, nombre: v.nombre, sexo: v.sexo,
+        brucelosis: v.brucelosis, observaciones: v.observaciones, criaEstado: 'viva',
       });
-      if (v.codigoMadre) await logic.vincularCriaConMadre(v.codigoMadre, nombre, v.fechaNac);
-      await logic.registrarEvento('TERNERO', nombre, 'ALTA_TERNERO',
-        { fecha: v.fechaNac, causa: v.codigoMadre ? 'Madre: ' + v.codigoMadre : '' });
-      toast(`Ternero ${nombre} registrado.`);
+      if (r === 'otra') return despues(() => formNuevoTernero(ctx, { ...v, codigoMadre: '' }));
+      if (!r) return;
+      toast(`${r.nombre} registrado como cría de la vaca ${v.codigoMadre}. 🎉`);
       ctx.refresh();
     },
   });
@@ -733,5 +816,117 @@ export function formEditarEvento(ev, ctx) {
         ctx.refresh();
       },
     },
+  });
+}
+
+// ── SANIDAD: vacunas, tratamientos y a quiénes se aplicaron ───────
+const NUEVO_PRODUCTO = '__nuevo__';
+const opcionesTipo = () => Object.entries(logic.TIPOS_PRODUCTO).map(([value, label]) => ({ value, label }));
+
+function gruposAnimales(state, marcados = []) {
+  const porChapeta = (a, b) => String(a.chapeta).localeCompare(String(b.chapeta), 'es', { numeric: true });
+  const vacas = state.vacas.filter(v => v.estado === 'ACTIVA' && !logic.esToro(v)).sort(porChapeta);
+  const toros = state.vacas.filter(v => v.estado === 'ACTIVA' && logic.esToro(v)).sort(porChapeta);
+  const terneros = state.terneros.filter(t => t.activo).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+  const visibles = new Set([...vacas, ...toros, ...terneros].map(a => a.uid));
+  // Si se corrige una aplicación vieja, los que ya no están (vendidos…) siguen marcados.
+  const ausentes = marcados.filter(u => !visibles.has(u)).map(u => logic.animalPorUid(state, u)).filter(Boolean);
+  return [
+    { titulo: '🐄 Vacas', opciones: vacas.map(v => ({ value: v.uid, label: nombreVaca(v) })) },
+    { titulo: '🐂 Toros', opciones: toros.map(t => ({ value: t.uid, label: t.chapeta })) },
+    { titulo: '🐮 Terneros', opciones: terneros.map(t => ({ value: t.uid, label: t.nombre })) },
+    { titulo: 'Ya no están en la finca', opciones: ausentes.map(a => ({ value: a.uid, label: etiquetaAnimal(a) })) },
+  ];
+}
+
+/*
+ * Registrar (o corregir) una aplicación: qué producto, cuándo, refuerzo, y a
+ * QUÉ ANIMALES. Desde la hoja de vida de un animal (soloAnimal) no se muestra
+ * la lista: es para ese animal.
+ */
+export function formAplicacion(ctx, { producto = '', soloAnimal = null, existente = null } = {}) {
+  const { state } = ctx;
+  const cat = logic.catalogo(state);
+  const inicial = existente ? existente.producto : (producto || (cat[0] ? cat[0].nombre : NUEVO_PRODUCTO));
+  const diasDe = n => { const p = cat.find(x => logic.mismoNombre(x.nombre, n)); return p && p.diasReaplicar ? p.diasReaplicar : ''; };
+  const marcados = existente ? logic.animalesDeTratamiento(state, existente).map(a => a.uid) : (soloAnimal ? [soloAnimal.uid] : []);
+  const conLista = !(soloAnimal && !existente);
+
+  formModal({
+    title: existente ? '✏️ Corregir aplicación' : (soloAnimal ? `💉 Vacuna o tratamiento — ${esc(etiquetaAnimal(soloAnimal))}` : '💉 Registrar aplicación'),
+    submitLabel: existente ? 'Guardar cambios' : 'Registrar',
+    fields: [
+      { name: 'producto', label: 'Vacuna o producto', type: 'select', value: inicial, options: [
+        ...cat.map(p => ({ value: p.nombre, label: p.nombre + (p.diasReaplicar ? ` (refuerzo cada ${p.diasReaplicar} d)` : '') })),
+        { value: NUEVO_PRODUCTO, label: '➕ Otro producto nuevo…' },
+      ] },
+      { name: 'nuevoNombre', label: 'Nombre del producto nuevo', grupo: 'nuevo', half: true, placeholder: 'Aftosa, Ivermectina…' },
+      { name: 'nuevoTipo', label: 'Tipo', type: 'select', grupo: 'nuevo', half: true, value: 'VACUNA', options: opcionesTipo() },
+      { name: 'fecha', label: 'Fecha de aplicación', type: 'date', required: true, value: existente ? existente.fecha : hoyISO(), half: true },
+      { name: 'diasReaplicar', label: 'Refuerzo en (días)', type: 'number', half: true,
+        value: existente ? (existente.diasReaplicar || '') : diasDe(inicial), help: 'Vacío si no lleva refuerzo.' },
+      ...(conLista ? [{ name: 'animales', label: '¿A cuáles se les aplicó?', type: 'checks',
+        grupos: gruposAnimales(state, marcados), value: marcados }] : []),
+      { name: 'notas', label: 'Notas (dosis, lote…)', type: 'textarea', value: existente ? existente.notas : '' },
+    ],
+    afterRender(form) {
+      const sel = form.querySelector('[name="producto"]');
+      const dias = form.querySelector('[name="diasReaplicar"]');
+      const mostrar = () => mostrarGrupo(form, ['nuevo'], sel.value === NUEVO_PRODUCTO ? 'nuevo' : '');
+      sel.addEventListener('change', () => { mostrar(); if (sel.value !== NUEVO_PRODUCTO) dias.value = diasDe(sel.value); });
+      mostrar();
+    },
+    async onSubmit(v) {
+      let nombre = v.producto;
+      const uids = conLista ? (v.animales || []) : [soloAnimal.uid];
+      if (!uids.length) throw new Error('Marca al menos un animal.');
+      if (nombre === NUEVO_PRODUCTO) {
+        if (!v.nuevoNombre) throw new Error('Escribe el nombre del producto nuevo.');
+        await logic.guardarProducto(state, { nombre: v.nuevoNombre, tipo: v.nuevoTipo, diasReaplicar: v.diasReaplicar });
+        nombre = v.nuevoNombre.trim();
+      }
+      const lista = uids.map(u => logic.animalPorUid(state, u)).filter(Boolean);
+      const datos = { fecha: v.fecha, producto: nombre, animales: uids, aplicadoA: logic.resumenAnimales(state, lista),
+        diasReaplicar: v.diasReaplicar, notas: v.notas };
+      if (existente) await logic.actualizarTratamiento(existente, datos);
+      else await logic.registrarTratamiento(datos);
+      toast(`${nombre}: ${existente ? 'aplicación corregida' : 'registrado'} para ${datos.aplicadoA.toLowerCase()}. 💉`);
+      ctx.refresh();
+    },
+    ...(existente ? { onDelete: {
+      mensaje: `¿Borrar la aplicación de <b>${esc(existente.producto)}</b> del ${fmtFecha(existente.fecha)}`
+        + ` (${esc(existente.aplicadoA || '')})?`,
+      async run() { await logic.eliminarTratamiento(existente); toast('Aplicación borrada.', 'info'); ctx.refresh(); },
+    } } : {}),
+  });
+}
+
+export const formEditarAplicacion = (t, ctx) => formAplicacion(ctx, { existente: t });
+
+// Crear o corregir una vacuna o producto del catálogo.
+export function formProducto(ctx, existente = null) {
+  formModal({
+    title: existente ? `✏️ ${esc(existente.nombre)}` : '➕ Nueva vacuna o producto',
+    submitLabel: existente ? 'Guardar cambios' : 'Crear',
+    fields: [
+      { name: 'nombre', label: 'Nombre', required: true, value: existente ? existente.nombre : '',
+        placeholder: 'Aftosa, Brucelosis, Ivermectina…' },
+      { name: 'tipo', label: 'Tipo', type: 'select', value: existente ? existente.tipo : 'VACUNA', half: true, options: opcionesTipo() },
+      { name: 'diasReaplicar', label: 'Refuerzo cada (días)', type: 'number', half: true,
+        value: existente && existente.diasReaplicar ? existente.diasReaplicar : '', help: 'Vacío si no lleva refuerzo.' },
+      { name: 'notas', label: 'Notas (dosis, vía, laboratorio…)', type: 'textarea', value: existente ? existente.notas : '' },
+      ...(existente ? [] : [{ name: 'aplicarYa', label: 'Después', type: 'checks', value: ['si'],
+        options: [{ value: 'si', label: 'Marcar ahora a qué animales se les aplicó' }] }]),
+    ],
+    async onSubmit(v) {
+      await logic.guardarProducto(ctx.state, v, existente);
+      toast(existente ? 'Producto actualizado.' : `${v.nombre.trim()} quedó en el catálogo. 💉`);
+      await ctx.refresh();
+      if (!existente && (v.aplicarYa || []).includes('si')) despues(() => formAplicacion(ctx, { producto: v.nombre.trim() }));
+    },
+    ...(existente ? { onDelete: {
+      mensaje: `¿Quitar <b>${esc(existente.nombre)}</b> del catálogo?<br><br>Las aplicaciones que ya se registraron no se borran.`,
+      async run() { await logic.eliminarProducto(existente); toast('Producto quitado del catálogo.', 'info'); ctx.refresh(); },
+    } } : {}),
   });
 }

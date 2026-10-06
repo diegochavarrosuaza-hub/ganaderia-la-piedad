@@ -629,17 +629,114 @@ export function alertas(state) {
 }
 
 // ── Sanidad ───────────────────────────────────────────────────────
-export async function registrarTratamiento({ fecha, producto, aplicadoA, diasReaplicar, notas }) {
+// ── Catálogo de vacunas y productos ───────────────────────────────
+export const TIPOS_PRODUCTO = {
+  VACUNA: '💉 Vacuna',
+  TRATAMIENTO: '💊 Tratamiento',
+  DESPARASITANTE: '🪱 Desparasitante',
+  VITAMINA: '🧪 Vitamina o suplemento',
+};
+
+export function animalPorUid(state, uid) {
+  return state.vacas.find(v => v.uid === uid) || state.terneros.find(t => t.uid === uid) || null;
+}
+
+// Las aplicaciones viejas no guardaban la lista de animales sino un texto
+// ("Toda la lechería"): se entiende como todas las vacas activas.
+const esGrupoLecheria = t => /lecher|tod[oa]s?\b/i.test(t.aplicadoA || '');
+
+export function animalesDeTratamiento(state, t) {
+  if (Array.isArray(t.animales)) return t.animales.map(u => animalPorUid(state, u)).filter(Boolean);
+  if (esGrupoLecheria(t)) return state.vacas.filter(v => v.estado === 'ACTIVA' && !esToro(v));
+  const una = state.vacas.find(v => v.chapeta === String(t.aplicadoA || '').trim());
+  return una ? [una] : [];
+}
+
+// Las vacunas y tratamientos que recibió un animal (para su hoja de vida).
+export function tratamientosDe(state, animal) {
+  return (state.tratamientos || []).filter(t => {
+    if (Array.isArray(t.animales)) return t.animales.includes(animal.uid);
+    if (animal.chapeta == null || esToro(animal)) return false;
+    return esGrupoLecheria(t) || String(t.aplicadoA || '').trim() === animal.chapeta;
+  }).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+}
+
+// "Toda la lechería (58 vacas)" · "Vaca 043, Pecosa" · "12 vacas, 3 terneros"
+export function resumenAnimales(state, lista) {
+  const nombre = a => a.chapeta != null ? (esToro(a) ? 'Toro ' : 'Vaca ') + a.chapeta : a.nombre;
+  if (lista.length <= 3) return lista.map(nombre).join(', ');
+  const vacasActivas = state.vacas.filter(v => v.estado === 'ACTIVA' && !esToro(v)).length;
+  const vacas = lista.filter(a => a.chapeta != null && !esToro(a)).length;
+  const toros = lista.filter(a => a.chapeta != null && esToro(a)).length;
+  const terneros = lista.filter(a => a.chapeta == null).length;
+  const s = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+  const partes = [];
+  if (vacas) partes.push(vacas === vacasActivas ? `toda la lechería (${vacas} vacas)` : s(vacas, 'vaca', 'vacas'));
+  if (toros) partes.push(s(toros, 'toro', 'toros'));
+  if (terneros) partes.push(s(terneros, 'ternero', 'terneros'));
+  const txt = partes.join(', ');
+  return txt.charAt(0).toUpperCase() + txt.slice(1);
+}
+
+// Productos guardados + los que aparecen en aplicaciones viejas, con su uso.
+export function catalogo(state) {
+  const mapa = new Map();
+  for (const p of (state.productos || [])) mapa.set(sinTildes(p.nombre), { ...p });
+  for (const t of (state.tratamientos || [])) {
+    const k = sinTildes(t.producto);
+    if (!k) continue;
+    if (!mapa.has(k)) mapa.set(k, { nombre: t.producto, tipo: '', diasReaplicar: Number(t.diasReaplicar) || 0, virtual: true });
+    const p = mapa.get(k);
+    if (!p.ultima || (t.fecha || '') > p.ultima.fecha) p.ultima = { fecha: t.fecha, n: animalesDeTratamiento(state, t).length };
+  }
+  return [...mapa.values()].sort((a, b) =>
+    (b.ultima ? b.ultima.fecha : '').localeCompare(a.ultima ? a.ultima.fecha : '') || a.nombre.localeCompare(b.nombre, 'es'));
+}
+
+export async function guardarProducto(state, { nombre, tipo = 'VACUNA', diasReaplicar, notas = '' }, existente = null) {
+  nombre = String(nombre || '').trim();
+  if (!nombre) throw new Error('Falta el nombre.');
+  const otro = (state.productos || []).find(p => (!existente || p.id !== existente.id) && mismoNombre(p.nombre, nombre));
+  if (otro) throw new Error(`Ya existe "${otro.nombre}".`);
+  const datos = { nombre, tipo, diasReaplicar: Number(diasReaplicar) || 0, notas: notas || '' };
+  if (!existente) return db.add('productos', datos);
+  const antes = existente.nombre;
+  Object.assign(existente, datos);
+  await db.put('productos', existente);
+  // Si se le cambió el nombre, sus aplicaciones lo siguen.
+  if (antes !== nombre) {
+    for (const t of await db.all('tratamientos')) {
+      if (mismoNombre(t.producto, antes)) { t.producto = nombre; await db.put('tratamientos', t); }
+    }
+  }
+}
+
+export function eliminarProducto(p) { return db.del('productos', p.id); }
+
+// ── Aplicaciones (cada vez que se aplica algo, y a quiénes) ──────
+export async function registrarTratamiento({ fecha, producto, animales = null, aplicadoA, diasReaplicar, notas }) {
   fecha = fecha || hoyISO();
   const dias = Number(diasReaplicar) || 0;
   await db.add('tratamientos', {
     fecha, producto, aplicadoA: aplicadoA || 'Toda la lechería',
+    ...(Array.isArray(animales) ? { animales } : {}),
     diasReaplicar: dias, fechaReaplicar: dias ? addDias(fecha, dias) : '',
     estado: 'PENDIENTE', notas: notas || '',
   });
   await registrarEvento('SANIDAD', aplicadoA || 'Toda la lechería', 'TRATAMIENTO',
-    { fecha, causa: producto + (dias ? ` — reaplicar en ${dias} días` : '') });
+    { fecha, causa: producto + (dias ? ` — refuerzo en ${dias} días` : '') });
 }
+
+export async function actualizarTratamiento(t, { fecha, producto, animales, aplicadoA, diasReaplicar, notas }) {
+  const dias = Number(diasReaplicar) || 0;
+  Object.assign(t, {
+    fecha, producto, animales, aplicadoA, notas: notas || '',
+    diasReaplicar: dias, fechaReaplicar: dias ? addDias(fecha, dias) : '',
+  });
+  await db.put('tratamientos', t);
+}
+
+export function eliminarTratamiento(t) { return db.del('tratamientos', t.id); }
 
 // Marca un tratamiento como reaplicado: lo cierra y crea el siguiente ciclo.
 export async function reaplicarTratamiento(trat, fecha) {
@@ -648,6 +745,7 @@ export async function reaplicarTratamiento(trat, fecha) {
   await db.put('tratamientos', trat);
   await registrarTratamiento({
     fecha, producto: trat.producto, aplicadoA: trat.aplicadoA,
+    ...(Array.isArray(trat.animales) ? { animales: [...trat.animales] } : {}),
     diasReaplicar: trat.diasReaplicar, notas: trat.notas,
   });
 }
@@ -694,6 +792,42 @@ export function nombreDisponible(state, nombre, { madre = '', excepto = null, au
     return cand;
   }
   throw new Error(`Ya existe un ternero llamado "${choque.nombre}". Ponle otro nombre.`);
+}
+
+// Una vaca parió pero no figura preñada: ¿había una preñez que se marcó como
+// perdida o que se borró, con el parto probable cerca de esta fecha?
+export async function prenezCandidata(chapeta, fechaParto) {
+  const lista = (await db.allRaw('prenez'))
+    .filter(p => p.chapeta === String(chapeta) && (p.deletedAt || p.estado === 'PERDIDA') && p.fechaProbParto)
+    .map(p => ({ p, d: Math.abs(diasEntre(p.fechaProbParto, fechaParto) ?? 9999) }))
+    .filter(x => x.d <= 100)
+    .sort((a, b) => a.d - b.d);
+  return lista.length ? lista[0].p : null;
+}
+
+// "Sí parió de esa preñez": se recupera la preñez borrada o "perdida".
+export async function reactivarPrenez(p) {
+  await db.revivir('prenez', p.id, {
+    estado: 'PREÑADA', fechaPerdida: '',
+    observaciones: [p.observaciones, 'Recuperada: no se había perdido, parió'].filter(Boolean).join(' | '),
+  });
+  await refrescarPrenezEnVaca(p.chapeta);
+  await registrarEvento('VACA', p.chapeta, 'CORRECCIÓN',
+    { fecha: p.fechaPrenez, causa: `Se recuperó la preñez del ${p.fechaPrenez}: sí parió` });
+}
+
+// Ternero que llega de afuera (comprado o traído): no tiene madre en la finca.
+export async function registrarTerneroComprado({ nombre, sexo, fechaNac, fechaIngreso, procedencia, precio, genetica, brucelosis, observaciones }) {
+  const f = fechaIngreso || hoyISO();
+  await db.add('terneros', {
+    nombre, sexo: sexo || '', fechaNac: fechaNac || '', codigoMadre: '', activo: true,
+    fechaSalida: '', tipoSalida: '', brucelosis: brucelosis || 'No', observaciones: observaciones || '',
+    ultimoPeso: null, fechaUltimoPesaje: '', genetica: genetica || '',
+    origen: 'COMPRADO', fechaIngreso: f, procedencia: procedencia || '',
+    precioCompra: precio !== '' && precio != null ? Number(precio) : null,
+  });
+  await registrarEvento('TERNERO', nombre, 'INGRESO',
+    { fecha: f, precio, causa: procedencia ? 'Llegó de ' + procedencia : 'Llegó de afuera' });
 }
 
 // "Es el mismo ternero": la preñez se cierra con la cría que ya existe, sin

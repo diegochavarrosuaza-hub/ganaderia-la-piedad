@@ -5,6 +5,7 @@ import { gdpDe } from '../logic.js';
 import { formNuevoTernero, formPesaje } from '../forms.js';
 import { abrirFichaTernero } from '../fichas.js';
 import { avatarHTML, iniciarRonda } from '../fotos.js';
+import { coincide } from '../buscar.js';
 
 let filtro = { q: '', estado: 'vivos' };
 
@@ -15,11 +16,7 @@ export function render(el, ctx) {
   else if (filtro.estado === 'vendidos') filas = filas.filter(t => t.tipoSalida === 'VENDIDO');
   else if (filtro.estado === 'fallecidos') filas = filas.filter(t => t.tipoSalida === 'FALLECIDO');
   else if (filtro.estado === 'novillas') filas = filas.filter(t => t.tipoSalida === 'NOVILLA');
-  if (filtro.q) {
-    const q = filtro.q.toLowerCase();
-    filas = filas.filter(t => [t.nombre, t.codigoMadre, t.observaciones]
-      .some(x => String(x || '').toLowerCase().includes(q)));
-  }
+  if (filtro.q) filas = filas.filter(t => coincide(t, filtro.q));
 
   el.innerHTML = `
     <div class="hint">💡 <span>Toca un ternero para ver su <b>curva de crecimiento</b> y registrar pesajes, ventas o salidas.</span></div>
@@ -43,7 +40,7 @@ export function render(el, ctx) {
         { key: 'nombre', label: 'Nombre', render: t => `<span class="nombre-con-foto">${avatarHTML(state, t, { tam: 'sm' })}<span><b>${esc(t.nombre)}</b>${t.genetica ? ` <span class="muted">· ${esc(t.genetica)}</span>` : ''}</span></span>` },
         { key: 'sexo', label: 'Sexo' },
         { key: 'edad', label: 'Edad', render: t => edadTexto(t.fechaNac) },
-        { key: 'codigoMadre', label: 'Madre', render: t => t.codigoMadre ? '🐄 ' + esc(t.codigoMadre) : '' },
+        { key: 'codigoMadre', label: 'Madre', render: t => t.codigoMadre ? '🐄 ' + esc(t.codigoMadre) : (t.origen === 'COMPRADO' ? '🚚 de afuera' : '') },
         { key: 'ultimoPeso', label: 'Último peso', num: true,
           render: t => t.ultimoPeso ? `<b>${fmtNum(t.ultimoPeso, 1)} kg</b>` : '' },
         { key: 'gdp', label: 'Ganancia', num: true, render: t => {

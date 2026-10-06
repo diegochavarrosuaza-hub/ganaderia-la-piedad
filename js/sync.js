@@ -128,6 +128,14 @@ async function _sincronizar() {
   // ── 1. BAJAR primero: conocer la nube antes de escribirle ──
   // Se pide por páginas, ordenadas por la hora del servidor, y la marca de
   // agua solo avanza cuando TODO llegó y se fusionó.
+  // Si la app trae un tipo de registro nuevo (productos, fotos…), lo que la nube
+  // ya tenía de ese tipo se saltó cuando este aparato no lo conocía: se vuelve a
+  // bajar todo una vez para recogerlo.
+  const firma = db.STORES.join(',');
+  if ((await db.metaGet('storesSync')) !== firma) {
+    await db.metaDel('cursorSync');
+    await db.metaSet('storesSync', firma);
+  }
   let cursor = (await db.metaGet('cursorSync')) || '1970-01-01T00:00:00+00:00';
   let bajados = 0;
   for (;;) {

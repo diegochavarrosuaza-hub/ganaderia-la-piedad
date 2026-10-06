@@ -4,6 +4,7 @@ import { initDB, loadState } from './db.js';
 import { toast } from './ui.js';
 import * as sync from './sync.js';
 import * as logic from './logic.js';
+import { abrirBuscador } from './buscar.js';
 import * as dashboard from './views/dashboard.js';
 import * as vacas from './views/vacas.js';
 import * as toros from './views/toros.js';
@@ -104,6 +105,8 @@ async function main() {
     const tab = e.target.closest('[data-nav]');
     if (tab) irA(tab.dataset.nav);
   });
+  // Lupa de la cabecera: buscar cualquier animal desde cualquier pantalla.
+  document.getElementById('btn-buscar').addEventListener('click', () => abrirBuscador(ctx));
   document.querySelector('.topbar').addEventListener('click', e => {
     const b = e.target.closest('[data-nav]');
     if (b) irA(b.dataset.nav);

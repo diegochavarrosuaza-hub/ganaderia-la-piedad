@@ -162,7 +162,7 @@ export function construirListaBascula(state) {
 // ── Lista de vacas (la que se esté viendo, con su filtro) ────────
 export function construirListaVacas(state, filas, repro) {
   return tablaPrint([
-    { key: 'chapeta', label: 'Chapeta' },
+    { key: 'chapeta', label: 'Chapeta', render: v => esc(v.chapeta) + (v.nombre ? ' · ' + esc(v.nombre) : '') },
     { key: 'codigo', label: 'Código' },
     { key: 'genetica', label: 'Genética' },
     { key: 'edad', label: 'Edad', render: v => edadTexto(v.fechaNac) },

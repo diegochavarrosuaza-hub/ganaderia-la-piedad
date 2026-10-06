@@ -6,15 +6,21 @@ import { kpisReproduccion, confirmarServicio, TIPO_SERVICIO,
 import { formServicio, formPrenez, formParto,
          formEditarPrenez, formEditarServicio } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
+import { coincide } from '../buscar.js';
+import { redibujarSoloTabla } from '../ui.js';
+
+let filtro = { q: '' };
 
 export function render(el, ctx) {
   const { state } = ctx;
   const k = kpisReproduccion(state);
   const aj = ajustes(state);
 
-  const activas = state.prenez.filter(p => p.estado === 'PREÑADA')
+  // El buscador filtra las dos tablas por la vaca (número o nombre).
+  const pasa = chapeta => !filtro.q || coincide(state.vacas.find(v => v.chapeta === chapeta) || { chapeta }, filtro.q);
+  const activas = state.prenez.filter(p => p.estado === 'PREÑADA' && pasa(p.chapeta))
     .sort((a, b) => (a.fechaProbParto || '').localeCompare(b.fechaProbParto || ''));
-  const servicios = [...state.servicios].sort((a, b) => {
+  const servicios = state.servicios.filter(s => pasa(s.chapeta)).sort((a, b) => {
     if ((a.resultado === 'PENDIENTE') !== (b.resultado === 'PENDIENTE')) {
       return a.resultado === 'PENDIENTE' ? -1 : 1; // pendientes primero
     }
@@ -35,10 +41,14 @@ export function render(el, ctx) {
     </div>
 
     <div class="fab-row">
+      <button class="btn btn-pink" id="btn-parto">🍼 Registrar parto</button>
       <button class="btn btn-primary" id="btn-ia">💉 Nueva inseminación</button>
       <button class="btn btn-blue" id="btn-te">🔬 Nueva transferencia</button>
       <button class="btn btn-warn" id="btn-mn">🐂 Monta con toro</button>
       <button class="btn btn-pink" id="btn-prenez">🤰 Preñez directa (monta)</button>
+    </div>
+    <div class="toolbar">
+      <input class="search" id="r-q" type="search" placeholder="🔍 Buscar vaca por número o nombre…" value="${esc(filtro.q)}">
     </div>
 
     <div class="card">
@@ -113,6 +123,8 @@ export function render(el, ctx) {
   el.querySelector('#btn-ia').onclick = () => formServicio('IA', ctx);
   el.querySelector('#btn-te').onclick = () => formServicio('TE', ctx);
   el.querySelector('#btn-mn').onclick = () => formServicio('MN', ctx);
+  el.querySelector('#btn-parto').onclick = () => formParto('', ctx);
+  el.querySelector('#r-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
   el.querySelector('#btn-prenez').onclick = () => formPrenez('', ctx);
 
   el.querySelectorAll('[data-edp]').forEach(b => b.addEventListener('click', e => {

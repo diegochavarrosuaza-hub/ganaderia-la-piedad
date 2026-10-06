@@ -6,8 +6,9 @@ import { formNuevaVaca } from '../forms.js';
 import { abrirFichaVaca } from '../fichas.js';
 import { avatarHTML, iniciarRonda } from '../fotos.js';
 import { imprimir, construirListaVacas } from '../print.js';
+import { coincide } from '../buscar.js';
 
-let filtro = { q: '', estado: 'ACTIVA' };
+let filtro = { q: '', estado: 'ACTIVA', orden: 'chapeta' };
 
 export function render(el, ctx) {
   const { state } = ctx;
@@ -33,18 +34,25 @@ export function render(el, ctx) {
   } else if (filtro.estado) {
     filas = filas.filter(v => v.estado === filtro.estado);
   }
-  if (filtro.q) {
-    const q = filtro.q.toLowerCase();
-    filas = filas.filter(v => [v.chapeta, v.codigo, v.genetica, v.criaActual]
-      .some(x => String(x || '').toLowerCase().includes(q)));
-  }
+  if (filtro.q) filas = filas.filter(v => coincide(v, filtro.q));
+
+  // Orden elegido (además del filtro): por chapeta, nombre, partos o días vacía.
+  const vacio = x => (x ? 0 : 1);
+  const prob = v => (prenezActivaDe(state, v.chapeta) || {}).fechaProbParto || '';
+  const ordenes = {
+    nombre: (a, b) => vacio(a.nombre) - vacio(b.nombre) || String(a.nombre || '').localeCompare(String(b.nombre || ''), 'es'),
+    parto: (a, b) => vacio(a.ultimoParto) - vacio(b.ultimoParto) || String(b.ultimoParto || '').localeCompare(String(a.ultimoParto || '')),
+    probable: (a, b) => vacio(prob(a)) - vacio(prob(b)) || prob(a).localeCompare(prob(b)),
+    vacia: (a, b) => (repro.get(b.chapeta).diasVacia ?? -1) - (repro.get(a.chapeta).diasVacia ?? -1),
+  };
+  if (ordenes[filtro.orden]) filas = [...filas].sort(ordenes[filtro.orden]);
 
   el.innerHTML = `
     <div class="hint">💡 <span>Toca cualquier vaca para ver su <b>hoja de vida completa</b>: crías, servicios, preñeces y acciones (parto, venta…).</span></div>
     <div class="toolbar">
       <button class="btn btn-primary" id="btn-nueva">➕ Nueva vaca</button>
       <button class="btn btn-ghost" id="btn-ronda">📷 Ronda de fotos</button>
-      <input class="search" id="v-q" placeholder="🔍 Chapeta, código, cría…" value="${esc(filtro.q)}">
+      <input class="search" id="v-q" type="search" placeholder="🔍 Número, nombre, código, cría…" value="${esc(filtro.q)}">
       <select class="filter-sel" id="v-estado">
         <option value="ACTIVA" ${filtro.estado === 'ACTIVA' ? 'selected' : ''}>Activas</option>
         <option value="SIN_SERVICIO" ${filtro.estado === 'SIN_SERVICIO' ? 'selected' : ''}>⏰ Sin servicio</option>
@@ -53,6 +61,13 @@ export function render(el, ctx) {
         <option value="VENDIDA" ${filtro.estado === 'VENDIDA' ? 'selected' : ''}>Vendidas</option>
         <option value="FALLECIDA" ${filtro.estado === 'FALLECIDA' ? 'selected' : ''}>Fallecidas</option>
         <option value="">Todas</option>
+      </select>
+      <select class="filter-sel" id="v-orden" title="Ordenar">
+        <option value="chapeta" ${filtro.orden === 'chapeta' ? 'selected' : ''}>↕️ Por chapeta</option>
+        <option value="nombre" ${filtro.orden === 'nombre' ? 'selected' : ''}>↕️ Por nombre</option>
+        <option value="parto" ${filtro.orden === 'parto' ? 'selected' : ''}>↕️ Último parto (reciente)</option>
+        <option value="probable" ${filtro.orden === 'probable' ? 'selected' : ''}>↕️ Próximas a parir</option>
+        <option value="vacia" ${filtro.orden === 'vacia' ? 'selected' : ''}>↕️ Más días sin servicio</option>
       </select>
       <span class="muted" style="font-size:13px;">${filas.length} vacas</span>
       <button class="btn btn-ghost btn-sm" id="btn-lista-vacas" title="Imprimir esta lista">🖨️ PDF</button>
@@ -63,7 +78,7 @@ export function render(el, ctx) {
     <div class="table-wrap">${tablaHTML({
       columns: [
         { key: 'chapeta', label: 'Chapeta', render: v =>
-            `<span class="nombre-con-foto">${avatarHTML(state, v, { tam: 'sm' })}<b>${esc(v.chapeta)}</b></span>` },
+            `<span class="nombre-con-foto">${avatarHTML(state, v, { tam: 'sm' })}<span><b>${esc(v.chapeta)}</b>${v.nombre ? ` <span class="nombre-vaca">${esc(v.nombre)}</span>` : ''}</span></span>` },
         { key: 'codigo', label: 'Código' },
         { key: 'genetica', label: 'Genética' },
         { key: 'edad', label: 'Edad', render: v => edadTexto(v.fechaNac) },
@@ -101,6 +116,7 @@ export function render(el, ctx) {
   };
   el.querySelector('#v-q').oninput = e => { filtro.q = e.target.value; redibujarSoloTabla(el, t => render(t, ctx)); };
   el.querySelector('#v-estado').onchange = e => { filtro.estado = e.target.value; render(el, ctx); };
+  el.querySelector('#v-orden').onchange = e => { filtro.orden = e.target.value; render(el, ctx); };
   el.querySelectorAll('tr[data-chapeta]').forEach(tr =>
     tr.addEventListener('click', () => abrirFichaVaca(tr.dataset.chapeta, ctx)));
 }
